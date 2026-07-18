@@ -51,7 +51,57 @@ def test_contours_of_tilted_plane():
 
 def test_hillshade_rgba_shape():
     dem = np.random.default_rng(0).normal(100, 10, (50, 50))
-    rgba = elevation.hillshade_rgba(dem, cellsize_m=30)
+    rgba = elevation.hillshade_rgba(dem, dx_m=30, dy_m=30)
     assert rgba.shape == (50, 50, 4)
     assert rgba.dtype == np.uint8
     assert rgba[..., 3].max() > 0  # 有阴影
+
+
+def test_crop_to_bounds_corners():
+    n = 1201
+    dem = np.arange(n * n, dtype=np.float32).reshape(n, n)
+    # 裁剪 114.25–114.35 E, 22.15–22.25 N（tile N22E114 西南角 114,22）
+    west, south, east, north = 114.25, 22.15, 114.35, 22.25
+    crop, lons, lats = elevation.crop_to_bounds(dem, "N22E114", west, south, east, north)
+    assert lons[0] == pytest.approx(114.25)
+    assert lons[-1] == pytest.approx(114.35)
+    assert lats[0] == pytest.approx(22.25)  # 第 0 行是北边缘
+    assert lats[-1] == pytest.approx(22.15)
+    assert crop.shape == (len(lats), len(lons))
+    # 西北角对应源图像 row=(23-22.25)*1200, col=(114.25-114)*1200
+    row_idx = int(round((23.0 - 22.25) * (n - 1)))
+    col_idx = int(round((114.25 - 114.0) * (n - 1)))
+    assert crop[0, 0] == dem[row_idx, col_idx]
+    # 东南角对应源图像 row=(23-22.15)*1200, col=(114.35-114)*1200
+    row_idx_se = int(round((23.0 - 22.15) * (n - 1)))
+    col_idx_se = int(round((114.35 - 114.0) * (n - 1)))
+    assert crop[-1, -1] == dem[row_idx_se, col_idx_se]
+
+
+def test_hillshade_orientation_contract():
+    # 北半部一个高斯丘、南半部 0：行 0（图像顶部/NW）应更暗（alpha 更大）
+    y = np.arange(20)
+    x = np.arange(20)
+    Y, X = np.meshgrid(y, x, indexing="ij")
+    dem = 100 * np.exp(-((Y - 5) ** 2 + (X - 10) ** 2) / 15).astype(np.float32)
+    dem[Y >= 10] = 0.0
+    rgba = elevation.hillshade_rgba(dem, dx_m=30, dy_m=30)
+    assert rgba[:10, :, 3].mean() > rgba[10:, :, 3].mean()
+
+
+def test_fill_voids_all_nan():
+    dem = np.full((5, 5), np.nan)
+    filled = elevation.fill_voids(dem)
+    assert filled.shape == (5, 5)
+    assert filled.dtype == np.float32
+    assert np.all(filled == 0)
+
+
+def test_contour_lines_empty_levels():
+    dem = np.full((10, 10), 5.0)
+    lons = np.linspace(114.0, 114.1, 10)
+    lats = np.linspace(22.0, 22.1, 10)
+    gdf = elevation.contour_lines(dem, lons, lats, interval=10)
+    assert gdf.empty
+    assert "ele" in gdf.columns
+    assert gdf.crs.to_string() == "EPSG:4326"

@@ -6,7 +6,9 @@
 
 import gzip
 import json
+import time
 import urllib.request
+import warnings
 from pathlib import Path
 
 import geopandas as gp
@@ -22,6 +24,7 @@ from shapely.geometry import LineString
 SKADI_URL = "https://s3.amazonaws.com/elevation-tiles-prod/skadi/{ns}/{tile}.hgt.gz"
 TILE = "N22E114"  # CUHK 所在 SRTM 瓦片
 VOID = -32768
+HGT_SIZES = {1201: 1201 * 1201 * 2, 3601: 3601 * 3601 * 2}
 
 
 def tile_bounds(tile):
@@ -35,19 +38,40 @@ def tile_bounds(tile):
     return (float(west), float(south), float(east), float(north))
 
 
+def _hgt_expected_size(path):
+    """根据文件名推断的 SRTM 分辨率返回预期字节数，无法推断返回 None。"""
+    name = Path(path).stem
+    n = int(round(np.sqrt(HGT_SIZES[1201] // 2)))
+    if "3" in name:
+        return HGT_SIZES[3601]
+    return HGT_SIZES[1201]
+
+
 def download_hgt(tile, dest_dir):
-    """从 skadi S3 下载并解压 .hgt，返回本地路径。已存在则跳过。"""
+    """从 skadi S3 下载并解压 .hgt，返回本地路径。已存在则校验大小，损坏则重下。"""
     dest_dir = Path(dest_dir)
     dest_dir.mkdir(parents=True, exist_ok=True)
     out = dest_dir / f"{tile}.hgt"
     if out.exists():
-        return out
+        expected = _hgt_expected_size(out)
+        if expected is not None and out.stat().st_size == expected:
+            return out
+        warnings.warn(f"[elevation] 缓存 HGT 大小异常，重新下载：{out}")
+        out.unlink()
+
     url = SKADI_URL.format(ns=tile[:3], tile=tile)
-    print(f"[elevation] 下载 {url}")
-    with urllib.request.urlopen(url, timeout=120) as resp:
-        payload = resp.read()
-    out.write_bytes(gzip.decompress(payload))
-    return out
+    last_err = None
+    for attempt in range(3):
+        try:
+            print(f"[elevation] 下载 {url} (attempt {attempt + 1}/3)")
+            with urllib.request.urlopen(url, timeout=120) as resp:
+                payload = resp.read()
+            out.write_bytes(gzip.decompress(payload))
+            return out
+        except Exception as err:  # noqa: BLE001
+            last_err = err
+            time.sleep(2 * (attempt + 1))
+    raise last_err
 
 
 def read_hgt(path):
@@ -62,9 +86,13 @@ def read_hgt(path):
 
 
 def fill_voids(dem):
-    """nan 用全局均值填充（SRTM 水域常为 void/0，CUHK 山地无大空洞）。"""
+    """nan 用全局均值填充（SRTM 水域常为 void/0，CUHK 山地无大空洞）。
+    若全部为 nan，视为全海面并返回 0 数组。"""
     if not np.isnan(dem).any():
         return dem
+    if np.isnan(dem).all():
+        warnings.warn("[elevation] DEM 全为 void，返回全 0（海面）")
+        return np.zeros(dem.shape, dtype=np.float32)
     fill = np.nanmean(dem)
     return np.where(np.isnan(dem), fill, dem)
 
@@ -90,17 +118,20 @@ def crop_to_bounds(dem, tile, west, south, east, north):
 
 
 def cellsize_m(lons, lats):
-    """经纬度步长换算成米（等距圆柱近似）。"""
+    """经纬度步长换算成米（等距圆柱近似）。
+
+    111320 ≈ 赤道处每度经度的米数；110540 ≈ 每度纬度的米数。
+    """
     mean_lat = np.deg2rad(np.mean(lats))
     dx = np.abs(lons[1] - lons[0]) * 111320 * np.cos(mean_lat)
     dy = np.abs(lats[1] - lats[0]) * 110540
     return dx, dy
 
 
-def hillshade_rgba(dem, cellsize_m=30, azdeg=315, altdeg=45, vert_exag=1.5):
+def hillshade_rgba(dem, dx_m=30.0, dy_m=30.0, azdeg=315, altdeg=45, vert_exag=1.5):
     """山体阴影 → RGBA：黑色阴影，alpha 随坡度阴影增强（海面已被置 0 → 无阴影）。"""
     ls = LightSource(azdeg=azdeg, altdeg=altdeg)
-    shade = ls.hillshade(dem, vert_exag=vert_exag, dx=cellsize_m, dy=cellsize_m)
+    shade = ls.hillshade(dem, vert_exag=vert_exag, dx=dx_m, dy=dy_m)
     rgba = np.zeros((*shade.shape, 4), dtype=np.uint8)
     rgba[..., 3] = ((1 - shade) * 255 * 0.85).astype(np.uint8)
     return rgba
@@ -114,14 +145,21 @@ def contour_lines(dem, lons, lats, interval=10, min_ele=None):
     if min_ele is not None:
         start = max(start, min_ele)
     levels = list(range(int(start), int(hi) + 1, interval))
-    X, Y = np.meshgrid(lons, lats)
-    cs = plt.contour(X, Y, dem, levels=levels)
-    rows = []
-    for level, segs in zip(cs.levels, cs.allsegs):
-        for seg in segs:
-            if len(seg) >= 2:
-                rows.append({"ele": int(level), "geometry": LineString(seg)})
-    plt.close("all")
+    if not levels:
+        warnings.warn(f"[elevation] 等高线为空（高程范围 {lo}..{hi} < interval {interval}）")
+        return gp.GeoDataFrame({"ele": [], "geometry": []}, crs="EPSG:4326")
+
+    fig, ax = plt.subplots()
+    try:
+        X, Y = np.meshgrid(lons, lats)
+        cs = ax.contour(X, Y, dem, levels=levels)
+        rows = []
+        for level, segs in zip(cs.levels, cs.allsegs):
+            for seg in segs:
+                if len(seg) >= 2:
+                    rows.append({"ele": int(level), "geometry": LineString(seg)})
+    finally:
+        plt.close(fig)
     return gp.GeoDataFrame(rows, crs="EPSG:4326")
 
 
@@ -144,7 +182,8 @@ def build_elevation_products(boundary_gdf, cache_dir, out_dir, interval=10):
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    rgba = hillshade_rgba(dem, cellsize_m=cellsize_m(lons, lats)[0])
+    dx, dy = cellsize_m(lons, lats)
+    rgba = hillshade_rgba(dem, dx_m=dx, dy_m=dy)
     plt.imsave(out_dir / "hillshade.png", rgba)
     coords = [
         [float(lons[0]), float(lats[0])],  # NW
