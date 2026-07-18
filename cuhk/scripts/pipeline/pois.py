@@ -1,6 +1,7 @@
 """POI 解析：pois.yml → pois.geojson。
 
-定位二选一：lon/lat 直接给点；osm_name 与抓取的命名要素做模糊匹配取质心。
+定位二选一：lon/lat 直接给点；osm_name 与抓取的命名要素做模糊匹配，
+取匹配要素的 representative_point()（保证落在要素内部）。
 匹配失败的条目全量报错（不静默丢弃）。
 """
 
@@ -31,14 +32,33 @@ def _cache_folder():
 def load_pois(path):
     """加载并校验 pois.yml，返回条目列表。"""
     with open(path, encoding="utf-8") as f:
-        entries = yaml.safe_load(f)["pois"]
+        data = yaml.safe_load(f)
+    if not isinstance(data, dict) or not isinstance(data.get("pois"), list):
+        raise ValueError("pois.yml 缺少 pois 列表")
+    entries = data["pois"]
     ids = set()
     for e in entries:
+        if not isinstance(e, dict):
+            raise ValueError(f"POI 条目必须是 mapping：{e!r}")
         missing = REQUIRED_FIELDS - set(e)
         if missing:
             raise ValueError(f"POI {e.get('id', '?')} 缺字段：{missing}")
         if e["category"] not in CATEGORIES:
             raise ValueError(f"POI {e['id']} 类别非法：{e['category']}")
+        if "osm_name" in e and (
+            not isinstance(e["osm_name"], str) or not e["osm_name"].strip()
+        ):
+            raise ValueError(f"POI {e['id']} osm_name 必须是非空字符串")
+        if "lon" in e or "lat" in e:
+            if not ("lon" in e and "lat" in e):
+                raise ValueError(f"POI {e['id']} lon/lat 必须成对给出")
+            lon, lat = e["lon"], e["lat"]
+            numeric = all(
+                isinstance(v, (int, float)) and not isinstance(v, bool)
+                for v in (lon, lat)
+            )
+            if not numeric or not (113.8 <= lon <= 114.5 and 22.1 <= lat <= 22.6):
+                raise ValueError(f"POI {e['id']} 经纬度越出香港范围：{lon}, {lat}")
         if not (("lon" in e and "lat" in e) or "osm_name" in e):
             raise ValueError(f"POI {e['id']} 必须给 lon/lat 或 osm_name")
         if e["id"] in ids:
@@ -55,7 +75,10 @@ def fetch_named_features(boundary_gdf):
     ox.settings.cache_folder = str(cache)
 
     polygon = boundary_gdf.geometry.union_all()
-    gdf = ox.features_from_polygon(polygon, tags=NAME_TAGS)
+    try:
+        gdf = ox.features_from_polygon(polygon, tags=NAME_TAGS)
+    except ox._errors.InsufficientResponseError:
+        return gp.GeoDataFrame(geometry=[], crs="EPSG:4326")
     if gdf.empty:
         return gdf
     has_name = pd.Series(False, index=gdf.index)
@@ -104,5 +127,9 @@ def resolve_pois(entries, features):
             "geometry": point,
         })
     if not rows:
-        return gp.GeoDataFrame({"geometry": []}, crs="EPSG:4326"), unmatched
+        empty = gp.GeoDataFrame(
+            {c: [] for c in ("id", "name_zh", "name_en", "category", "desc")},
+            geometry=gp.GeoSeries([], crs="EPSG:4326"),
+        )
+        return empty, unmatched
     return gp.GeoDataFrame(rows, crs="EPSG:4326"), unmatched

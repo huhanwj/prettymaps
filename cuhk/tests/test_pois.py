@@ -66,3 +66,55 @@ def test_unmatched_reported(features):
     ]
     _, unmatched = pois.resolve_pois(entries, features)
     assert unmatched == ["ghost"]
+
+
+def test_resolve_fuzzy_match_with_typo(features):
+    entries = [
+        {"id": "na", "name_zh": "新亚书院", "name_en": "New Asia College",
+         "category": "life", "desc": "", "osm_name": "New Asia Collage"}
+    ]
+    gdf, unmatched = pois.resolve_pois(entries, features)
+    assert unmatched == []
+    # 错拼仍模糊命中新亚书院，取面内代表点（box 质心）
+    assert gdf.geometry.iloc[0].x == pytest.approx(114.2095)
+    assert gdf.geometry.iloc[0].y == pytest.approx(22.4215)
+    _, score = pois._match_feature("New Asia Collage", features)
+    assert 0.55 < score < 1.0
+
+
+def test_load_pois_missing_pois_key(tmp_path):
+    yml = tmp_path / "nopois.yml"
+    yml.write_text("other:\n  - id: x\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="缺少 pois"):
+        pois.load_pois(yml)
+
+
+def test_load_pois_blank_osm_name(tmp_path):
+    yml = tmp_path / "blank.yml"
+    yml.write_text(
+        "pois:\n  - id: x\n    name_zh: 测试\n    name_en: Test\n"
+        "    category: study\n    desc: d\n    osm_name: \"\"\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="osm_name"):
+        pois.load_pois(yml)
+
+
+def test_load_pois_bad_lonlat(tmp_path):
+    non_numeric = tmp_path / "non_numeric.yml"
+    non_numeric.write_text(
+        "pois:\n  - id: x\n    name_zh: 测试\n    name_en: Test\n"
+        "    category: study\n    desc: d\n    lon: \"abc\"\n    lat: 22.4\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="经纬度"):
+        pois.load_pois(non_numeric)
+
+    outside_hk = tmp_path / "outside_hk.yml"
+    outside_hk.write_text(
+        "pois:\n  - id: x\n    name_zh: 测试\n    name_en: Test\n"
+        "    category: study\n    desc: d\n    lon: 120.0\n    lat: 30.0\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="经纬度"):
+        pois.load_pois(outside_hk)
