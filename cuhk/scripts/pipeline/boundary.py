@@ -6,6 +6,7 @@ Nominatim 在本机不可达，因此不用 osmnx geocoder；一律走 OverpassC
 from pathlib import Path
 
 import geopandas as gp
+from shapely import make_valid
 from shapely.geometry import Polygon
 from shapely.ops import polygonize, unary_union
 
@@ -38,6 +39,10 @@ def assemble_multipolygon(relation):
     result = shell
     for hole in holes:
         result = result.difference(Polygon(hole))
+
+    result = make_valid(result)
+    if not result.is_valid:
+        raise ValueError("assembled boundary is invalid")
     return result
 
 
@@ -57,7 +62,7 @@ def fetch_campus_boundary(client, buffer_m=800):
     try:
         payload = client.query(ql)
         geom = assemble_multipolygon(payload["elements"][0])
-    except Exception as e:
+    except RuntimeError as e:
         if not FALLBACK_PATH.exists():
             raise RuntimeError(
                 f"Overpass 取边界失败且无 fallback 文件：{e}"
