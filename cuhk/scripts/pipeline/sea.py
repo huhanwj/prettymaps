@@ -5,7 +5,7 @@
 
 import geopandas as gp
 import osmnx as ox
-from shapely.geometry import MultiPolygon, box
+from shapely.geometry import box
 from shapely.ops import unary_union
 
 
@@ -27,7 +27,7 @@ def pick_sea_side(candidates, roads_gdf, crs="EPSG:4326"):
     ]
     if not sea_parts:
         return gp.GeoDataFrame(geometry=[], crs=crs)
-    merged = unary_union(MultiPolygon(sea_parts))
+    merged = unary_union(sea_parts)
     return gp.GeoDataFrame(geometry=[merged], crs=crs)
 
 
@@ -53,6 +53,10 @@ def fetch_sea(boundary_gdf):
     )
     roads = ox.graph_to_gdfs(graph, nodes=False)
     sea_gdf = pick_sea_side(candidates, roads, crs="EPSG:4326")
-    # 海面充满整个矩形画框（不止 buffer 内），交给前端直接展示
-    print(f"[sea] 海面面积 {sea_gdf.to_crs(sea_gdf.estimate_utm_crs()).area.sum():.0f} m²")
+    # 海面为 bbox 矩形中海岸线以外的一侧，前端直接展示
+    if not sea_gdf.empty:
+        area = sea_gdf.to_crs(sea_gdf.estimate_utm_crs()).area.sum()
+        print(f"[sea] 海面面积 {area:.0f} m²")
+    else:
+        print("[sea] 无海面")
     return sea_gdf
