@@ -30,8 +30,8 @@ def tile_bounds(tile):
     lon = int(tile[4:7]) * (1 if tile[3] == "E" else -1)
     north = lat + 1 if lat >= 0 else lat
     south = north - 1
-    east = lon + 1 if lon >= 0 else lon
-    west = east - 1
+    west = lon
+    east = lon + 1
     return (float(west), float(south), float(east), float(north))
 
 

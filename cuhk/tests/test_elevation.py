@@ -8,6 +8,10 @@ def test_tile_bounds():
     assert elevation.tile_bounds("N22E114") == (114.0, 22.0, 115.0, 23.0)
 
 
+def test_tile_bounds_western():
+    assert elevation.tile_bounds("S22W114") == (-114.0, -23.0, -113.0, -22.0)
+
+
 def test_read_hgt_roundtrip(tmp_path):
     dem = (np.arange(1201 * 1201) % 30000).astype(">i2").reshape(1201, 1201)
     path = tmp_path / "tile.hgt"
