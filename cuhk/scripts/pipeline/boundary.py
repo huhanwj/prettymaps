@@ -3,7 +3,6 @@
 Nominatim 在本机不可达，因此不用 osmnx geocoder；一律走 OverpassClient。
 """
 
-import json
 from pathlib import Path
 
 import geopandas as gp
@@ -52,7 +51,8 @@ def buffer_polygon_meters(geom, meters):
 
 def fetch_campus_boundary(client, buffer_m=800):
     """主流程：Overpass 取 relation → 组装 → buffer → GeoDataFrame(4326)。
-    失败时回退到 cuhk/data/boundary_fallback.geojson。"""
+    失败时回退到 cuhk/data/boundary_fallback.geojson（fallback 仍为未 buffer 边界，
+    buffer 在此函数中统一应用）。"""
     ql = f"[out:json][timeout:60];relation({CUHK_RELATION_ID});out geom;"
     try:
         payload = client.query(ql)
@@ -63,10 +63,8 @@ def fetch_campus_boundary(client, buffer_m=800):
                 f"Overpass 取边界失败且无 fallback 文件：{e}"
             ) from e
         print(f"[boundary] Overpass 失败（{e}），使用 fallback 文件")
-        return gp.read_file(FALLBACK_PATH)
+        geom = gp.read_file(FALLBACK_PATH).geometry.iloc[0]
 
-    campus = gp.GeoDataFrame(geometry=[geom], crs="EPSG:4326")
     if buffer_m:
-        buffered = buffer_polygon_meters(geom, buffer_m)
-        campus = gp.GeoDataFrame(geometry=[buffered], crs="EPSG:4326")
-    return campus
+        geom = buffer_polygon_meters(geom, buffer_m)
+    return gp.GeoDataFrame(geometry=[geom], crs="EPSG:4326")
