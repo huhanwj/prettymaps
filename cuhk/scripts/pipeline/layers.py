@@ -3,12 +3,11 @@
 osmnx 自带 HTTP 缓存，cache_folder 指到 cuhk/cache/osmnx，重复跑不重抓。
 """
 
+from pathlib import Path
+
 import geopandas as gp
 import osmnx as ox
-import pandas as pd
 
-ox.settings.use_cache = True
-ox.settings.cache_folder = None  # 由 fetch_all_layers 按 cache_dir 设置
 
 LAYER_TAGS = {
     "buildings": {"building": True},
@@ -45,8 +44,9 @@ def classify_roads(gdf):
     def to_class(value):
         values = value if isinstance(value, list) else [value]
         for v in values:
-            if v in ROAD_CLASS:
-                return ROAD_CLASS[v]
+            normalized = v.removesuffix("_link") if isinstance(v, str) else v
+            if normalized in ROAD_CLASS:
+                return ROAD_CLASS[normalized]
         return "minor"
 
     gdf = gdf.copy()
@@ -56,6 +56,7 @@ def classify_roads(gdf):
 
 def clip_to_boundary(gdf, boundary_gdf):
     """要素与边界求交，丢掉空几何。"""
+    assert gdf.crs == boundary_gdf.crs, "gdf and boundary_gdf must have the same CRS"
     if gdf.empty:
         return gdf
     boundary = boundary_gdf.geometry.union_all()
@@ -67,14 +68,15 @@ def clip_to_boundary(gdf, boundary_gdf):
 
 def fetch_all_layers(boundary_gdf, cache_dir):
     """抓取全部图层，返回 {layer_name: GeoDataFrame}（已裁剪到边界）。"""
+    cache_dir = Path(cache_dir)
+    ox.settings.use_cache = True
     ox.settings.cache_folder = str(cache_dir / "osmnx")
     polygon = boundary_gdf.geometry.union_all()
     out = {}
     for name, tags in LAYER_TAGS.items():
         try:
             gdf = ox.features_from_polygon(polygon, tags=tags)
-        except Exception as e:
-            print(f"[layers] {name} 抓取失败：{e}")
+        except ox._errors.InsufficientResponseError:
             gdf = gp.GeoDataFrame(geometry=[], crs="EPSG:4326")
         # 只保留面（水/绿地）或线（道路/铁路/水道）或混合；osmnx 会混入点
         if name in ("roads", "railway", "waterway") and not gdf.empty:
