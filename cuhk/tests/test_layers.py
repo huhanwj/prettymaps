@@ -1,7 +1,5 @@
 import geopandas as gp
-import pandas as pd
-import pytest
-from shapely.geometry import LineString, Point, Polygon, box
+from shapely.geometry import LineString, box
 
 from pipeline import layers
 
