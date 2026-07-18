@@ -51,7 +51,6 @@ def test_download_hgt_uses_valid_cache(tmp_path):
     assert elevation.download_hgt("N22E114", tmp_path) == cached
 
 
-
 def test_fill_voids():
     dem = np.full((5, 5), 100.0)
     dem[2, 2] = np.nan

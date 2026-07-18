@@ -5,6 +5,7 @@
 """
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -43,7 +44,6 @@ def main():
     # ① 边界（校园 + 800m 缓冲）
     print("== ① 边界 ==")
     campus = boundary.fetch_campus_boundary(client, buffer_m=800)
-    campus.to_file(out_dir / "boundary.geojson", driver="GeoJSON")
 
     # ② 图层
     print("== ② OSM 图层 ==")
@@ -60,6 +60,7 @@ def main():
     )
 
     # ⑤ 建筑高度 + 配色索引
+    print("== ⑤ 建筑高度 ==")
     gdfs["buildings"] = heights.add_heights(gdfs["buildings"])
 
     # ⑥ POI
@@ -80,9 +81,10 @@ def main():
         print(" ", line)
 
     # ⑧ 写出（所有图层都要落盘——style.json 静态引用全部 12 个文件，
-    #    空图层写成空 FeatureCollection，避免前端 404）
+    #    空图层写成空 FeatureCollection，避免前端 404。
+    #    全部 GeoJSON 都在校验通过后写出，避免混 vintage 产出）
     print("== ⑧ 写出 ==")
-    import json
+    campus.to_file(out_dir / "boundary.geojson", driver="GeoJSON")
 
     keep = {
         "buildings": ["h", "c", "geometry"],
@@ -105,7 +107,10 @@ def main():
             path.write_text(json.dumps(EMPTY_FC), encoding="utf-8")
             print(f"  {name}.geojson: 空图层")
             continue
-        existing = [c for c in cols if c in gdf.columns or c == "geometry"]
+        missing = set(cols) - {"geometry"} - set(gdf.columns)
+        if missing:
+            print(f"  WARNING {name}: 缺列 {missing}")
+        existing = [c for c in cols if c in gdf.columns]
         gdf[existing].to_file(path, driver="GeoJSON")
         print(f"  {name}.geojson: {len(gdf)} 要素")
     pois_gdf.to_file(out_dir / "pois.geojson", driver="GeoJSON")

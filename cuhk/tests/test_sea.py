@@ -95,5 +95,27 @@ def test_pick_sea_side_mixed_bridge_and_road_is_land():
     )
     sea_gdf = sea.pick_sea_side(candidates, roads, crs="EPSG:4326")
     assert len(sea_gdf) == 1
-    assert sea_gdf.geometry.iloc[0].bounds[1] < 5  # 保留的是西半边…
     assert sea_gdf.geometry.iloc[0].bounds[0] < 5
+    assert sea_gdf.geometry.iloc[0].bounds[2] < 5.1  # maxx：保留的是西半边
+
+
+def test_pick_sea_side_list_valued_bridge_kept():
+    """osmnx 多重取值 bridge=["viaduct", None]：不崩溃且按桥处理（保留海面）。"""
+    bbox = box(0, 0, 10, 10)
+    coastline = gp.GeoDataFrame(
+        {"geometry": [LineString([(5, -1), (5, 11)])]}, crs="EPSG:4326"
+    )
+    candidates = sea.sea_candidates(bbox, coastline)
+    roads = gp.GeoDataFrame(
+        {
+            "bridge": [["viaduct", None], None],
+            "geometry": [
+                LineString([(8, 2), (8, 8)]),  # list 取值的桥跨东侧海面
+                LineString([(2, 2), (2, 8)]),  # 普通道路在西侧陆上
+            ],
+        },
+        crs="EPSG:4326",
+    )
+    sea_gdf = sea.pick_sea_side(candidates, roads, crs="EPSG:4326")
+    assert len(sea_gdf) == 1
+    assert sea_gdf.geometry.iloc[0].bounds[0] > 5  # minx 在海岸线以东

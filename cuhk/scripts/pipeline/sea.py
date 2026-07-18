@@ -5,6 +5,8 @@ yes/viaduct 等）跨水不算陆侧——原 prettymaps 只认 bridge=yes，大
 高架段 bridge=viaduct 会把吐露港误判成陆地，这里按 OSM 语义放宽。
 """
 
+from pathlib import Path
+
 import geopandas as gp
 import osmnx as ox
 import pandas as pd
@@ -24,7 +26,13 @@ def sea_candidates(bbox_polygon, coastline_gdf):
 
 
 def _is_bridge(value):
-    """OSM bridge 语义：非空且非 no 即桥（yes/viaduct/aqueduct/...）。"""
+    """OSM bridge 语义：非空且非 no 即桥（yes/viaduct/aqueduct/...）。
+
+    osmnx 多重取值 tag 可能是 list（如 ["viaduct", None]），递归处理
+    ——pd.isna(list) 会抛 ambiguous truth ValueError。
+    """
+    if isinstance(value, (list, tuple, set)):
+        return any(_is_bridge(v) for v in value)
     if value is None or (not isinstance(value, str) and pd.isna(value)):
         return False
     return str(value).strip().lower() not in ("", "no", "nan", "none")
@@ -49,6 +57,12 @@ def pick_sea_side(candidates, roads_gdf, crs="EPSG:4326"):
 
 def fetch_sea(boundary_gdf):
     """主流程：以边界的外接矩形为 bbox 抓海岸线和车行网，返回海面 gdf。"""
+    # 自带 osmnx 缓存设置，不依赖 layers.fetch_all_layers 先跑
+    ox.settings.use_cache = True
+    cache = Path(__file__).resolve().parents[2] / "cache" / "osmnx"
+    cache.mkdir(parents=True, exist_ok=True)
+    ox.settings.cache_folder = str(cache)
+
     minx, miny, maxx, maxy = boundary_gdf.total_bounds
     bbox_polygon = box(minx, miny, maxx, maxy)
 
