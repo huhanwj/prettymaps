@@ -29,7 +29,7 @@ class OverpassClient:
         self.timeout = timeout
 
     def _cache_path(self, ql):
-        key = hashlib.sha1(ql.encode("utf-8")).hexdigest()
+        key = hashlib.sha1(f"{self.endpoint}:{ql}".encode("utf-8")).hexdigest()
         return self.cache_dir / "overpass" / f"{key}.json"
 
     def query(self, ql, use_cache=True):
@@ -49,9 +49,10 @@ class OverpassClient:
                 )
                 resp.raise_for_status()
                 payload = resp.json()
-                cache_path.write_text(
-                    json.dumps(payload, ensure_ascii=False), encoding="utf-8"
-                )
+                if use_cache:
+                    cache_path.write_text(
+                        json.dumps(payload, ensure_ascii=False), encoding="utf-8"
+                    )
                 return payload
             except (requests.RequestException, ValueError) as e:
                 last_err = e
@@ -59,4 +60,4 @@ class OverpassClient:
         raise RuntimeError(
             f"Overpass 查询失败（{self.max_retries} 次重试后）：{last_err}\n"
             f"可尝试设置环境变量 CUHK_OVERPASS_URL 切换镜像端点。"
-        )
+        ) from last_err
