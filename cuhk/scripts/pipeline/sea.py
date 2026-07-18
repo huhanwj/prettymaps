@@ -1,0 +1,58 @@
+"""海面多边形：bbox - 海岸线 → 候选面 → 排除与车行道相交的一侧。
+
+移植自 prettymaps fetch.py 的 sea 逻辑（简化：不区分桥梁，车行网相交即陆侧）。
+"""
+
+import geopandas as gp
+import osmnx as ox
+from shapely.geometry import MultiPolygon, box
+from shapely.ops import unary_union
+
+
+def sea_candidates(bbox_polygon, coastline_gdf):
+    """bbox 减海岸线 buffer，返回候选多边形列表。"""
+    coastline = unary_union(list(coastline_gdf.geometry))
+    diff = bbox_polygon.difference(coastline.buffer(1e-9))
+    if diff.is_empty:
+        return []
+    if diff.geom_type == "Polygon":
+        return [diff]
+    return list(diff.geoms)
+
+
+def pick_sea_side(candidates, roads_gdf, crs="EPSG:4326"):
+    """排除与车行道路网相交的候选面，剩下的合并为海面 GeoDataFrame。"""
+    sea_parts = [
+        c for c in candidates if not roads_gdf.geometry.intersects(c).any()
+    ]
+    if not sea_parts:
+        return gp.GeoDataFrame(geometry=[], crs=crs)
+    merged = unary_union(MultiPolygon(sea_parts))
+    return gp.GeoDataFrame(geometry=[merged], crs=crs)
+
+
+def fetch_sea(boundary_gdf):
+    """主流程：以边界的外接矩形为 bbox 抓海岸线和车行网，返回海面 gdf。"""
+    minx, miny, maxx, maxy = boundary_gdf.total_bounds
+    bbox_polygon = box(minx, miny, maxx, maxy)
+
+    try:
+        coastline = ox.features_from_polygon(bbox_polygon, tags={"natural": "coastline"})
+    except ox._errors.InsufficientResponseError:
+        print("[sea] 范围内无海岸线，返回空海面")
+        return gp.GeoDataFrame(geometry=[], crs="EPSG:4326")
+
+    coastline = coastline[coastline.geometry.geom_type.isin(["LineString", "MultiLineString"])]
+    if coastline.empty:
+        print("[sea] 范围内无海岸线，返回空海面")
+        return gp.GeoDataFrame(geometry=[], crs="EPSG:4326")
+
+    candidates = sea_candidates(bbox_polygon, coastline)
+    graph = ox.graph_from_polygon(
+        bbox_polygon, network_type="drive", truncate_by_edge=True
+    )
+    roads = ox.graph_to_gdfs(graph, nodes=False)
+    sea_gdf = pick_sea_side(candidates, roads, crs="EPSG:4326")
+    # 海面充满整个矩形画框（不止 buffer 内），交给前端直接展示
+    print(f"[sea] 海面面积 {sea_gdf.to_crs(sea_gdf.estimate_utm_crs()).area.sum():.0f} m²")
+    return sea_gdf
