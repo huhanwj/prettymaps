@@ -1,10 +1,13 @@
-"""海面多边形：bbox - 海岸线 → 候选面 → 排除与车行道相交的一侧。
+"""海面多边形：bbox - 海岸线 → 候选面 → 排除与非桥车行道相交的一侧。
 
-移植自 prettymaps fetch.py 的 sea 逻辑（简化：不区分桥梁，车行网相交即陆侧）。
+移植自 prettymaps fetch.py 的 sea 逻辑；桥（bridge=* 非空且非 no，含
+yes/viaduct 等）跨水不算陆侧——原 prettymaps 只认 bridge=yes，大老山公路
+高架段 bridge=viaduct 会把吐露港误判成陆地，这里按 OSM 语义放宽。
 """
 
 import geopandas as gp
 import osmnx as ox
+import pandas as pd
 from shapely.geometry import box
 from shapely.ops import unary_union
 
@@ -20,11 +23,24 @@ def sea_candidates(bbox_polygon, coastline_gdf):
     return list(diff.geoms)
 
 
+def _is_bridge(value):
+    """OSM bridge 语义：非空且非 no 即桥（yes/viaduct/aqueduct/...）。"""
+    if value is None or (not isinstance(value, str) and pd.isna(value)):
+        return False
+    return str(value).strip().lower() not in ("", "no", "nan", "none")
+
+
 def pick_sea_side(candidates, roads_gdf, crs="EPSG:4326"):
-    """排除与车行道路网相交的候选面，剩下的合并为海面 GeoDataFrame。"""
-    sea_parts = [
-        c for c in candidates if not roads_gdf.geometry.intersects(c).any()
-    ]
+    """排除与非桥车行道路相交的候选面，剩下的合并为海面 GeoDataFrame。"""
+    def on_land(candidate):
+        hit = roads_gdf.geometry.intersects(candidate)
+        if not hit.any():
+            return False
+        if "bridge" not in roads_gdf.columns:
+            return True
+        return not all(_is_bridge(v) for v in roads_gdf.loc[hit, "bridge"])
+
+    sea_parts = [c for c in candidates if not on_land(c)]
     if not sea_parts:
         return gp.GeoDataFrame(geometry=[], crs=crs)
     merged = unary_union(sea_parts)

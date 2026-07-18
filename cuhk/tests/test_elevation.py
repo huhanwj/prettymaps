@@ -27,6 +27,31 @@ def test_read_hgt_rejects_bad_size(tmp_path):
         elevation.read_hgt(tmp_path / "bad.hgt")
 
 
+def test_hgt_size_ok_accepts_both_resolutions(tmp_path):
+    """skadi 文件名不编码分辨率：1201² 和 3601² 都算合法缓存。"""
+    srtm3 = tmp_path / "N22E114.hgt"
+    srtm3.write_bytes(b"\x00" * (1201 * 1201 * 2))
+    assert elevation._hgt_size_ok(srtm3)
+    srtm1 = tmp_path / "N22E115.hgt"
+    srtm1.write_bytes(b"\x00" * (3601 * 3601 * 2))
+    assert elevation._hgt_size_ok(srtm1)
+
+
+def test_hgt_size_ok_rejects_garbage(tmp_path):
+    bad = tmp_path / "N22E114.hgt"
+    bad.write_bytes(b"\x00" * 12345)
+    assert not elevation._hgt_size_ok(bad)
+    assert not elevation._hgt_size_ok(tmp_path / "missing.hgt")
+
+
+def test_download_hgt_uses_valid_cache(tmp_path):
+    """合法缓存直接命中，不触发下载（SRTM1 大小，文件名不含 3）。"""
+    cached = tmp_path / "N22E114.hgt"
+    cached.write_bytes(b"\x00" * (3601 * 3601 * 2))
+    assert elevation.download_hgt("N22E114", tmp_path) == cached
+
+
+
 def test_fill_voids():
     dem = np.full((5, 5), 100.0)
     dem[2, 2] = np.nan

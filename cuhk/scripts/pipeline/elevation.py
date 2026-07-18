@@ -38,13 +38,16 @@ def tile_bounds(tile):
     return (float(west), float(south), float(east), float(north))
 
 
-def _hgt_expected_size(path):
-    """根据文件名推断的 SRTM 分辨率返回预期字节数，无法推断返回 None。"""
-    name = Path(path).stem
-    n = int(round(np.sqrt(HGT_SIZES[1201] // 2)))
-    if "3" in name:
-        return HGT_SIZES[3601]
-    return HGT_SIZES[1201]
+def _hgt_size_ok(path):
+    """文件大小是否为合法 SRTM .hgt（SRTM3 1201² 或 SRTM1 3601²，int16）。
+
+    skadi 的瓦片文件名不编码分辨率——N22E114.hgt 实际是 SRTM1（3601²），
+    不能靠文件名推断，两种合法大小都接受。
+    """
+    try:
+        return Path(path).stat().st_size in HGT_SIZES.values()
+    except OSError:
+        return False
 
 
 def download_hgt(tile, dest_dir):
@@ -53,8 +56,7 @@ def download_hgt(tile, dest_dir):
     dest_dir.mkdir(parents=True, exist_ok=True)
     out = dest_dir / f"{tile}.hgt"
     if out.exists():
-        expected = _hgt_expected_size(out)
-        if expected is not None and out.stat().st_size == expected:
+        if _hgt_size_ok(out):
             return out
         warnings.warn(f"[elevation] 缓存 HGT 大小异常，重新下载：{out}")
         out.unlink()
