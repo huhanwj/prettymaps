@@ -9,6 +9,7 @@ const map = new maplibregl.Map({
   style: "style.json",
   center: CUHK_CENTER,
   zoom: 14.6,
+  hash: true,
   minZoom: 12.5,
   maxZoom: 18,
   maxPitch: 65,
