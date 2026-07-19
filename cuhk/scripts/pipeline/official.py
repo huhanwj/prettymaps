@@ -24,6 +24,7 @@ OFFICIAL_DB_PATH = Path(__file__).resolve().parents[2] / "data" / "official" / "
 
 SECTIONS = [
     "campus", "colleges", "buildings", "landmarks", "facilities",
+    "shuttle_bus_route_type", "shuttle_bus_route_service_time",
     "shuttle_bus_route", "shuttle_bus_route_seg", "shuttle_bus_seg",
     "shuttle_bus_stops", "walking_route",
 ]
@@ -204,6 +205,14 @@ def shuttle_routes(db):
     """
     segs = {s["bus_route_seg_id"]: s for s in db.get("shuttle_bus_seg", [])}
     stops = {s["bus_stop_id"]: s for s in db.get("shuttle_bus_stops", [])}
+    route_types = {
+        str(item.get("shuttle_bus_route_type_id", "")): item
+        for item in db.get("shuttle_bus_route_type", [])
+    }
+    service_times = {
+        str(item.get("shuttle_bus_route_service_time_id", "")): item
+        for item in db.get("shuttle_bus_route_service_time", [])
+    }
     order = {}
     for r in db.get("shuttle_bus_route_seg", []):
         order.setdefault(r["route_id"], []).append((int(r["order"]), r["seg_id"]))
@@ -255,15 +264,31 @@ def shuttle_routes(db):
                 lines.append(LineString(deduped))
         if not lines:
             continue
+        service_type_id = str(route.get("route_service_type_id", "")).strip()
+        service_time_id = str(
+            route.get("rotue_service_time_id") or route.get("route_service_time_id") or ""
+        ).strip()
+        service_type = route_types.get(service_type_id, {})
+        service_time = service_times.get(service_time_id, {})
         rows.append({
             "route_id": str(rid),
             "name_en": route.get("route_name_en", ""),
             "name_zh": route.get("route_name_xb5", ""),
             "color": route.get("route_color") or "#2F3737",
+            "service_type_id": service_type_id,
+            "service_type_en": service_type.get("shuttle_bus_route_type_name_en", ""),
+            "service_type_zh": service_type.get("shuttle_bus_route_type_name_xb5", ""),
+            "service_time_id": service_time_id,
+            "service_time_en": service_time.get("shuttle_bus_route_service_time_name_en", ""),
+            "service_time_zh": service_time.get("shuttle_bus_route_service_time_name_xb5", ""),
             "geometry": MultiLineString(lines),
         })
     if not rows:
-        return _empty_gdf(["route_id", "name_en", "name_zh", "color", "geometry"])
+        return _empty_gdf([
+            "route_id", "name_en", "name_zh", "color",
+            "service_type_id", "service_type_en", "service_type_zh",
+            "service_time_id", "service_time_en", "service_time_zh", "geometry",
+        ])
     return gp.GeoDataFrame(rows, crs="EPSG:4326")
 
 
@@ -304,13 +329,11 @@ def official_poi_sources(db):
 
 
 def build_official_products(db):
-    """一次性产出全部官方图层：{name: GeoDataFrame}。"""
+    """产出不依赖当前线路定义的官方图层。"""
     return {
         "official_buildings": official_buildings(db),
         "official_landmarks": official_landmarks(db),
         "official_colleges": official_colleges(db),
         "official_facilities": official_facilities(db),
-        "shuttle_routes": shuttle_routes(db),
-        "shuttle_stops": shuttle_stops(db),
         "walking": walking_routes(db),
     }

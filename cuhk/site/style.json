@@ -17,8 +17,6 @@
     "boundary":  { "type": "geojson", "data": "data/boundary.geojson" },
     "shuttle_routes": { "type": "geojson", "data": "data/shuttle_routes.geojson" },
     "shuttle_stops": { "type": "geojson", "data": "data/shuttle_stops.geojson" },
-    "walking": { "type": "geojson", "data": "data/walking.geojson" },
-    "pedestrian_links": { "type": "geojson", "data": "data/pedestrian_links.geojson" },
     "dem": {
       "type": "raster-dem",
       "tiles": ["tiles/terrain-rgb/{z}/{x}/{y}.png"],
@@ -74,6 +72,13 @@
       "paint": { "fill-color": "#EFC7B8", "fill-outline-color": "#D8A18E", "fill-opacity": 0.92 }
     },
     {
+      "id": "sports-pools",
+      "type": "fill",
+      "source": "sports",
+      "filter": ["==", ["get", "sports_kind"], "pool"],
+      "paint": { "fill-color": "#B9E3F2", "fill-outline-color": "#4D9CBD", "fill-opacity": 0.96 }
+    },
+    {
       "id": "beach",
       "type": "fill",
       "source": "beach",
@@ -106,21 +111,10 @@
       "id": "roads-path",
       "type": "line",
       "source": "roads",
-      "filter": ["==", ["get", "road_class"], "path"],
+      "filter": ["==", ["get", "pedestrian_kind"], "path"],
       "paint": {
         "line-color": "#9AAFC0",
         "line-width": ["interpolate", ["linear"], ["zoom"], 13, 0.5, 16, 2.0]
-      }
-    },
-    {
-      "id": "walking",
-      "type": "line",
-      "source": "walking",
-      "paint": {
-        "line-color": "#9AAFC0",
-        "line-width": ["interpolate", ["linear"], ["zoom"], 13, 1.2, 16, 2.5],
-        "line-dasharray": [3, 2],
-        "line-opacity": 0.75
       }
     },
     {
@@ -148,9 +142,17 @@
       "type": "line",
       "source": "railway",
       "paint": {
-        "line-color": "#2F3737",
-        "line-width": 2,
-        "line-dasharray": [3, 3]
+        "line-color": "#657477",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 13, 2.2, 16, 4.2]
+      }
+    },
+    {
+      "id": "railway-center",
+      "type": "line",
+      "source": "railway",
+      "paint": {
+        "line-color": "#FFFFFF",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 13, 0.8, 16, 1.6]
       }
     },
     {
@@ -196,8 +198,8 @@
     {
       "id": "pedestrian-bridges",
       "type": "line",
-      "source": "pedestrian_links",
-      "filter": ["==", ["get", "kind"], "bridge"],
+      "source": "roads",
+      "filter": ["==", ["get", "pedestrian_kind"], "bridge"],
       "paint": {
         "line-color": "#5C95B7",
         "line-width": ["interpolate", ["linear"], ["zoom"], 13, 2.4, 16, 5.0],
@@ -207,8 +209,8 @@
     {
       "id": "pedestrian-stairs",
       "type": "line",
-      "source": "pedestrian_links",
-      "filter": ["==", ["get", "kind"], "stairs"],
+      "source": "roads",
+      "filter": ["==", ["get", "pedestrian_kind"], "stairs"],
       "paint": {
         "line-color": "#5C95B7",
         "line-width": ["interpolate", ["linear"], ["zoom"], 13, 1.5, 16, 3.0],
@@ -217,25 +219,28 @@
       }
     },
     {
-      "id": "boundary",
-      "type": "line",
-      "source": "boundary",
-      "paint": {
-        "line-color": "#2F3737",
-        "line-width": 1.5,
-        "line-dasharray": [4, 3],
-        "line-opacity": 0.5
-      }
-    },
-    {
       "id": "shuttle-routes",
       "type": "line",
       "source": "shuttle_routes",
+      "filter": ["==", ["get", "is_conditional"], false],
       "layout": { "visibility": "none" },
       "paint": {
         "line-color": ["get", "color"],
         "line-width": 3,
         "line-opacity": 0.9
+      }
+    },
+    {
+      "id": "shuttle-route-variants",
+      "type": "line",
+      "source": "shuttle_routes",
+      "filter": ["==", ["get", "is_conditional"], true],
+      "layout": { "visibility": "none" },
+      "paint": {
+        "line-color": ["get", "color"],
+        "line-width": 3,
+        "line-dasharray": [2, 1.5],
+        "line-opacity": 0.82
       }
     },
     {

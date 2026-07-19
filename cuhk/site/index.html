@@ -43,6 +43,11 @@
   }
   #btnTerrain.active { background: #D8CCBA; }
   #btnTerrain:disabled { cursor: wait; opacity: 0.45; }
+  #btnRecordRoute {
+    cursor: pointer; padding: 4px 12px; border: 1.5px solid #2F3737;
+    border-radius: 999px; background: #fff; color: #2F3737; font-size: 13px;
+  }
+  #btnRecordRoute.active { color: #fff; background: #D84A3A; }
 
   .poi-marker { display: flex; align-items: center; gap: 4px; cursor: pointer; }
   .poi-marker .dot {
@@ -50,16 +55,24 @@
     border: 2px solid #fff; box-shadow: 0 0 2px rgba(0,0,0,0.6); flex: none;
   }
   .poi-marker .lbl {
-    display: none; line-height: 1.15; pointer-events: none;
+    display: block; line-height: 1.15; pointer-events: none;
     position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
   }
   .poi-marker .zh { font-size: 12px; font-weight: 700; color: #2F3737; text-shadow: 0 0 3px #fff, 0 0 3px #fff; white-space: nowrap; }
   .poi-marker .en { font-size: 10px; color: #475657; text-shadow: 0 0 3px #fff, 0 0 3px #fff; white-space: nowrap; }
-  body.z-mid .poi-marker.cat-landmark .lbl,
-  body.z-mid .poi-marker.cat-transport .lbl { display: block; }
-  body.z-high .poi-marker .lbl { display: block; }
+  .poi-marker.label-hidden .lbl { display: none; }
   .poi-marker.hidden { display: none; }
   .poi-university-station-west .lbl { left: auto; right: 15px; text-align: right; }
+
+  .building-label-marker { width: 1px; height: 1px; cursor: pointer; }
+  .building-label-marker .lbl {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    line-height: 1.1; text-align: center; white-space: nowrap;
+    padding: 2px 3px; border-radius: 3px; background: rgba(255,255,255,0.72);
+  }
+  .building-label-marker .zh { font-size: 10px; font-weight: 600; color: #4A5658; }
+  .building-label-marker .en { font-size: 8.5px; color: #6E7A7C; }
+  .building-label-marker.label-hidden .lbl { display: none; }
 
   .cat-study .dot, .chip[data-cat="study"] .swatch { background: #2F3737; }
   .cat-life .dot, .chip[data-cat="life"] .swatch { background: #FF5E5B; }
@@ -96,6 +109,42 @@
   .terrain-title { margin-bottom: 5px; font-weight: 700; color: #2F3737; }
   .terrain-band { display: flex; align-items: center; gap: 7px; margin-top: 3px; }
   .terrain-swatch { width: 28px; height: 10px; border: 1px solid rgba(47,55,55,0.15); }
+  #bus-route-info {
+    position: absolute; left: 10px; top: 68px; z-index: 10;
+    width: min(330px, calc(100vw - 80px)); max-height: min(48vh, 330px); overflow: auto;
+    padding: 9px 11px; border-radius: 8px; background: rgba(255,255,255,0.96);
+    color: #2F3737; font-size: 12px; box-shadow: 0 2px 10px rgba(47,55,55,0.16);
+  }
+  #bus-route-info.hidden { display: none; }
+  .bus-route-title { font-weight: 700; margin-bottom: 7px; }
+  .bus-service-group + .bus-service-group { margin-top: 10px; padding-top: 8px; border-top: 1px solid #DCE3E5; }
+  .bus-service-label { font-weight: 700; color: #475657; font-size: 11px; }
+  .bus-route-item { display: grid; grid-template-columns: 10px 1fr; gap: 8px; margin: 6px 0; }
+  .bus-route-swatch { width: 10px; height: 10px; border-radius: 50%; margin-top: 4px; }
+  .bus-route-code { display: inline-block; min-width: 24px; color: #2F3737; }
+  .route-en { color: #647274; font-size: 10.5px; }
+  .route-condition { color: #7A5A1D; font-size: 10px; margin-top: 2px; line-height: 1.3; }
+  #route-recorder {
+    position: absolute; left: 10px; top: 68px; z-index: 20;
+    width: min(350px, calc(100vw - 20px)); max-height: calc(100vh - 90px); overflow: auto;
+    padding: 12px; border: 2px solid #D84A3A; border-radius: 10px;
+    background: rgba(255,255,255,0.97); color: #2F3737; box-shadow: 0 4px 18px rgba(47,55,55,.2);
+  }
+  #route-recorder.hidden { display: none; }
+  .recorder-title { font-weight: 700; }
+  .recorder-help { margin: 5px 0 9px; font-size: 11px; line-height: 1.4; color: #5B686A; }
+  .recorder-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+  .recorder-actions button { padding: 4px 9px; border: 1px solid #647274; border-radius: 5px; background: #fff; cursor: pointer; }
+  #recorderExport { border-color: #D84A3A; color: #A52E24; font-weight: 700; }
+  #recorderPoints { margin: 9px 0 0; padding-left: 26px; font-size: 11px; line-height: 1.55; }
+  #recorderPoints .waypoint { color: #7A5A1D; }
+  .route-recording-active .poi-marker,
+  .route-recording-active .building-label-marker { pointer-events: none; }
+  .route-badge {
+    padding: 3px 7px; border: 2px solid #fff; border-radius: 999px;
+    background: #2F3737; color: #fff; font-size: 11px; font-weight: 700;
+    box-shadow: 0 1px 4px rgba(47,55,55,0.35); white-space: nowrap;
+  }
   #error-overlay {
     position: absolute; inset: 0; z-index: 100; display: flex;
     align-items: center; justify-content: center; background: #FFFFFF;
@@ -116,10 +165,11 @@
     <button type="button" class="chip" data-cat="transport" aria-pressed="true"><span class="swatch"></span>交通</button>
     <button type="button" class="chip" data-cat="landmark" aria-pressed="true"><span class="swatch"></span>地標</button>
     <button type="button" id="btnTerrain" aria-pressed="false" disabled>地形</button>
+    <button type="button" id="btnRecordRoute" aria-pressed="false">录线</button>
     <label class="bus-filter" for="busRouteSelect">校巴
       <select id="busRouteSelect" disabled>
         <option value="off">關閉</option>
-        <option value="all">全部線路</option>
+        <option value="all">全部服務</option>
       </select>
     </label>
   </div>
@@ -131,6 +181,18 @@
   <div class="terrain-band"><span class="terrain-swatch" style="background:#DED6C9"></span>100–149 m</div>
   <div class="terrain-band"><span class="terrain-swatch" style="background:#CDC3B5"></span>150 m+</div>
 </div>
+<div id="bus-route-info" class="hidden" aria-live="polite"></div>
+<aside id="route-recorder" class="hidden" aria-live="polite">
+  <div class="recorder-title">校巴真实走线录制 · <span id="recorderRouteId"></span></div>
+  <div class="recorder-help">按行车顺序点击：点亮的圆点是标准站点；道路上的点击会记为转弯控制点。岔路口容易走错时补点即可。</div>
+  <div class="recorder-actions">
+    <button type="button" id="recorderUndo">撤销一步</button>
+    <button type="button" id="recorderClear">清空</button>
+    <button type="button" id="recorderExport">导出 JSON</button>
+    <button type="button" id="recorderClose">结束录制</button>
+  </div>
+  <ol id="recorderPoints"></ol>
+</aside>
 <div id="link-legend" aria-label="步行連接圖例">
   <div><span class="legend-line path"></span>普通步道</div>
   <div><span class="legend-line"></span>天橋</div>

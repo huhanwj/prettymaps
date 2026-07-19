@@ -18,6 +18,22 @@ def test_road_classification():
     ]
 
 
+def test_pedestrian_kind_is_mutually_exclusive_for_path_bridge_and_stairs():
+    gdf = gp.GeoDataFrame(
+        {
+            "highway": ["footway", "footway", "steps", "primary"],
+            "bridge": [None, "yes", None, "yes"],
+            "layer": [None, "1", None, "1"],
+            "geometry": [LineString([(0, 0), (1, 1)])] * 4,
+        },
+        crs="EPSG:4326",
+    )
+
+    out = layers.classify_roads(gdf)
+
+    assert list(out["pedestrian_kind"]) == ["path", "bridge", "stairs", ""]
+
+
 def test_clip_to_boundary():
     gdf = gp.GeoDataFrame(
         {"geometry": [box(0, 0, 2, 2), box(10, 10, 11, 11)]}, crs="EPSG:4326"
@@ -67,13 +83,14 @@ def test_fetch_empty_layers(monkeypatch, campus_square, tmp_path):
 def test_split_green_and_sports_keeps_only_generic_land_in_green():
     source = gp.GeoDataFrame(
         {
-            "leisure": ["pitch", "track", "park", None],
-            "landuse": [None, None, None, "grass"],
+            "leisure": ["pitch", "track", "swimming_pool", "park", None],
+            "landuse": [None, None, None, None, "grass"],
             "geometry": [
                 box(114.200, 22.410, 114.201, 22.411),
                 box(114.202, 22.410, 114.203, 22.411),
                 box(114.204, 22.410, 114.205, 22.411),
                 box(114.206, 22.410, 114.207, 22.411),
+                box(114.208, 22.410, 114.209, 22.411),
             ],
         },
         crs="EPSG:4326",
@@ -82,4 +99,8 @@ def test_split_green_and_sports_keeps_only_generic_land_in_green():
     green, sports = layers.split_green_and_sports(source)
 
     assert list(green["leisure"].fillna("")) == ["park", ""]
-    assert list(sports["sports_kind"]) == ["field", "track"]
+    assert list(sports["sports_kind"]) == ["field", "track", "pool"]
+
+
+def test_green_query_fetches_swimming_pools():
+    assert "swimming_pool" in layers.LAYER_TAGS["green"]["leisure"]

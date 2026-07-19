@@ -32,6 +32,8 @@ def test_v3_restores_separate_sports_surfaces():
     assert style["sources"]["sports"]["data"] == "data/sports.geojson"
     assert _layer(style, "sports-fields")["paint"]["fill-color"] == "#DCE8C8"
     assert _layer(style, "sports-tracks")["paint"]["fill-color"] == "#EFC7B8"
+    assert _layer(style, "sports-pools")["filter"] == ["==", ["get", "sports_kind"], "pool"]
+    assert _layer(style, "sports-pools")["paint"]["fill-color"] == "#B9E3F2"
 
 
 def test_v3_building_palette_covers_all_official_campus_ids():
@@ -44,22 +46,32 @@ def test_v3_building_palette_covers_all_official_campus_ids():
         assert color in serialized
 
 
-def test_v3_has_distinct_bridge_and_stair_layers():
+def test_v3_has_distinct_osm_bridge_and_stair_layers():
     style = _style()
-    assert style["sources"]["pedestrian_links"]["data"] == "data/pedestrian_links.geojson"
     bridge = _layer(style, "pedestrian-bridges")
     stairs = _layer(style, "pedestrian-stairs")
-    assert bridge["filter"] == ["==", ["get", "kind"], "bridge"]
-    assert stairs["filter"] == ["==", ["get", "kind"], "stairs"]
+    assert bridge["source"] == "roads"
+    assert stairs["source"] == "roads"
+    assert bridge["filter"] == ["==", ["get", "pedestrian_kind"], "bridge"]
+    assert stairs["filter"] == ["==", ["get", "pedestrian_kind"], "stairs"]
     assert "line-dasharray" not in bridge["paint"]
     assert stairs["paint"]["line-dasharray"]
 
 
-def test_v3_keeps_ordinary_paths_solid_and_reserves_dashes_for_pdf_stairs():
+def test_v3_keeps_ordinary_paths_solid_and_separate_from_osm_links():
     style = _style()
     paths = _layer(style, "roads-path")
-    assert paths["filter"] == ["==", ["get", "road_class"], "path"]
+    assert paths["filter"] == ["==", ["get", "pedestrian_kind"], "path"]
     assert "line-dasharray" not in paths["paint"]
+
+
+def test_v3_removes_ambiguous_grey_dashed_overlays():
+    style = _style()
+    layer_ids = {layer["id"] for layer in style["layers"]}
+    assert "walking" not in layer_ids
+    assert "boundary" not in layer_ids
+    assert "line-dasharray" not in _layer(style, "railway")["paint"]
+    assert _layer(style, "railway-center")["paint"]["line-color"] == "#FFFFFF"
 
 
 def test_v3_hides_3d_and_exposes_bus_selector_and_link_legend():
@@ -69,9 +81,68 @@ def test_v3_hides_3d_and_exposes_bus_selector_and_link_legend():
     assert _layer(style, "buildings-3d")["layout"]["visibility"] == "none"
     assert 'id="btn3d"' not in html
     assert 'id="busRouteSelect"' in html
+    assert 'id="bus-route-info"' in html
     assert "天橋" in html and "樓梯" in html
     assert "wire3DButton()" not in app
     assert "green-hatch" not in app
+
+
+def test_v3_uses_collision_managed_labels_instead_of_category_zoom_hiding():
+    html = INDEX_PATH.read_text(encoding="utf-8")
+    app = APP_PATH.read_text(encoding="utf-8")
+    assert "body.z-mid .poi-marker.cat-landmark" not in html
+    assert "selectNonOverlappingLabels" in app
+    assert "updateZoomClass" not in app
+
+
+def test_v3_loads_zoom_progressive_official_building_labels():
+    html = INDEX_PATH.read_text(encoding="utf-8")
+    app = APP_PATH.read_text(encoding="utf-8")
+    assert "official_buildings.geojson" in app
+    assert "addOfficialBuildingLabels" in app
+    assert "buildingLabelsEnabled" in app
+    assert "labelCollisionPadding" in app
+    assert ".building-label-marker" in html
+
+
+def test_v3_constrains_viewport_and_hides_internal_shuttle_ids():
+    app = APP_PATH.read_text(encoding="utf-8")
+    assert "const CUHK_MAX_BOUNDS" in app
+    assert "zoom: 15" in app
+    assert "minZoom: 14.8" in app
+    assert "maxBounds: CUHK_MAX_BOUNDS" in app
+    assert "renderWorldCopies: false" in app
+    assert "CUHKAppCore.routeGroups" in app
+    assert "線路 ${" not in app
+
+
+def test_v3_splits_regular_and_conditional_shuttle_paths():
+    style = _style()
+    regular = _layer(style, "shuttle-routes")
+    conditional = _layer(style, "shuttle-route-variants")
+    assert regular["filter"] == ["==", ["get", "is_conditional"], False]
+    assert conditional["filter"] == ["==", ["get", "is_conditional"], True]
+    assert conditional["paint"]["line-dasharray"]
+
+
+def test_v3_uses_public_route_ids_and_renders_service_conditions():
+    app = APP_PATH.read_text(encoding="utf-8")
+    assert "sourceRouteIds" not in app
+    assert "routeConditions" in app
+    assert "shuttle-route-variants" in app
+
+
+def test_v3_exposes_interactive_route_recorder():
+    html = INDEX_PATH.read_text(encoding="utf-8")
+    app = APP_PATH.read_text(encoding="utf-8")
+    assert 'id="btnRecordRoute"' in html
+    assert 'id="route-recorder"' in html
+    assert 'id="recorderUndo"' in html
+    assert 'id="recorderExport"' in html
+    assert "recording-stop-candidates" in app
+    assert "routeRecordingGeoJSON" in app
+    assert ".route-recording-active .poi-marker" in html
+    assert 'classList.toggle("route-recording-active"' in app
 
 
 def test_v3_terrain_is_optional_and_has_conditional_legend():

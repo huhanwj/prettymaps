@@ -12,8 +12,14 @@ buildings : [
 {"building_id":"1", "bldg_name_en":"Benjamin Franklin Centre", "bldg_name_xb5":"范克廉樓", "lat_lng":"(22.41841513972474, 114.20518487691879)", "hostel_type":"", "bldg_code":"H1"},
 {"building_id":"2", "bldg_name_en":"Brace {Test} \\"Quoted\\"", "bldg_name_xb5":"測試", "lat_lng":"", "hostel_type":"student", "bldg_code":"X2"},
 ],
+shuttle_bus_route_type : [
+{"shuttle_bus_route_type_id":"1", "shuttle_bus_route_type_name_en":"Monday to Saturday", "shuttle_bus_route_type_name_xb5":"星期一至六"},
+],
+shuttle_bus_route_service_time : [
+{"shuttle_bus_route_service_time_id":"1", "shuttle_bus_route_service_type_id":"1", "shuttle_bus_route_service_time_name_en":"Before 9:00 a.m.", "shuttle_bus_route_service_time_name_xb5":"上午9時前"},
+],
 shuttle_bus_route : [
-{"route_id":"1", "route_name_en":"University Station > NA College", "route_name_xb5":"大學站 > 新亞書院", "route_color":"#ff0000"},
+{"route_id":"1", "route_name_en":"University Station > NA College", "route_name_xb5":"大學站 > 新亞書院", "route_color":"#ff0000", "route_service_type_id":"1", "rotue_service_time_id":"1"},
 ],
 shuttle_bus_route_seg : [
 {"route_id":"1", "seg_id":"1", "order":"2"},
@@ -75,6 +81,10 @@ def test_shuttle_routes_ordered_assembly():
     row = gdf.iloc[0]
     assert row["route_id"] == "1"
     assert row["color"] == "#ff0000"
+    assert row["service_type_zh"] == "星期一至六"
+    assert row["service_type_en"] == "Monday to Saturday"
+    assert row["service_time_zh"] == "上午9時前"
+    assert row["service_time_en"] == "Before 9:00 a.m."
     # seg 折线锚定其 start 站：order=1 的 seg2（锚 stop1）应排在 order=2 的 seg1（锚 stop2）前
     # seg2 "g@{@{@{@oA{@" 解码相对点 (0.0002,0.0003),(0.0005,0.0006),(0.0009,0.0009)
     line0 = row.geometry.geoms[0]
@@ -95,6 +105,16 @@ def test_shuttle_routes_ordered_assembly():
         114.2115, 22.4114,
         114.2120, 22.4120,
     ], abs=1e-6)
+
+
+def test_shuttle_route_without_service_time_keeps_service_type():
+    db = official.parse_map_data(SAMPLE_JS)
+    db["shuttle_bus_route"][0]["rotue_service_time_id"] = ""
+
+    row = official.shuttle_routes(db).iloc[0]
+
+    assert row["service_type_zh"] == "星期一至六"
+    assert row["service_time_zh"] == ""
 
 
 def test_walking_routes():
@@ -245,8 +265,6 @@ def test_real_file_products_smoke(recwarn):
         "official_landmarks": 26,
         "official_colleges": 9,
         "official_facilities": 372,
-        "shuttle_routes": 19,
-        "shuttle_stops": 51,
         "walking": 2,
     }
     skips = [w for w in recwarn.list if "无法定位" in str(w.message)]

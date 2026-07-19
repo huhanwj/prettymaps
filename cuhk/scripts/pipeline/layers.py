@@ -21,7 +21,8 @@ LAYER_TAGS = {
         "landuse": ["grass", "orchard", "meadow"],
         "natural": ["wood", "wetland"],
         "leisure": [
-            "garden", "golf_course", "park", "pitch", "sports_centre", "track",
+            "garden", "golf_course", "park", "pitch", "sports_centre",
+            "swimming_pool", "track",
         ],
     },
     "beach": {"natural": "beach"},
@@ -38,7 +39,8 @@ ROAD_CLASS = {
     "steps": "steps",
 }
 
-SPORTS_LEISURE = {"pitch", "track", "sports_centre", "stadium"}
+SPORTS_LEISURE = {"pitch", "track", "sports_centre", "stadium", "swimming_pool"}
+PEDESTRIAN_HIGHWAYS = {"pedestrian", "footway", "path", "steps", "cycleway"}
 
 
 def _tag_values(value):
@@ -57,7 +59,11 @@ def split_green_and_sports(gdf):
     )
     sports = gdf.loc[sports_mask].copy()
     sports["sports_kind"] = leisure.loc[sports_mask].map(
-        lambda value: "track" if "track" in {str(item) for item in _tag_values(value)} else "field"
+        lambda value: (
+            "pool" if "swimming_pool" in {str(item) for item in _tag_values(value)}
+            else "track" if "track" in {str(item) for item in _tag_values(value)}
+            else "field"
+        )
     )
     return gdf.loc[~sports_mask].copy(), sports
 
@@ -73,8 +79,34 @@ def classify_roads(gdf):
                 return ROAD_CLASS[normalized]
         return "minor"
 
+    def positive_layer(value):
+        for item in _tag_values(value):
+            try:
+                if float(item) > 0:
+                    return True
+            except (TypeError, ValueError):
+                continue
+        return False
+
+    def is_yes(value):
+        return any(
+            str(item).strip().lower() in {"yes", "true", "1"}
+            for item in _tag_values(value)
+        )
+
+    def pedestrian_kind(row):
+        highways = {str(v).strip().lower() for v in _tag_values(row.get("highway"))}
+        if not highways & PEDESTRIAN_HIGHWAYS:
+            return ""
+        if "steps" in highways:
+            return "stairs"
+        if is_yes(row.get("bridge")) or positive_layer(row.get("layer")):
+            return "bridge"
+        return "path"
+
     gdf = gdf.copy()
     gdf["road_class"] = gdf["highway"].map(to_class)
+    gdf["pedestrian_kind"] = gdf.apply(pedestrian_kind, axis=1)
     return gdf
 
 

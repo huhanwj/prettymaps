@@ -17,9 +17,9 @@ from pipeline import (  # noqa: E402
     heights,
     layers,
     official,
-    pedestrian,
     pois,
     sea,
+    shuttle,
     terrain,
     validate,
 )
@@ -81,6 +81,14 @@ def main():
     gdfs.update(products)
     for name, gdf in products.items():
         print(f"  {name}: {len(gdf)}")
+    shuttle_products = shuttle.build_products(
+        roads=gdfs["roads"],
+        official_db=db,
+        config_path=REPO_CUHK / "data" / "shuttle_routes.yml",
+    )
+    gdfs.update(shuttle_products)
+    for name, gdf in shuttle_products.items():
+        print(f"  {name}: {len(gdf)}")
 
     # ⑤c 建筑功能分类（依赖 ⑤b 的官方建筑点，故必须在 ⑤b 之后）
     print("== ⑤c 建筑分类 ==")
@@ -90,18 +98,6 @@ def main():
     gdfs["buildings"][["bt", "campus_id"]] = building_attrs
     print("  建筑 bt 分布:", dict(gdfs["buildings"]["bt"].value_counts()))
     print("  建筑 campus_id 分布:", dict(gdfs["buildings"]["campus_id"].value_counts()))
-
-    # ⑤d 天桥/楼梯：OSM 标签自动识别 + 官方 PDF 人工补齐
-    print("== ⑤d 天桥与楼梯 ==")
-    osm_links = pedestrian.extract_osm_links(gdfs["roads"])
-    curated_links = pedestrian.load_curated_links(
-        REPO_CUHK / "data" / "official" / "pedestrian_links.geojson", campus
-    )
-    gdfs["pedestrian_links"] = pedestrian.select_v3_links(osm_links, curated_links)
-    print(
-        "  pedestrian_links 分布:",
-        dict(gdfs["pedestrian_links"]["kind"].value_counts()),
-    )
 
     # ⑥ POI
     print("== ⑥ POI ==")
@@ -131,7 +127,7 @@ def main():
 
     keep = {
         "buildings": ["h", "c", "bt", "campus_id", "geometry"],
-        "roads": ["road_class", "geometry"],
+        "roads": ["road_class", "pedestrian_kind", "geometry"],
         "railway": ["geometry"],
         "water": ["geometry"],
         "waterway": ["geometry"],
@@ -144,10 +140,15 @@ def main():
         "contours": ["ele", "geometry"],
         "official_buildings": ["name_en", "name_zh", "bldg_code", "campus_id", "hostel_type", "type", "geometry"],
         "official_landmarks": ["name_en", "name_zh", "geometry"],
-        "shuttle_routes": ["route_id", "name_en", "name_zh", "color", "geometry"],
-        "shuttle_stops": ["name_en", "name_zh", "route_ids", "geometry"],
+        "shuttle_routes": [
+            "route_id", "name_en", "name_zh", "color",
+            "service_type_id", "service_type_en", "service_type_zh",
+            "service_time_id", "service_time_en", "service_time_zh",
+            "variant", "condition_zh", "condition_en", "is_conditional",
+            "stop_ids", "geometry",
+        ],
+        "shuttle_stops": ["stop_id", "name_en", "name_zh", "route_ids", "geometry"],
         "walking": ["name_en", "name_zh", "geometry"],
-        "pedestrian_links": ["kind", "source", "note", "geometry"],
     }
     EMPTY_FC = {"type": "FeatureCollection", "features": []}
     for name, cols in keep.items():
