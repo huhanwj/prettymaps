@@ -25,9 +25,21 @@ async function loadJSON(url) {
   return resp.json();
 }
 
+const escapeHTML = (s) =>
+  String(s).replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  }[c]));
+
+let mapReady = false;
+
 function showError() {
   document.getElementById("error-overlay").classList.remove("hidden");
 }
+
+map.on("error", (e) => {
+  console.error(e);
+  if (!mapReady) showError();
+});
 
 /* ---------- 点状纹理（prettymaps hatch 风格） ---------- */
 
@@ -90,9 +102,9 @@ async function addHillshade() {
 
 function popupHTML(props) {
   return `<div class="pop">
-    <div class="zh">${props.name_zh}</div>
-    <div class="en">${props.name_en}</div>
-    <p>${props.desc}</p>
+    <div class="zh">${escapeHTML(props.name_zh)}</div>
+    <div class="en">${escapeHTML(props.name_en)}</div>
+    <p>${escapeHTML(props.desc)}</p>
   </div>`;
 }
 
@@ -102,7 +114,7 @@ function addPOIMarkers(geojson) {
     const el = document.createElement("div");
     el.className = `poi-marker cat-${p.category}`;
     el.innerHTML = `<div class="dot"></div>
-      <div class="lbl"><div class="zh">${p.name_zh}</div><div class="en">${p.name_en}</div></div>`;
+      <div class="lbl"><div class="zh">${escapeHTML(p.name_zh)}</div><div class="en">${escapeHTML(p.name_en)}</div></div>`;
     const popup = new maplibregl.Popup({ maxWidth: "280px", offset: 12 }).setHTML(popupHTML(p));
     new maplibregl.Marker({ element: el })
       .setLngLat(feat.geometry.coordinates)
@@ -119,6 +131,7 @@ function wireChips() {
       const cat = chip.dataset.cat;
       chip.classList.toggle("off");
       const show = !chip.classList.contains("off");
+      chip.setAttribute("aria-pressed", String(show));
       document
         .querySelectorAll(`.poi-marker.cat-${cat}`)
         .forEach((m) => m.classList.toggle("hidden", !show));
@@ -136,7 +149,7 @@ function wire3DButton() {
     map.setLayoutProperty("buildings-3d", "visibility", is3d ? "visible" : "none");
     map.setLayoutProperty("buildings-2d", "visibility", is3d ? "none" : "visible");
     map.easeTo({ pitch: is3d ? 45 : 0, duration: 800 });
-    btn.textContent = is3d ? "2D 视角" : "3D 视角";
+    btn.textContent = is3d ? "2D 視角" : "3D 視角";
   });
 }
 
@@ -151,17 +164,30 @@ function updateZoomClass() {
 /* ---------- 启动 ---------- */
 
 map.on("load", async () => {
+  // 核心数据探测失败 = 管线没跑过 → 显示错误浮层并放弃启动
   try {
-    addHatchLayers();
-    await addHillshade();
-    const pois = await loadJSON("data/pois.geojson");
-    addPOIMarkers(pois);
-    wireChips();
-    wire3DButton();
-    updateZoomClass();
-    map.on("zoom", updateZoomClass);
+    await loadJSON("data/buildings.geojson");
   } catch (e) {
     console.error(e);
     showError();
+    return;
   }
+  addHatchLayers();
+  // 非核心资源各自降级：缺 hillshade / POI 不影响地图其余部分
+  try {
+    await addHillshade();
+  } catch (e) {
+    console.warn("hillshade 加载失败，跳过山体阴影：", e);
+  }
+  try {
+    const pois = await loadJSON("data/pois.geojson");
+    addPOIMarkers(pois);
+  } catch (e) {
+    console.warn("pois.geojson 加载失败，跳过 POI 标注：", e);
+  }
+  wireChips();
+  wire3DButton();
+  updateZoomClass();
+  map.on("zoom", updateZoomClass);
+  mapReady = true;
 });

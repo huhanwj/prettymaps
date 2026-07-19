@@ -27,6 +27,9 @@ REPO_CUHK = Path(__file__).resolve().parents[1]
 
 
 def main():
+    # 中文 Windows 控制台默认 GBK：输出含 ²/繁体等字符会直接崩溃，强制 UTF-8
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
     parser = argparse.ArgumentParser(description="CUHK 地图数据管线")
     parser.add_argument("--out", default=str(REPO_CUHK / "site" / "data"))
     parser.add_argument("--cache", default=str(REPO_CUHK / "cache"))

@@ -13,13 +13,16 @@
   #topbar {
     position: absolute; top: 0; left: 0; right: 0; z-index: 10;
     display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; row-gap: 6px;
     padding: 10px 16px; background: rgba(242, 244, 203, 0.92);
     border-bottom: 2px solid #2F3737;
   }
+  .maplibregl-ctrl-top-right { top: 56px; }
   .title { font-size: 18px; font-weight: 700; color: #2F3737; }
   .title .sub { font-size: 12px; font-weight: 400; color: #475657; margin-left: 10px; }
   #chips { display: flex; gap: 8px; align-items: center; }
   .chip {
+    font: inherit;
     display: flex; align-items: center; gap: 6px; cursor: pointer;
     padding: 4px 12px; border: 1.5px solid #2F3737; border-radius: 999px;
     background: #fff; font-size: 13px; color: #2F3737; user-select: none;
@@ -31,12 +34,15 @@
     border-radius: 999px; background: #2F3737; color: #F2F4CB; font-size: 13px;
   }
 
-  .poi-marker { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+  .poi-marker { position: relative; display: flex; align-items: center; gap: 4px; cursor: pointer; }
   .poi-marker .dot {
     width: 11px; height: 11px; border-radius: 50%;
     border: 2px solid #fff; box-shadow: 0 0 2px rgba(0,0,0,0.6); flex: none;
   }
-  .poi-marker .lbl { display: none; line-height: 1.15; pointer-events: none; }
+  .poi-marker .lbl {
+    display: none; line-height: 1.15; pointer-events: none;
+    position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+  }
   .poi-marker .zh { font-size: 12px; font-weight: 700; color: #2F3737; text-shadow: 0 0 3px #F2F4CB, 0 0 3px #F2F4CB; white-space: nowrap; }
   .poi-marker .en { font-size: 10px; color: #475657; text-shadow: 0 0 3px #F2F4CB, 0 0 3px #F2F4CB; white-space: nowrap; }
   body.z-mid .poi-marker.cat-landmark .lbl,
@@ -74,20 +80,20 @@
 <div id="topbar">
   <div class="title">香港中文大學校園地圖<span class="sub">CUHK Campus Map · 迎新特別版</span></div>
   <div id="chips">
-    <div class="chip" data-cat="study"><span class="swatch"></span>学习</div>
-    <div class="chip" data-cat="life"><span class="swatch"></span>生活</div>
-    <div class="chip" data-cat="sports"><span class="swatch"></span>体育</div>
-    <div class="chip" data-cat="transport"><span class="swatch"></span>交通</div>
-    <div class="chip" data-cat="landmark"><span class="swatch"></span>地标</div>
-    <button id="btn3d">3D 视角</button>
+    <button type="button" class="chip" data-cat="study" aria-pressed="true"><span class="swatch"></span>學習</button>
+    <button type="button" class="chip" data-cat="life" aria-pressed="true"><span class="swatch"></span>生活</button>
+    <button type="button" class="chip" data-cat="sports" aria-pressed="true"><span class="swatch"></span>體育</button>
+    <button type="button" class="chip" data-cat="transport" aria-pressed="true"><span class="swatch"></span>交通</button>
+    <button type="button" class="chip" data-cat="landmark" aria-pressed="true"><span class="swatch"></span>地標</button>
+    <button id="btn3d">3D 視角</button>
   </div>
 </div>
-<div id="credit">数据 © OpenStreetMap contributors · 风格灵感来自 prettymaps</div>
+<div id="credit">數據 © OpenStreetMap contributors · 風格靈感來自 prettymaps</div>
 <div id="error-overlay" class="hidden">
   <div>
-    找不到地图数据文件 😢<br>
-    请先在仓库根目录运行：<code>python cuhk/scripts/build_data.py</code><br>
-    然后用 <code>start.bat</code> 重新打开本页
+    找不到地圖數據文件 😢<br>
+    請先在倉庫根目錄運行：<code>python cuhk/scripts/build_data.py</code><br>
+    然後用 <code>start.bat</code> 重新打開本頁
   </div>
 </div>
 <script src="vendor/maplibre-gl.js"></script>
