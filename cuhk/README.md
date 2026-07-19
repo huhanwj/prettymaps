@@ -19,7 +19,7 @@ cuhk\site\start.bat
 bash cuhk/site/start.sh
 ```
 
-浏览器打开 http://localhost:8765/ 即可。`file://` 直接双击 index.html 无法工作
+浏览器打开 http://localhost:12580/ 即可。`file://` 直接双击 index.html 无法工作
 （浏览器限制 fetch/Web Worker），必须走 http.server。
 
 ## 修改内容
