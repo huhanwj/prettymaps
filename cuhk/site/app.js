@@ -154,6 +154,32 @@ function wire3DButton() {
   });
 }
 
+/* ---------- 校巴模式 ---------- */
+
+function wireBusButton() {
+  const btn = document.getElementById("btnBus");
+  let on = false;
+  btn.addEventListener("click", () => {
+    on = !on;
+    for (const id of ["shuttle-routes", "shuttle-stops"]) {
+      map.setLayoutProperty(id, "visibility", on ? "visible" : "none");
+    }
+    btn.classList.toggle("active", on);
+  });
+
+  for (const layer of ["shuttle-routes", "shuttle-stops"]) {
+    map.on("click", layer, (e) => {
+      const p = e.features[0].properties;
+      new maplibregl.Popup({ maxWidth: "280px" })
+        .setLngLat(e.lngLat)
+        .setHTML(popupHTML({ name_zh: p.name_zh, name_en: p.name_en, desc: p.desc || "" }))
+        .addTo(map);
+    });
+    map.on("mouseenter", layer, () => (map.getCanvas().style.cursor = "pointer"));
+    map.on("mouseleave", layer, () => (map.getCanvas().style.cursor = ""));
+  }
+}
+
 /* ---------- 标注密度随缩放变化 ---------- */
 
 function updateZoomClass() {
@@ -188,6 +214,7 @@ map.on("load", async () => {
   }
   wireChips();
   wire3DButton();
+  wireBusButton();
   updateZoomClass();
   map.on("zoom", updateZoomClass);
   mapReady = true;

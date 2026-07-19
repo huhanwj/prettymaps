@@ -13,7 +13,9 @@
     "parking":   { "type": "geojson", "data": "data/parking.geojson" },
     "sea":       { "type": "geojson", "data": "data/sea.geojson" },
     "contours":  { "type": "geojson", "data": "data/contours.geojson" },
-    "boundary":  { "type": "geojson", "data": "data/boundary.geojson" }
+    "boundary":  { "type": "geojson", "data": "data/boundary.geojson" },
+    "shuttle_routes": { "type": "geojson", "data": "data/shuttle_routes.geojson" },
+    "shuttle_stops": { "type": "geojson", "data": "data/shuttle_stops.geojson" }
   },
   "layers": [
     {
@@ -144,6 +146,29 @@
         "line-width": 1.5,
         "line-dasharray": [4, 3],
         "line-opacity": 0.5
+      }
+    },
+    {
+      "id": "shuttle-routes",
+      "type": "line",
+      "source": "shuttle_routes",
+      "layout": { "visibility": "none" },
+      "paint": {
+        "line-color": ["get", "color"],
+        "line-width": 3,
+        "line-opacity": 0.9
+      }
+    },
+    {
+      "id": "shuttle-stops",
+      "type": "circle",
+      "source": "shuttle_stops",
+      "layout": { "visibility": "none" },
+      "paint": {
+        "circle-radius": 5,
+        "circle-color": "#ffffff",
+        "circle-stroke-color": "#2F3737",
+        "circle-stroke-width": 2
       }
     }
   ]

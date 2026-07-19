@@ -29,10 +29,11 @@
   }
   .chip .swatch { width: 10px; height: 10px; border-radius: 50%; }
   .chip.off { opacity: 0.35; }
-  #btn3d {
+  #btn3d, #btnBus {
     cursor: pointer; padding: 4px 14px; border: 1.5px solid #2F3737;
     border-radius: 999px; background: #2F3737; color: #F2F4CB; font-size: 13px;
   }
+  #btnBus.active { background: #E8B64C; color: #2F3737; }
 
   .poi-marker { display: flex; align-items: center; gap: 4px; cursor: pointer; }
   .poi-marker .dot {
@@ -85,6 +86,7 @@
     <button type="button" class="chip" data-cat="sports" aria-pressed="true"><span class="swatch"></span>體育</button>
     <button type="button" class="chip" data-cat="transport" aria-pressed="true"><span class="swatch"></span>交通</button>
     <button type="button" class="chip" data-cat="landmark" aria-pressed="true"><span class="swatch"></span>地標</button>
+    <button id="btnBus">校巴線</button>
     <button id="btn3d">3D 視角</button>
   </div>
 </div>
