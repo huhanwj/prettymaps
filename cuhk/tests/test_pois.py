@@ -1,6 +1,6 @@
 import geopandas as gp
 import pytest
-from shapely.geometry import Point, Polygon, box
+from shapely.geometry import box
 
 from pipeline import pois
 

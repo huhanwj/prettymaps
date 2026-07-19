@@ -55,11 +55,12 @@ def pick_sea_side(candidates, roads_gdf, crs="EPSG:4326"):
     return gp.GeoDataFrame(geometry=[merged], crs=crs)
 
 
-def fetch_sea(boundary_gdf):
+def fetch_sea(boundary_gdf, cache_dir=None):
     """主流程：以边界的外接矩形为 bbox 抓海岸线和车行网，返回海面 gdf。"""
     # 自带 osmnx 缓存设置，不依赖 layers.fetch_all_layers 先跑
     ox.settings.use_cache = True
-    cache = Path(__file__).resolve().parents[2] / "cache" / "osmnx"
+    default_cache = Path(__file__).resolve().parents[2] / "cache"
+    cache = Path(cache_dir) / "osmnx" if cache_dir else default_cache / "osmnx"
     cache.mkdir(parents=True, exist_ok=True)
     ox.settings.cache_folder = str(cache)
 

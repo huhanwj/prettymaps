@@ -6,7 +6,11 @@
 ## 快速开始
 
 ```bash
-# 1. 跑数据管线（需要网络抓 OSM/SRTM，约 3-10 分钟，之后有缓存）
+# 0. 装依赖（Python 3.11+）
+pip install -r cuhk/requirements.txt
+
+# 1. 跑数据管线（需要网络抓 OSM/SRTM，约 3-10 分钟，之后有缓存；
+#    产出写入 cuhk/site/data/，该目录被 gitignore，必须本机生成）
 python cuhk/scripts/build_data.py
 
 # 2. 启动本地服务并打开地图（Windows）

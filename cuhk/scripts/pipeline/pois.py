@@ -67,10 +67,10 @@ def load_pois(path):
     return entries
 
 
-def fetch_named_features(boundary_gdf):
+def fetch_named_features(boundary_gdf, cache_dir=None):
     """抓边界内所有带名字的要素（一次大请求，osmnx 缓存）。"""
     ox.settings.use_cache = True
-    cache = _cache_folder()
+    cache = Path(cache_dir) / "osmnx" if cache_dir else _cache_folder()
     cache.mkdir(parents=True, exist_ok=True)
     ox.settings.cache_folder = str(cache)
 

@@ -2,7 +2,7 @@ import pathlib
 import sys
 
 import pytest
-from shapely.geometry import LineString, Polygon, box
+from shapely.geometry import box
 
 # 让测试可以 import cuhk/scripts/pipeline 下的模块
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "scripts"))

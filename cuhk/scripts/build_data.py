@@ -9,8 +9,6 @@ import json
 import sys
 from pathlib import Path
 
-import geopandas as gp
-
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipeline import (  # noqa: E402
     boundary,
@@ -54,7 +52,7 @@ def main():
 
     # ③ 海面
     print("== ③ 海面 ==")
-    gdfs["sea"] = sea.fetch_sea(campus)
+    gdfs["sea"] = sea.fetch_sea(campus, cache_dir)
 
     # ④ 高程（hillshade + 等高线）
     print("== ④ 高程 ==")
@@ -69,7 +67,7 @@ def main():
     # ⑥ POI
     print("== ⑥ POI ==")
     entries = pois.load_pois(REPO_CUHK / "data" / "pois.yml")
-    features = pois.fetch_named_features(campus)
+    features = pois.fetch_named_features(campus, cache_dir)
     pois_gdf, unmatched = pois.resolve_pois(entries, features)
     if unmatched:
         msg = f"以下 POI 未匹配到 OSM 要素：{unmatched}（核对 pois.yml 的 osm_name 或改 lon/lat）"
