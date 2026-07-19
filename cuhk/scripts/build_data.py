@@ -12,6 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipeline import (  # noqa: E402
     boundary,
+    building_types,
     elevation,
     heights,
     layers,
@@ -73,6 +74,12 @@ def main():
     for name, gdf in products.items():
         print(f"  {name}: {len(gdf)}")
 
+    # ⑤c 建筑功能分类（依赖 ⑤b 的官方建筑点，故必须在 ⑤b 之后）
+    gdfs["buildings"]["bt"] = building_types.assign_types(
+        gdfs["buildings"], gdfs["official_buildings"]
+    )
+    print("  建筑 bt 分布:", dict(gdfs["buildings"]["bt"].value_counts()))
+
     # ⑥ POI
     print("== ⑥ POI ==")
     entries = pois.load_pois(REPO_CUHK / "data" / "pois.yml")
@@ -99,7 +106,7 @@ def main():
     campus.to_file(out_dir / "boundary.geojson", driver="GeoJSON")
 
     keep = {
-        "buildings": ["h", "c", "geometry"],
+        "buildings": ["h", "c", "bt", "geometry"],
         "roads": ["road_class", "geometry"],
         "railway": ["geometry"],
         "water": ["geometry"],

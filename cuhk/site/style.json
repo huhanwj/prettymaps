@@ -121,7 +121,12 @@
       "type": "fill",
       "source": "buildings",
       "paint": {
-        "fill-color": ["match", ["get", "c"], 0, "#FF5E5B", "#433633"],
+        "fill-color": ["match", ["get", "bt"],
+          "college", "#E8B64C",
+          "dorm", "#F2A65A",
+          "sports", "#64B96A",
+          "study", "#2f6fb5",
+          ["match", ["get", "c"], 0, "#FF5E5B", "#433633"]],
         "fill-outline-color": "#2F3737"
       }
     },
@@ -131,7 +136,12 @@
       "source": "buildings",
       "layout": { "visibility": "none" },
       "paint": {
-        "fill-extrusion-color": ["match", ["get", "c"], 0, "#FF5E5B", "#433633"],
+        "fill-extrusion-color": ["match", ["get", "bt"],
+          "college", "#E8B64C",
+          "dorm", "#F2A65A",
+          "sports", "#64B96A",
+          "study", "#2f6fb5",
+          ["match", ["get", "c"], 0, "#FF5E5B", "#433633"]],
         "fill-extrusion-height": ["get", "h"],
         "fill-extrusion-base": 0,
         "fill-extrusion-opacity": 0.95
