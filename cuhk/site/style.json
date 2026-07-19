@@ -15,7 +15,14 @@
     "contours":  { "type": "geojson", "data": "data/contours.geojson" },
     "boundary":  { "type": "geojson", "data": "data/boundary.geojson" },
     "shuttle_routes": { "type": "geojson", "data": "data/shuttle_routes.geojson" },
-    "shuttle_stops": { "type": "geojson", "data": "data/shuttle_stops.geojson" }
+    "shuttle_stops": { "type": "geojson", "data": "data/shuttle_stops.geojson" },
+    "dem": {
+      "type": "raster-dem",
+      "tiles": ["tiles/terrain-rgb/{z}/{x}/{y}.png"],
+      "tileSize": 256,
+      "encoding": "mapbox",
+      "maxzoom": 16
+    }
   },
   "layers": [
     {

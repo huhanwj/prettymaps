@@ -150,6 +150,7 @@ function wire3DButton() {
     map.setLayoutProperty("buildings-3d", "visibility", is3d ? "visible" : "none");
     map.setLayoutProperty("buildings-2d", "visibility", is3d ? "none" : "visible");
     map.easeTo({ pitch: is3d ? 45 : 0, duration: 800 });
+    map.setTerrain(is3d ? { source: "dem", exaggeration: 1.2 } : null);
     btn.textContent = is3d ? "2D 視角" : "3D 視角";
   });
 }

@@ -19,6 +19,7 @@ from pipeline import (  # noqa: E402
     official,
     pois,
     sea,
+    terrain,
     validate,
 )
 from pipeline.overpass import OverpassClient  # noqa: E402
@@ -56,11 +57,16 @@ def main():
     print("== ③ 海面 ==")
     gdfs["sea"] = sea.fetch_sea(campus, cache_dir)
 
-    # ④ 高程（hillshade + 等高线）
+    # ④ 高程（hillshade + 等高线 + terrain-RGB 瓦片）
     print("== ④ 高程 ==")
-    gdfs["contours"] = elevation.build_elevation_products(
+    gdfs["contours"], dem, dem_lons, dem_lats = elevation.build_elevation_products(
         campus, cache_dir, out_dir, interval=10
     )
+    n_tiles = terrain.generate_terrain_tiles(
+        dem, dem_lons, dem_lats,
+        Path(out_dir).parent / "tiles" / "terrain-rgb",
+    )
+    print(f"[terrain] {n_tiles} 张 terrain-RGB 瓦片")
 
     # ⑤ 建筑高度 + 配色索引
     print("== ⑤ 建筑高度 ==")

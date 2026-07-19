@@ -167,7 +167,9 @@ def contour_lines(dem, lons, lats, interval=10, min_ele=None):
 
 def build_elevation_products(boundary_gdf, cache_dir, out_dir, interval=10):
     """主流程：下载瓦片 → 裁剪到边界 bbox(含 5% 余量) → 填洞/平滑 →
-    写出 hillshade.png + hillshade.json（四角坐标），返回等高线 gdf。
+    写出 hillshade.png + hillshade.json（四角坐标），
+    返回 (等高线 gdf, dem, lons, lats)——dem 为 clip+smooth 后的裁剪 DEM，
+    供 terrain-RGB 瓦片复用。
 
     contours.geojson 由编排器（build_data.py 步骤⑧）统一落盘——校验
     通过前不写任何 GeoJSON，避免混 vintage 产出。
@@ -203,4 +205,4 @@ def build_elevation_products(boundary_gdf, cache_dir, out_dir, interval=10):
 
     contours = contour_lines(dem, lons, lats, interval=interval, min_ele=10)
     print(f"[elevation] hillshade {rgba.shape[:2]}, 等高线 {len(contours)} 条")
-    return contours
+    return contours, dem, lons, lats
