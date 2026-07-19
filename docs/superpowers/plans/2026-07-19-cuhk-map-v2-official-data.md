@@ -9,7 +9,7 @@
 **Tech Stack:** 同 v1（零新增 Python 依赖）。官方数据集：`https://www.cuhk.edu.hk/english/js/campus/cuhk_location_db.js`（397KB，提交存档到 `cuhk/data/official/cuhk_location_db.js` 保证可复现/离线）。
 
 **已核实的官方数据事实（2026-07-19）：**
-- `buildings` 268 条：`bldg_code/bldg_name_en/bldg_name_xb5/lat_lng/campus_id/hostel_type/type`；hostel_type ∈ {''(97), student(38), staff(20), guest(2), others(2)} —— **它是住宿类型不是功能分类**，建筑功能分类需按名称规则推导
+- `buildings` 159 条（初估 268 为正则误计，以实测为准）：`bldg_code/bldg_name_en/bldg_name_xb5/lat_lng/campus_id/hostel_type/type`；hostel_type 为**数字代码**：{''(97), "3"=Students(38), "2"=Staff(20), "1"=Guests(2), "4"=Others(2)} —— **它是住宿类型不是功能分类**，建筑功能分类需按名称规则推导
 - `landmarks` 26 条：含 仲門(Gate of Wisdom) 与 烽火台(The Beacon) 两个**不同**条目、The University Mall（林蔭大道/百萬大道）、Pavilion of Harmony、Lake Ad Excellentiam
 - `shuttle_bus_route` 19 条（含 route_color）、`shuttle_bus_route_seg`（route_id→seg_id 有序映射）、`shuttle_bus_seg` 46 段（encoded_line 为 Google encoded polyline）、`shuttle_bus_stops` 51 站（含 University Station 官方坐标 (22.414497479108096, 114.21013355255127)）
 - `walking_route` 2 条：University Station → NA College / Shaw College（ecoded_line [原文如此拼写]）
@@ -353,7 +353,7 @@ def build_official_products(db):
 
 Run: `python -m pytest cuhk/tests/test_official.py -v` → 6 passed
 
-真实数据自检（应输出 268/26/19/51/2）：
+真实数据自检（应输出 159/26/9/19/51/2）：
 
 ```bash
 PYTHONPATH=cuhk/scripts python -X utf8 -c "

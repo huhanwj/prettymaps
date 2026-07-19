@@ -24,7 +24,7 @@ bash cuhk/site/start.sh
 
 ## 修改内容
 
-- 改地点：编辑 `cuhk/data/pois.yml`（42 条中英双语 POI），重跑管线
+- 改地点：编辑 `cuhk/data/pois.yml`（43 条中英双语 POI），重跑管线
 - 改样式：编辑 `cuhk/site/style.json`（配色取自 prettymaps default preset），刷新页面即可
 - 改交互：编辑 `cuhk/site/app.js`
 
