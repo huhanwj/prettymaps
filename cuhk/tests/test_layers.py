@@ -62,3 +62,24 @@ def test_fetch_empty_layers(monkeypatch, campus_square, tmp_path):
     assert set(out.keys()) == set(layers.LAYER_TAGS.keys())
     for name, gdf in out.items():
         assert gdf.empty, f"{name} should be empty"
+
+
+def test_split_green_and_sports_keeps_only_generic_land_in_green():
+    source = gp.GeoDataFrame(
+        {
+            "leisure": ["pitch", "track", "park", None],
+            "landuse": [None, None, None, "grass"],
+            "geometry": [
+                box(114.200, 22.410, 114.201, 22.411),
+                box(114.202, 22.410, 114.203, 22.411),
+                box(114.204, 22.410, 114.205, 22.411),
+                box(114.206, 22.410, 114.207, 22.411),
+            ],
+        },
+        crs="EPSG:4326",
+    )
+
+    green, sports = layers.split_green_and_sports(source)
+
+    assert list(green["leisure"].fillna("")) == ["park", ""]
+    assert list(sports["sports_kind"]) == ["field", "track"]

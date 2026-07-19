@@ -9,6 +9,7 @@
     "waterway":  { "type": "geojson", "data": "data/waterway.geojson" },
     "forest":    { "type": "geojson", "data": "data/forest.geojson" },
     "green":     { "type": "geojson", "data": "data/green.geojson" },
+    "sports":    { "type": "geojson", "data": "data/sports.geojson" },
     "beach":     { "type": "geojson", "data": "data/beach.geojson" },
     "parking":   { "type": "geojson", "data": "data/parking.geojson" },
     "sea":       { "type": "geojson", "data": "data/sea.geojson" },
@@ -59,6 +60,20 @@
       "paint": { "fill-color": "#FFFFFF", "fill-outline-color": "#E4E9ED" }
     },
     {
+      "id": "sports-fields",
+      "type": "fill",
+      "source": "sports",
+      "filter": ["==", ["get", "sports_kind"], "field"],
+      "paint": { "fill-color": "#DCE8C8", "fill-outline-color": "#B7C99C", "fill-opacity": 0.92 }
+    },
+    {
+      "id": "sports-tracks",
+      "type": "fill",
+      "source": "sports",
+      "filter": ["==", ["get", "sports_kind"], "track"],
+      "paint": { "fill-color": "#EFC7B8", "fill-outline-color": "#D8A18E", "fill-opacity": 0.92 }
+    },
+    {
       "id": "beach",
       "type": "fill",
       "source": "beach",
@@ -74,6 +89,7 @@
       "id": "contours",
       "type": "line",
       "source": "contours",
+      "layout": { "visibility": "none" },
       "paint": {
         "line-color": "#D6DEE5",
         "line-width": ["interpolate", ["linear"], ["zoom"], 13, 0.4, 16, 1.0],
@@ -90,11 +106,10 @@
       "id": "roads-path",
       "type": "line",
       "source": "roads",
-      "filter": ["in", ["get", "road_class"], ["literal", ["path", "steps"]]],
+      "filter": ["==", ["get", "road_class"], "path"],
       "paint": {
         "line-color": "#9AAFC0",
-        "line-width": ["interpolate", ["linear"], ["zoom"], 13, 0.5, 16, 2.0],
-        "line-dasharray": [2, 1.5]
+        "line-width": ["interpolate", ["linear"], ["zoom"], 13, 0.5, 16, 2.0]
       }
     },
     {

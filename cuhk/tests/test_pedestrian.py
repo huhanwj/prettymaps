@@ -72,3 +72,30 @@ def test_merge_links_prefers_curated_duplicate():
     assert len(result) == 1
     assert result.iloc[0]["source"] == "official_pdf"
     assert result.iloc[0]["note"] == "PDF"
+
+
+def test_v3_links_use_only_curated_pdf_records():
+    osm = gp.GeoDataFrame(
+        {
+            "kind": ["bridge", "stairs"],
+            "source": ["osm", "osm"],
+            "note": ["extra bridge", "extra stairs"],
+            "geometry": [_line(), _line(22.421)],
+        },
+        crs="EPSG:4326",
+    )
+    curated = gp.GeoDataFrame(
+        {
+            "kind": ["bridge"],
+            "source": ["official_pdf"],
+            "note": ["PDF"],
+            "geometry": [_line(22.422)],
+        },
+        crs="EPSG:4326",
+    )
+
+    result = pedestrian.select_v3_links(osm, curated)
+
+    assert len(result) == 1
+    assert set(result["source"]) == {"official_pdf"}
+    assert result.iloc[0]["note"] == "PDF"

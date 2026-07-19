@@ -1,8 +1,11 @@
+from pathlib import Path
+
 import geopandas as gp
+import pandas as pd
 import pytest
 from shapely.geometry import box
 
-from pipeline import pois
+from pipeline import official, pois
 
 
 @pytest.fixture
@@ -175,3 +178,46 @@ def test_resolve_below_threshold_official_falls_back_to_osm(features):
     # 官方库里有不相关名字但相似度低于阈值 → 回落 OSM
     assert gdf.iloc[0]["source"] == "osm"
     assert gdf.geometry.iloc[0].x == pytest.approx(114.2095)
+
+
+def test_validate_official_pairs_rejects_crossed_bilingual_name():
+    entries = [{
+        "id": "elb",
+        "name_zh": "伍何曼原樓",
+        "name_en": "Esther Lee Building",
+        "official_name": "Esther Lee Building",
+    }]
+    official_names = pd.DataFrame({
+        "name_en": ["Esther Lee Building"],
+        "name_zh": ["利黃瑤璧樓"],
+    })
+
+    with pytest.raises(ValueError, match="elb.*利黃瑤璧樓"):
+        pois.validate_official_pairs(entries, official_names)
+
+
+def test_real_pois_use_matching_official_chinese_names():
+    entries = pois.load_pois(Path(__file__).resolve().parents[1] / "data" / "pois.yml")
+    db = official.load_official_db()
+    official_names = pd.concat([
+        official.official_buildings(db)[["name_en", "name_zh"]],
+        official.official_landmarks(db)[["name_en", "name_zh"]],
+        official.official_colleges(db)[["name_en", "name_zh"]],
+        official.official_facilities(db)[["name_en", "name_zh"]],
+        official.shuttle_stops(db)[["name_en", "name_zh"]],
+    ], ignore_index=True)
+
+    pois.validate_official_pairs(entries, official_names)
+
+
+def test_transport_pois_use_official_exit_and_interchange_points():
+    entries = {
+        entry["id"]: entry
+        for entry in pois.load_pois(Path(__file__).resolve().parents[1] / "data" / "pois.yml")
+    }
+
+    assert entries["university-station-north"]["official_name"] == "University MTR Station (Northern Exit)"
+    assert entries["university-station-west"]["official_name"] == "University MTR Station (Western Exit)"
+    assert entries["bus-terminus"]["name_zh"] == "大學站公共運輸交匯處"
+    assert entries["bus-terminus"]["lon"] == pytest.approx(114.21080678701401)
+    assert entries["bus-terminus"]["lat"] == pytest.approx(22.412917985947334)

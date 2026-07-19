@@ -121,3 +121,9 @@ def merge_links(osm, curated, duplicate_distance_m=8):
         if not duplicate:
             keep.append(i)
     return combined.iloc[keep].reset_index(drop=True)[["kind", "source", "note", "geometry"]]
+
+
+def select_v3_links(osm, curated):
+    """V3 严格采用官方 PDF 校准线；OSM 仅保留为未来审计输入。"""
+    del osm
+    return curated[["kind", "source", "note", "geometry"]].copy().reset_index(drop=True)

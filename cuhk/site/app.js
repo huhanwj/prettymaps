@@ -74,19 +74,41 @@ function addWaterHatchLayer() {
   );
 }
 
-/* ---------- 山体阴影（image source，坐标来自 hillshade.json） ---------- */
+/* ---------- 可选高程分层（默认关闭，不启用 3D terrain） ---------- */
 
-async function addHillshade() {
-  const meta = await loadJSON("data/hillshade.json");
-  map.addSource("hillshade", {
+async function addTerrainTint() {
+  const meta = await loadJSON("data/terrain-tint.json");
+  map.addSource("terrain-tint", {
     type: "image",
-    url: "data/hillshade.png",
+    url: "data/terrain-tint.png",
     coordinates: meta.coordinates,
   });
   map.addLayer(
-    { id: "hillshade", type: "raster", source: "hillshade", paint: { "raster-opacity": 0.3 } },
-    "sea" // 插到 sea 之下：陆上有阴影、海面干净
+    {
+      id: "terrain-tint",
+      type: "raster",
+      source: "terrain-tint",
+      layout: { visibility: "none" },
+      paint: { "raster-opacity": 0.78, "raster-resampling": "linear" },
+    },
+    "contours"
   );
+}
+
+function wireTerrainButton() {
+  const btn = document.getElementById("btnTerrain");
+  const legend = document.getElementById("terrain-legend");
+  let visible = false;
+  btn.disabled = false;
+  btn.addEventListener("click", () => {
+    visible = !visible;
+    for (const id of ["terrain-tint", "contours"]) {
+      map.setLayoutProperty(id, "visibility", visible ? "visible" : "none");
+    }
+    btn.classList.toggle("active", visible);
+    btn.setAttribute("aria-pressed", String(visible));
+    legend.classList.toggle("hidden", !visible);
+  });
 }
 
 /* ---------- POI markers ---------- */
@@ -104,6 +126,7 @@ function addPOIMarkers(geojson) {
     const p = feat.properties;
     const el = document.createElement("div");
     el.className = `poi-marker cat-${p.category}`;
+    el.classList.add(`poi-${p.id}`);
     el.innerHTML = `<div class="dot"></div>
       <div class="lbl"><div class="zh">${escapeHTML(p.name_zh)}</div><div class="en">${escapeHTML(p.name_en)}</div></div>`;
     const popup = new maplibregl.Popup({ maxWidth: "280px", offset: 12 }).setHTML(popupHTML(p));
@@ -234,11 +257,12 @@ map.on("load", async () => {
     return;
   }
   addWaterHatchLayer();
-  // 非核心资源各自降级：缺 hillshade / POI 不影响地图其余部分
+  // 非核心资源各自降级：缺高程着色 / POI 不影响地图其余部分
   try {
-    await addHillshade();
+    await addTerrainTint();
+    wireTerrainButton();
   } catch (e) {
-    console.warn("hillshade 加载失败，跳过山体阴影：", e);
+    console.warn("terrain tint 加载失败，地形开关已停用：", e);
   }
   try {
     const pois = await loadJSON("data/pois.geojson");

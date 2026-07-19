@@ -79,13 +79,22 @@ def test_shuttle_routes_ordered_assembly():
     # seg2 "g@{@{@{@oA{@" 解码相对点 (0.0002,0.0003),(0.0005,0.0006),(0.0009,0.0009)
     line0 = row.geometry.geoms[0]
     flat0 = [c for pt in line0.coords for c in pt]
-    assert flat0 == pytest.approx(
-        [114.2103, 22.4102, 114.2106, 22.4105, 114.2109, 22.4109], abs=1e-6
-    )
+    assert flat0 == pytest.approx([
+        114.2100, 22.4100,
+        114.2103, 22.4102,
+        114.2106, 22.4105,
+        114.2109, 22.4109,
+        114.2110, 22.4110,
+    ], abs=1e-6)
     # seg1 "SS{@oA" 锚 stop2 (22.4110, 114.2110)，相对点 (0.0001,0.0001),(0.0004,0.0005)
     line1 = row.geometry.geoms[1]
     flat1 = [c for pt in line1.coords for c in pt]
-    assert flat1 == pytest.approx([114.2111, 22.4111, 114.2115, 22.4114], abs=1e-6)
+    assert flat1 == pytest.approx([
+        114.2110, 22.4110,
+        114.2111, 22.4111,
+        114.2115, 22.4114,
+        114.2120, 22.4120,
+    ], abs=1e-6)
 
 
 def test_walking_routes():
@@ -125,9 +134,39 @@ def test_shuttle_anchor_prefers_encoded_start_pt():
         ],
     }
     gdf = official.shuttle_routes(db)
-    flat = [c for pt in gdf.iloc[0].geometry.geoms[0].coords for c in pt]
-    # 锚 encoded_start_pt → (114.2096,22.4136),(114.2100,22.4139)；若错锚 stop9 则全在 (114.2,22.4) 附近
-    assert flat == pytest.approx([114.2096, 22.4136, 114.2100, 22.4139], abs=1e-6)
+    coords = [c for pt in gdf.iloc[0].geometry.geoms[0].coords for c in pt]
+    # 线从实际站点出发；中间路径仍须以 encoded_start_pt 解码，不能错锚到 stop9。
+    assert coords == pytest.approx([
+        114.2000, 22.4000,
+        114.2096, 22.4136,
+        114.2100, 22.4139,
+    ], abs=1e-6)
+
+
+def test_shuttle_segment_runs_from_start_stop_through_path_to_end_stop():
+    db = {
+        "shuttle_bus_route": [
+            {"route_id": "1", "route_name_en": "R", "route_name_xb5": "", "route_color": "#000"},
+        ],
+        "shuttle_bus_route_seg": [{"route_id": "1", "seg_id": "1", "order": "1"}],
+        "shuttle_bus_seg": [{
+            "bus_route_seg_id": "1",
+            "start_bus_stop_id": "A",
+            "end_bus_stop_id": "B",
+            "encoded_start_pt": "ksxgCkpaxT",
+            "encoded_line": "SS",
+        }],
+        "shuttle_bus_stops": [
+            {"bus_stop_id": "A", "bus_stop_name_en": "A", "bus_stop_name_xb5": "", "lat_lng": "(22.4135, 114.2095)"},
+            {"bus_stop_id": "B", "bus_stop_name_en": "B", "bus_stop_name_xb5": "", "lat_lng": "(22.4140, 114.2101)"},
+        ],
+    }
+
+    line = official.shuttle_routes(db).iloc[0].geometry.geoms[0]
+
+    assert list(line.coords)[0] == pytest.approx((114.2095, 22.4135))
+    assert list(line.coords)[-1] == pytest.approx((114.2101, 22.4140))
+    assert len(line.coords) == 3
 
 
 def test_shuttle_seg_unanchorable_warns():
@@ -170,6 +209,30 @@ def test_shuttle_real_file_lands_on_campus():
     # 真实文件 19 条 shuttle 路线全部带显式 route_color，无 #2F3737 回退
     assert (gdf["color"] != "").all()
     assert (gdf["color"] != "#2F3737").all()
+
+
+def test_real_shuttle_routes_pass_through_every_assigned_stop():
+    db = official.load_official_db()
+    routes = official.shuttle_routes(db).set_index("route_id").to_crs(32650)
+    stops = official.shuttle_stops(db).to_crs(32650)
+
+    for _, stop in stops.iterrows():
+        route_ids = filter(None, stop["route_ids"].strip("|").split("|"))
+        for route_id in route_ids:
+            assert stop.geometry.distance(routes.loc[route_id].geometry) < 0.5, (
+                f"route {route_id} does not enter stop {stop['name_en']}"
+            )
+
+
+def test_real_shuttle_route_parts_are_visually_continuous():
+    routes = official.shuttle_routes(official.load_official_db()).to_crs(32650)
+
+    for _, route in routes.iterrows():
+        parts = list(route.geometry.geoms)
+        for previous, current in zip(parts, parts[1:]):
+            assert previous.distance(current) < 0.5, (
+                f"route {route['route_id']} has a visible gap between ordered parts"
+            )
 
 
 def test_real_file_products_smoke(recwarn):

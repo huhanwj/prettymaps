@@ -139,6 +139,20 @@ def hillshade_rgba(dem, dx_m=30.0, dy_m=30.0, azdeg=315, altdeg=45, vert_exag=1.
     return rgba
 
 
+def elevation_tint_rgba(dem):
+    """高程分层浅色图：0m 透明，其后按 50m 分四档中性暖色。"""
+    rgba = np.zeros((*dem.shape, 4), dtype=np.uint8)
+    bands = (
+        ((dem > 0) & (dem < 50), (247, 244, 237, 105)),
+        ((dem >= 50) & (dem < 100), (236, 230, 218, 115)),
+        ((dem >= 100) & (dem < 150), (222, 214, 201, 125)),
+        (dem >= 150, (205, 195, 181, 135)),
+    )
+    for mask, color in bands:
+        rgba[mask] = color
+    return rgba
+
+
 def contour_lines(dem, lons, lats, interval=10, min_ele=None):
     """等高线 → GeoDataFrame(LineString, 属性 ele)。经纬度网格直接出地理坐标。"""
     lo = float(np.nanmin(dem))
@@ -167,7 +181,7 @@ def contour_lines(dem, lons, lats, interval=10, min_ele=None):
 
 def build_elevation_products(boundary_gdf, cache_dir, out_dir, interval=10):
     """主流程：下载瓦片 → 裁剪到边界 bbox(含 5% 余量) → 填洞/平滑 →
-    写出 hillshade.png + hillshade.json（四角坐标），
+    写出 terrain-tint.png + terrain-tint.json（四角坐标），
     返回 (等高线 gdf, dem, lons, lats)——dem 为 clip+smooth 后的裁剪 DEM，
     供 terrain-RGB 瓦片复用。
 
@@ -190,19 +204,18 @@ def build_elevation_products(boundary_gdf, cache_dir, out_dir, interval=10):
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    dx, dy = cellsize_m(lons, lats)
-    rgba = hillshade_rgba(dem, dx_m=dx, dy_m=dy)
-    plt.imsave(out_dir / "hillshade.png", rgba)
+    rgba = elevation_tint_rgba(dem)
+    plt.imsave(out_dir / "terrain-tint.png", rgba)
     coords = [
         [float(lons[0]), float(lats[0])],  # NW
         [float(lons[-1]), float(lats[0])],  # NE
         [float(lons[-1]), float(lats[-1])],  # SE
         [float(lons[0]), float(lats[-1])],  # SW
     ]
-    (out_dir / "hillshade.json").write_text(
+    (out_dir / "terrain-tint.json").write_text(
         json.dumps({"coordinates": coords}), encoding="utf-8"
     )
 
     contours = contour_lines(dem, lons, lats, interval=interval, min_ele=10)
-    print(f"[elevation] hillshade {rgba.shape[:2]}, 等高线 {len(contours)} 条")
+    print(f"[elevation] terrain tint {rgba.shape[:2]}, 等高线 {len(contours)} 条")
     return contours, dem, lons, lats

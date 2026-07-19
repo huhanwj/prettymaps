@@ -53,12 +53,13 @@ def main():
     # ② 图层
     print("== ② OSM 图层 ==")
     gdfs = layers.fetch_all_layers(campus, cache_dir)
+    gdfs["green"], gdfs["sports"] = layers.split_green_and_sports(gdfs["green"])
 
     # ③ 海面
     print("== ③ 海面 ==")
     gdfs["sea"] = sea.fetch_sea(campus, cache_dir)
 
-    # ④ 高程（hillshade + 等高线 + terrain-RGB 瓦片）
+    # ④ 高程（分层浅色 + 等高线 + terrain-RGB 瓦片）
     print("== ④ 高程 ==")
     gdfs["contours"], dem, dem_lons, dem_lats = elevation.build_elevation_products(
         campus, cache_dir, out_dir, interval=10
@@ -96,7 +97,7 @@ def main():
     curated_links = pedestrian.load_curated_links(
         REPO_CUHK / "data" / "official" / "pedestrian_links.geojson", campus
     )
-    gdfs["pedestrian_links"] = pedestrian.merge_links(osm_links, curated_links)
+    gdfs["pedestrian_links"] = pedestrian.select_v3_links(osm_links, curated_links)
     print(
         "  pedestrian_links 分布:",
         dict(gdfs["pedestrian_links"]["kind"].value_counts()),
@@ -107,6 +108,7 @@ def main():
     entries = pois.load_pois(REPO_CUHK / "data" / "pois.yml")
     features = pois.fetch_named_features(campus, cache_dir)
     official_src = official.official_poi_sources(db)
+    pois.validate_official_pairs(entries, official_src)
     pois_gdf, unmatched = pois.resolve_pois(entries, features, official=official_src)
     if unmatched:
         msg = f"以下 POI 三通道均未解析：{unmatched}（核对 official_name / lon,lat / osm_name）"
@@ -135,6 +137,7 @@ def main():
         "waterway": ["geometry"],
         "forest": ["geometry"],
         "green": ["geometry"],
+        "sports": ["sports_kind", "geometry"],
         "beach": ["geometry"],
         "parking": ["geometry"],
         "sea": ["geometry"],

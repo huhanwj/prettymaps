@@ -72,6 +72,24 @@ def load_pois(path):
     return entries
 
 
+def validate_official_pairs(entries, official_names):
+    """校验 official_name 对应的显示中文名来自同一官方英文记录。"""
+    pairs = {}
+    for _, row in official_names.iterrows():
+        name_en = str(row.get("name_en", "")).strip()
+        name_zh = str(row.get("name_zh", "")).strip()
+        if name_en and name_zh and name_zh.lower() != "nan":
+            pairs.setdefault(name_en, set()).add(name_zh)
+    for entry in entries:
+        official_name = str(entry.get("official_name", "")).strip()
+        allowed = pairs.get(official_name)
+        if allowed and entry["name_zh"] not in allowed:
+            expected = " / ".join(sorted(allowed))
+            raise ValueError(
+                f"POI {entry['id']} 中英名称错配：{official_name} 应对应 {expected}"
+            )
+
+
 def fetch_named_features(boundary_gdf, cache_dir=None):
     """抓边界内所有带名字的要素（一次大请求，osmnx 缓存）。"""
     ox.settings.use_cache = True

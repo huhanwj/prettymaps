@@ -7,6 +7,7 @@ from pathlib import Path
 
 import geopandas as gp
 import osmnx as ox
+import pandas as pd
 
 
 LAYER_TAGS = {
@@ -36,6 +37,29 @@ ROAD_CLASS = {
     "track": "path", "cycleway": "path",
     "steps": "steps",
 }
+
+SPORTS_LEISURE = {"pitch", "track", "sports_centre", "stadium"}
+
+
+def _tag_values(value):
+    return value if isinstance(value, (list, tuple, set)) else [value]
+
+
+def split_green_and_sports(gdf):
+    """把运动场地从普通绿地拆出，避免白色底图吞掉体育设施。"""
+    if gdf.empty:
+        sports = gdf.copy()
+        sports["sports_kind"] = pd.Series(dtype=str)
+        return gdf.copy(), sports
+    leisure = gdf.get("leisure", pd.Series(None, index=gdf.index))
+    sports_mask = leisure.map(
+        lambda value: any(str(item) in SPORTS_LEISURE for item in _tag_values(value))
+    )
+    sports = gdf.loc[sports_mask].copy()
+    sports["sports_kind"] = leisure.loc[sports_mask].map(
+        lambda value: "track" if "track" in {str(item) for item in _tag_values(value)} else "field"
+    )
+    return gdf.loc[~sports_mask].copy(), sports
 
 
 def classify_roads(gdf):

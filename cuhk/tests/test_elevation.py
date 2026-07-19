@@ -113,6 +113,18 @@ def test_hillshade_orientation_contract():
     assert rgba[:10, :, 3].mean() > rgba[10:, :, 3].mean()
 
 
+def test_elevation_tint_uses_four_neutral_height_bands():
+    dem = np.array([[0, 49, 50, 99, 100, 149, 150, 220]], dtype=np.float32)
+
+    rgba = elevation.elevation_tint_rgba(dem)
+
+    assert rgba.shape == (1, 8, 4)
+    assert rgba.dtype == np.uint8
+    assert rgba[0, 0, 3] == 0
+    assert len({tuple(pixel) for pixel in rgba[0, 1:]}) == 4
+    assert all(abs(int(pixel[0]) - int(pixel[1])) < 25 for pixel in rgba[0, 1:])
+
+
 def test_fill_voids_all_nan():
     dem = np.full((5, 5), np.nan)
     filled = elevation.fill_voids(dem)

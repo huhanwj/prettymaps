@@ -233,9 +233,26 @@ def shuttle_routes(db):
             if anchor is None:
                 warnings.warn(f"[official] 警告：route {rid} seg {seg_id} 无法定位，已跳过")
                 continue
-            abs_pts = [(anchor[0] + lat, anchor[1] + lng) for lat, lng in pts]
-            if len(abs_pts) >= 2:
-                lines.append(LineString([(lng, lat) for lat, lng in abs_pts]))
+            coords = []
+            start = stops.get(seg.get("start_bus_stop_id", ""))
+            start_ll = parse_lat_lng(start.get("lat_lng")) if start else None
+            if start_ll is not None:
+                coords.append(start_ll)
+            coords.extend(
+                (anchor[1] + lng, anchor[0] + lat) for lat, lng in pts
+            )
+            end = stops.get(seg.get("end_bus_stop_id", ""))
+            end_ll = parse_lat_lng(end.get("lat_lng")) if end else None
+            if end_ll is not None:
+                coords.append(end_ll)
+            deduped = [coords[0]] if coords else []
+            for coord in coords[1:]:
+                if coord != deduped[-1]:
+                    deduped.append(coord)
+            if len(deduped) >= 2:
+                if lines and deduped[0] != lines[-1].coords[-1]:
+                    deduped.insert(0, lines[-1].coords[-1])
+                lines.append(LineString(deduped))
         if not lines:
             continue
         rows.append({
