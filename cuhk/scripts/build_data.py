@@ -15,6 +15,7 @@ from pipeline import (  # noqa: E402
     elevation,
     heights,
     layers,
+    official,
     pois,
     sea,
     validate,
@@ -64,24 +65,34 @@ def main():
     print("== ⑤ 建筑高度 ==")
     gdfs["buildings"] = heights.add_heights(gdfs["buildings"])
 
+    # ⑤b 官方数据（校巴/捷径/官方建筑/POI 校正源）
+    print("== ⑤b 官方数据 ==")
+    db = official.load_official_db()
+    products = official.build_official_products(db)
+    gdfs.update(products)
+    for name, gdf in products.items():
+        print(f"  {name}: {len(gdf)}")
+
     # ⑥ POI
     print("== ⑥ POI ==")
     entries = pois.load_pois(REPO_CUHK / "data" / "pois.yml")
     features = pois.fetch_named_features(campus, cache_dir)
-    pois_gdf, unmatched = pois.resolve_pois(entries, features)
+    official_src = official.official_poi_sources(db)
+    pois_gdf, unmatched = pois.resolve_pois(entries, features, official=official_src)
     if unmatched:
-        msg = f"以下 POI 未匹配到 OSM 要素：{unmatched}（核对 pois.yml 的 osm_name 或改 lon/lat）"
+        msg = f"以下 POI 三通道均未解析：{unmatched}（核对 official_name / lon,lat / osm_name）"
         if args.allow_unmatched:
             print("WARNING:", msg)
         else:
             raise SystemExit(msg)
+    print("  POI source 分布:", dict(pois_gdf["source"].value_counts()))
 
     # ⑦ 校验
     print("== ⑦ 校验 ==")
     for line in validate.validate(gdfs, pois_gdf):
         print(" ", line)
 
-    # ⑧ 写出（所有图层都要落盘——style.json 静态引用全部 12 个文件，
+    # ⑧ 写出（所有图层都要落盘——style.json 静态引用这些文件，
     #    空图层写成空 FeatureCollection，避免前端 404。
     #    全部 GeoJSON 都在校验通过后写出，避免混 vintage 产出）
     print("== ⑧ 写出 ==")
@@ -99,6 +110,11 @@ def main():
         "parking": ["geometry"],
         "sea": ["geometry"],
         "contours": ["ele", "geometry"],
+        "official_buildings": ["name_en", "name_zh", "bldg_code", "campus_id", "hostel_type", "type", "geometry"],
+        "official_landmarks": ["name_en", "name_zh", "geometry"],
+        "shuttle_routes": ["name_en", "name_zh", "color", "geometry"],
+        "shuttle_stops": ["name_en", "name_zh", "geometry"],
+        "walking": ["name_en", "name_zh", "geometry"],
     }
     EMPTY_FC = {"type": "FeatureCollection", "features": []}
     for name, cols in keep.items():

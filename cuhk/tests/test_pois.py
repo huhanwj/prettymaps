@@ -125,7 +125,7 @@ def test_resolve_prefers_official(features):
         {
             "name_en": ["New Asia College"],
             "name_zh": ["新亞書院"],
-            "geometry": [box(114.2090, 22.4210, 114.2100, 22.4220)],
+            "geometry": [box(114.2000, 22.4100, 114.2010, 22.4110)],
         },
         crs="EPSG:4326",
     )
@@ -136,11 +136,13 @@ def test_resolve_prefers_official(features):
     ]
     gdf, unmatched = pois.resolve_pois(entries, features, official=official)
     assert unmatched == []
-    # official 与 OSM fixture 同一坐标，证明走了哪条通道需要看 source 列
     assert gdf.iloc[0]["source"] == "official"
+    # 官方坐标与 OSM fixture 不同：命中点必须来自官方要素的面内代表点（box 质心）
+    assert gdf.geometry.iloc[0].x == pytest.approx(114.2005)
+    assert gdf.geometry.iloc[0].y == pytest.approx(22.4105)
 
 
-def test_resolve_official_falls_back_to_osm(features):
+def test_resolve_empty_official_falls_back_to_osm(features):
     official = gp.GeoDataFrame(
         {"name_en": [], "name_zh": [], "geometry": []}, crs="EPSG:4326"
     )
@@ -152,3 +154,24 @@ def test_resolve_official_falls_back_to_osm(features):
     gdf, unmatched = pois.resolve_pois(entries, features, official=official)
     assert unmatched == []
     assert gdf.iloc[0]["source"] == "osm"
+
+
+def test_resolve_below_threshold_official_falls_back_to_osm(features):
+    official = gp.GeoDataFrame(
+        {
+            "name_en": ["Something Else Entirely"],
+            "name_zh": ["完全不相干"],
+            "geometry": [box(114.2000, 22.4100, 114.2010, 22.4110)],
+        },
+        crs="EPSG:4326",
+    )
+    entries = [
+        {"id": "na", "name_zh": "新亞書院", "name_en": "New Asia College",
+         "category": "life", "desc": "", "official_name": "No Such Place Zzz",
+         "osm_name": "New Asia College"}
+    ]
+    gdf, unmatched = pois.resolve_pois(entries, features, official=official)
+    assert unmatched == []
+    # 官方库里有不相关名字但相似度低于阈值 → 回落 OSM
+    assert gdf.iloc[0]["source"] == "osm"
+    assert gdf.geometry.iloc[0].x == pytest.approx(114.2095)

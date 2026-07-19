@@ -200,5 +200,6 @@ def test_official_poi_sources_combines_layers():
     }
     gdf = official.official_poi_sources(db)
     assert len(gdf) == 2 + 1 + 1 + 3
-    assert set(gdf.columns) >= {"name_en", "name_zh", "geometry"}
+    assert set(gdf.columns) == {"name_en", "name_zh", "geometry"}
+    assert gdf.index.is_unique
     assert gdf.crs.to_string() == "EPSG:4326"
