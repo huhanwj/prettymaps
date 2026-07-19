@@ -1,4 +1,4 @@
-/* CUHK 迎新校园地图：MapLibre 初始化 + POI marker + 分类筛选 + 3D 切换
+/* CUHK V3 校园地图：MapLibre 初始化 + POI marker + 分类筛选 + 校巴方向
  * 数据全部来自本地 ./data/（由 cuhk/scripts/build_data.py 生成），零外部请求。
  */
 
@@ -59,20 +59,10 @@ function makeDotsImage(color) {
   return { width: size, height: size, data: new Uint8Array(img.data.buffer) };
 }
 
-function addHatchLayers() {
-  if (!map.hasImage("dots-green")) {
-    map.addImage("dots-green", makeDotsImage("#A7C497"));
+function addWaterHatchLayer() {
+  if (!map.hasImage("dots-water")) {
     map.addImage("dots-water", makeDotsImage("#9bc3d4"));
   }
-  map.addLayer(
-    {
-      id: "green-hatch",
-      type: "fill",
-      source: "green",
-      paint: { "fill-pattern": "dots-green" },
-    },
-    "forest"
-  );
   map.addLayer(
     {
       id: "water-hatch",
@@ -94,7 +84,7 @@ async function addHillshade() {
     coordinates: meta.coordinates,
   });
   map.addLayer(
-    { id: "hillshade", type: "raster", source: "hillshade", paint: { "raster-opacity": 1 } },
+    { id: "hillshade", type: "raster", source: "hillshade", paint: { "raster-opacity": 0.3 } },
     "sea" // 插到 sea 之下：陆上有阴影、海面干净
   );
 }
@@ -140,33 +130,76 @@ function wireChips() {
   });
 }
 
-/* ---------- 3D 切换 ---------- */
+/* ---------- 校巴筛选与方向 ---------- */
 
-function wire3DButton() {
-  const btn = document.getElementById("btn3d");
-  let is3d = false;
-  btn.addEventListener("click", () => {
-    is3d = !is3d;
-    map.setLayoutProperty("buildings-3d", "visibility", is3d ? "visible" : "none");
-    map.setLayoutProperty("buildings-2d", "visibility", is3d ? "none" : "visible");
-    map.easeTo({ pitch: is3d ? 45 : 0, duration: 800 });
-    map.setTerrain(is3d ? { source: "dem", exaggeration: 1.2 } : null);
-    btn.textContent = is3d ? "2D 視角" : "3D 視角";
-  });
+function makeArrowImage(color) {
+  const size = 24;
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = size;
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, size, size);
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(3, 5);
+  ctx.lineTo(21, 12);
+  ctx.lineTo(3, 19);
+  ctx.lineTo(7, 12);
+  ctx.closePath();
+  ctx.fill();
+  const image = ctx.getImageData(0, 0, size, size);
+  return { width: size, height: size, data: new Uint8Array(image.data.buffer) };
 }
 
-/* ---------- 校巴模式 ---------- */
+function addBusArrowLayer() {
+  if (!map.hasImage("shuttle-arrow")) {
+    map.addImage("shuttle-arrow", makeArrowImage("#2F3737"));
+  }
+  if (!map.getLayer("shuttle-arrows")) {
+    map.addLayer({
+      id: "shuttle-arrows",
+      type: "symbol",
+      source: "shuttle_routes",
+      layout: {
+        visibility: "none",
+        "symbol-placement": "line",
+        "symbol-spacing": 90,
+        "icon-image": "shuttle-arrow",
+        "icon-size": 0.55,
+        "icon-rotation-alignment": "map",
+        "icon-keep-upright": false,
+        "icon-allow-overlap": true,
+      },
+    });
+  }
+}
 
-function wireBusButton() {
-  const btn = document.getElementById("btnBus");
-  let on = false;
-  btn.addEventListener("click", () => {
-    on = !on;
-    for (const id of ["shuttle-routes", "shuttle-stops"]) {
-      map.setLayoutProperty(id, "visibility", on ? "visible" : "none");
+function applyBusSelection(selection) {
+  const visible = selection !== "off";
+  for (const id of ["shuttle-routes", "shuttle-stops", "shuttle-arrows"]) {
+    map.setLayoutProperty(id, "visibility", visible ? "visible" : "none");
+  }
+  map.setFilter("shuttle-routes", CUHKAppCore.routeFilter(selection));
+  map.setFilter("shuttle-arrows", CUHKAppCore.routeFilter(selection));
+  map.setFilter("shuttle-stops", CUHKAppCore.stopFilter(selection));
+}
+
+async function wireBusRouteSelect() {
+  const select = document.getElementById("busRouteSelect");
+  try {
+    const routes = await loadJSON("data/shuttle_routes.geojson");
+    for (const route of CUHKAppCore.routeOptions(routes)) {
+      const option = document.createElement("option");
+      option.value = route.routeId;
+      option.textContent = route.label;
+      select.appendChild(option);
     }
-    btn.classList.toggle("active", on);
-  });
+    select.disabled = false;
+    select.addEventListener("change", () => applyBusSelection(select.value));
+    applyBusSelection(select.value);
+  } catch (error) {
+    select.disabled = true;
+    console.warn("校巴线路加载失败，筛选器已停用：", error);
+  }
 
   for (const layer of ["shuttle-routes", "shuttle-stops"]) {
     map.on("click", layer, (e) => {
@@ -200,7 +233,7 @@ map.on("load", async () => {
     showError();
     return;
   }
-  addHatchLayers();
+  addWaterHatchLayer();
   // 非核心资源各自降级：缺 hillshade / POI 不影响地图其余部分
   try {
     await addHillshade();
@@ -214,8 +247,8 @@ map.on("load", async () => {
     console.warn("pois.geojson 加载失败，跳过 POI 标注：", e);
   }
   wireChips();
-  wire3DButton();
-  wireBusButton();
+  addBusArrowLayer();
+  await wireBusRouteSelect();
   updateZoomClass();
   map.on("zoom", updateZoomClass);
   mapReady = true;

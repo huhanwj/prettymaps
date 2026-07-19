@@ -17,6 +17,7 @@ from pipeline import (  # noqa: E402
     heights,
     layers,
     official,
+    pedestrian,
     pois,
     sea,
     terrain,
@@ -82,10 +83,24 @@ def main():
 
     # ⑤c 建筑功能分类（依赖 ⑤b 的官方建筑点，故必须在 ⑤b 之后）
     print("== ⑤c 建筑分类 ==")
-    gdfs["buildings"]["bt"] = building_types.assign_types(
+    building_attrs = building_types.assign_attributes(
         gdfs["buildings"], gdfs["official_buildings"]
     )
+    gdfs["buildings"][["bt", "campus_id"]] = building_attrs
     print("  建筑 bt 分布:", dict(gdfs["buildings"]["bt"].value_counts()))
+    print("  建筑 campus_id 分布:", dict(gdfs["buildings"]["campus_id"].value_counts()))
+
+    # ⑤d 天桥/楼梯：OSM 标签自动识别 + 官方 PDF 人工补齐
+    print("== ⑤d 天桥与楼梯 ==")
+    osm_links = pedestrian.extract_osm_links(gdfs["roads"])
+    curated_links = pedestrian.load_curated_links(
+        REPO_CUHK / "data" / "official" / "pedestrian_links.geojson", campus
+    )
+    gdfs["pedestrian_links"] = pedestrian.merge_links(osm_links, curated_links)
+    print(
+        "  pedestrian_links 分布:",
+        dict(gdfs["pedestrian_links"]["kind"].value_counts()),
+    )
 
     # ⑥ POI
     print("== ⑥ POI ==")
@@ -113,7 +128,7 @@ def main():
     campus.to_file(out_dir / "boundary.geojson", driver="GeoJSON")
 
     keep = {
-        "buildings": ["h", "c", "bt", "geometry"],
+        "buildings": ["h", "c", "bt", "campus_id", "geometry"],
         "roads": ["road_class", "geometry"],
         "railway": ["geometry"],
         "water": ["geometry"],
@@ -126,9 +141,10 @@ def main():
         "contours": ["ele", "geometry"],
         "official_buildings": ["name_en", "name_zh", "bldg_code", "campus_id", "hostel_type", "type", "geometry"],
         "official_landmarks": ["name_en", "name_zh", "geometry"],
-        "shuttle_routes": ["name_en", "name_zh", "color", "geometry"],
-        "shuttle_stops": ["name_en", "name_zh", "geometry"],
+        "shuttle_routes": ["route_id", "name_en", "name_zh", "color", "geometry"],
+        "shuttle_stops": ["name_en", "name_zh", "route_ids", "geometry"],
         "walking": ["name_en", "name_zh", "geometry"],
+        "pedestrian_links": ["kind", "source", "note", "geometry"],
     }
     EMPTY_FC = {"type": "FeatureCollection", "features": []}
     for name, cols in keep.items():

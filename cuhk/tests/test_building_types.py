@@ -37,6 +37,46 @@ def test_match_official_to_osm():
     assert list(bt) == ["other", "dorm"]
 
 
+def test_assign_attributes_returns_type_and_campus_id():
+    osm = gp.GeoDataFrame(
+        {"geometry": [box(114.2000, 22.4100, 114.2010, 22.4110),
+                      box(114.2100, 22.4200, 114.2110, 22.4210)]},
+        crs="EPSG:4326",
+    )
+    official = gp.GeoDataFrame(
+        {
+            "name_en": ["University Library", "New Asia College Hall"],
+            "hostel_type": ["", "3"],
+            "campus_id": ["1", "3"],
+            "geometry": [Point(114.2005, 22.4105), Point(114.2105, 22.4205)],
+        },
+        crs="EPSG:4326",
+    )
+
+    attrs = building_types.assign_attributes(osm, official, max_dist_m=60)
+
+    assert list(attrs.columns) == ["bt", "campus_id"]
+    assert list(attrs["bt"]) == ["study", "dorm"]
+    assert list(attrs["campus_id"]) == ["1", "3"]
+
+
+def test_assign_attributes_unmatched_building_has_empty_campus_id():
+    osm = gp.GeoDataFrame(
+        {"geometry": [box(114.2, 22.4, 114.21, 22.41)]}, crs="EPSG:4326"
+    )
+
+    attrs = building_types.assign_attributes(
+        osm,
+        gp.GeoDataFrame(
+            {"name_en": [], "hostel_type": [], "campus_id": [], "geometry": []},
+            geometry="geometry",
+            crs="EPSG:4326",
+        ),
+    )
+
+    assert attrs.to_dict("records") == [{"bt": "other", "campus_id": ""}]
+
+
 def test_no_match_stays_other():
     osm = gp.GeoDataFrame({"geometry": [box(114.2, 22.4, 114.21, 22.41)]}, crs="EPSG:4326")
     official = gp.GeoDataFrame(

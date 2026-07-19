@@ -73,6 +73,7 @@ def test_shuttle_routes_ordered_assembly():
     gdf = official.shuttle_routes(db)
     assert len(gdf) == 1
     row = gdf.iloc[0]
+    assert row["route_id"] == "1"
     assert row["color"] == "#ff0000"
     # seg 折线锚定其 start 站：order=1 的 seg2（锚 stop1）应排在 order=2 的 seg1（锚 stop2）前
     # seg2 "g@{@{@{@oA{@" 解码相对点 (0.0002,0.0003),(0.0005,0.0006),(0.0009,0.0009)
@@ -92,6 +93,14 @@ def test_walking_routes():
     gdf = official.walking_routes(db)
     assert len(gdf) == 1
     assert len(gdf.iloc[0].geometry.coords) == 3
+
+
+def test_shuttle_stops_include_route_ids():
+    db = official.parse_map_data(SAMPLE_JS)
+
+    gdf = official.shuttle_stops(db)
+
+    assert list(gdf["route_ids"]) == ["|1|", "|1|", "|1|"]
 
 
 def test_decode_polyline_malformed_raises_valueerror():
@@ -145,7 +154,7 @@ def test_empty_layers_no_crash():
     assert len(official.official_facilities({})) == 0
     assert len(official.shuttle_routes({})) == 0
     assert len(official.walking_routes({})) == 0
-    assert list(official.shuttle_stops({}).columns) == ["name_en", "name_zh", "geometry"]
+    assert list(official.shuttle_stops({}).columns) == ["name_en", "name_zh", "route_ids", "geometry"]
 
 
 def test_shuttle_real_file_lands_on_campus():

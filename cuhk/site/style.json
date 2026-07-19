@@ -17,6 +17,7 @@
     "shuttle_routes": { "type": "geojson", "data": "data/shuttle_routes.geojson" },
     "shuttle_stops": { "type": "geojson", "data": "data/shuttle_stops.geojson" },
     "walking": { "type": "geojson", "data": "data/walking.geojson" },
+    "pedestrian_links": { "type": "geojson", "data": "data/pedestrian_links.geojson" },
     "dem": {
       "type": "raster-dem",
       "tiles": ["tiles/terrain-rgb/{z}/{x}/{y}.png"],
@@ -31,7 +32,7 @@
     {
       "id": "background",
       "type": "background",
-      "paint": { "background-color": "#F2F4CB" }
+      "paint": { "background-color": "#FFFFFF" }
     },
     {
       "id": "sea",
@@ -49,13 +50,13 @@
       "id": "green",
       "type": "fill",
       "source": "green",
-      "paint": { "fill-color": "#8BB174", "fill-outline-color": "#2F3737" }
+      "paint": { "fill-color": "#FFFFFF", "fill-outline-color": "#E4E9ED" }
     },
     {
       "id": "forest",
       "type": "fill",
       "source": "forest",
-      "paint": { "fill-color": "#64B96A", "fill-outline-color": "#2F3737" }
+      "paint": { "fill-color": "#FFFFFF", "fill-outline-color": "#E4E9ED" }
     },
     {
       "id": "beach",
@@ -67,16 +68,16 @@
       "id": "parking",
       "type": "fill",
       "source": "parking",
-      "paint": { "fill-color": "#F2F4CB", "fill-outline-color": "#2F3737" }
+      "paint": { "fill-color": "#FFFFFF", "fill-outline-color": "#A5BFD2" }
     },
     {
       "id": "contours",
       "type": "line",
       "source": "contours",
       "paint": {
-        "line-color": "#b8b27a",
+        "line-color": "#D6DEE5",
         "line-width": ["interpolate", ["linear"], ["zoom"], 13, 0.4, 16, 1.0],
-        "line-opacity": 0.8
+        "line-opacity": 0.65
       }
     },
     {
@@ -91,7 +92,7 @@
       "source": "roads",
       "filter": ["in", ["get", "road_class"], ["literal", ["path", "steps"]]],
       "paint": {
-        "line-color": "#6b7a7a",
+        "line-color": "#9AAFC0",
         "line-width": ["interpolate", ["linear"], ["zoom"], 13, 0.5, 16, 2.0],
         "line-dasharray": [2, 1.5]
       }
@@ -101,10 +102,10 @@
       "type": "line",
       "source": "walking",
       "paint": {
-        "line-color": "#4a8f52",
+        "line-color": "#9AAFC0",
         "line-width": ["interpolate", ["linear"], ["zoom"], 13, 1.2, 16, 2.5],
         "line-dasharray": [3, 2],
-        "line-opacity": 0.9
+        "line-opacity": 0.75
       }
     },
     {
@@ -113,7 +114,7 @@
       "source": "roads",
       "filter": ["in", ["get", "road_class"], ["literal", ["medium", "minor"]]],
       "paint": {
-        "line-color": "#475657",
+        "line-color": "#A5BFD2",
         "line-width": ["interpolate", ["linear"], ["zoom"], 13, 1.0, 16, 4.0]
       }
     },
@@ -123,7 +124,7 @@
       "source": "roads",
       "filter": ["==", ["get", "road_class"], "major"],
       "paint": {
-        "line-color": "#2F3737",
+        "line-color": "#A5BFD2",
         "line-width": ["interpolate", ["linear"], ["zoom"], 13, 1.5, 16, 6.0]
       }
     },
@@ -142,13 +143,22 @@
       "type": "fill",
       "source": "buildings",
       "paint": {
-        "fill-color": ["match", ["get", "bt"],
-          "college", "#E8B64C",
-          "dorm", "#F2A65A",
-          "sports", "#64B96A",
-          "study", "#2f6fb5",
-          ["match", ["get", "c"], 0, "#FF5E5B", "#433633"]],
-        "fill-outline-color": "#2F3737"
+        "fill-color": ["match", ["get", "campus_id"],
+          "1", "#C396C5",
+          "2", "#F59288",
+          "3", "#7ED3F7",
+          "4", "#59C5C2",
+          "5", "#FBB04C",
+          "6", "#C396C5",
+          "7", "#C396C5",
+          "8", "#FFE06A",
+          "9", "#4069B2",
+          "10", "#EC66A6",
+          "11", "#D0D094",
+          "12", "#F27072",
+          "13", "#C396C5",
+          "#E8E0EA"],
+        "fill-outline-color": "#FFFFFF"
       }
     },
     {
@@ -157,15 +167,38 @@
       "source": "buildings",
       "layout": { "visibility": "none" },
       "paint": {
-        "fill-extrusion-color": ["match", ["get", "bt"],
-          "college", "#E8B64C",
-          "dorm", "#F2A65A",
-          "sports", "#64B96A",
-          "study", "#2f6fb5",
-          ["match", ["get", "c"], 0, "#FF5E5B", "#433633"]],
+        "fill-extrusion-color": ["match", ["get", "campus_id"],
+          "1", "#C396C5", "2", "#F59288", "3", "#7ED3F7",
+          "4", "#59C5C2", "5", "#FBB04C", "6", "#C396C5",
+          "7", "#C396C5", "8", "#FFE06A", "9", "#4069B2",
+          "10", "#EC66A6", "11", "#D0D094", "12", "#F27072",
+          "13", "#C396C5", "#E8E0EA"],
         "fill-extrusion-height": ["get", "h"],
         "fill-extrusion-base": 0,
         "fill-extrusion-opacity": 0.95
+      }
+    },
+    {
+      "id": "pedestrian-bridges",
+      "type": "line",
+      "source": "pedestrian_links",
+      "filter": ["==", ["get", "kind"], "bridge"],
+      "paint": {
+        "line-color": "#5C95B7",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 13, 2.4, 16, 5.0],
+        "line-opacity": 0.95
+      }
+    },
+    {
+      "id": "pedestrian-stairs",
+      "type": "line",
+      "source": "pedestrian_links",
+      "filter": ["==", ["get", "kind"], "stairs"],
+      "paint": {
+        "line-color": "#5C95B7",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 13, 1.5, 16, 3.0],
+        "line-dasharray": [1, 1.5],
+        "line-opacity": 0.95
       }
     },
     {

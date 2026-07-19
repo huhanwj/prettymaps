@@ -171,9 +171,28 @@ def official_facilities(db):
 
 
 def shuttle_stops(db):
+    segs = {s["bus_route_seg_id"]: s for s in db.get("shuttle_bus_seg", [])}
+    routes_by_stop = {}
+    for relation in db.get("shuttle_bus_route_seg", []):
+        route_id = str(relation.get("route_id", "")).strip()
+        seg = segs.get(relation.get("seg_id"))
+        if not route_id or not seg:
+            continue
+        for key in ("start_bus_stop_id", "end_bus_stop_id"):
+            stop_id = str(seg.get(key, "")).strip()
+            if stop_id:
+                routes_by_stop.setdefault(stop_id, set()).add(route_id)
+    records = []
+    for source in db.get("shuttle_bus_stops", []):
+        record = dict(source)
+        stop_id = str(record.get("bus_stop_id", "")).strip()
+        route_ids = sorted(routes_by_stop.get(stop_id, set()))
+        record["route_ids"] = "|" + "|".join(route_ids) + "|" if route_ids else ""
+        records.append(record)
     return _points_gdf(
-        db.get("shuttle_bus_stops", []),
+        records,
         [("name_en", "bus_stop_name_en"), ("name_zh", "bus_stop_name_xb5")],
+        extra_fields=("route_ids",),
     )
 
 
@@ -220,13 +239,14 @@ def shuttle_routes(db):
         if not lines:
             continue
         rows.append({
+            "route_id": str(rid),
             "name_en": route.get("route_name_en", ""),
             "name_zh": route.get("route_name_xb5", ""),
             "color": route.get("route_color") or "#2F3737",
             "geometry": MultiLineString(lines),
         })
     if not rows:
-        return _empty_gdf(["name_en", "name_zh", "color", "geometry"])
+        return _empty_gdf(["route_id", "name_en", "name_zh", "color", "geometry"])
     return gp.GeoDataFrame(rows, crs="EPSG:4326")
 
 

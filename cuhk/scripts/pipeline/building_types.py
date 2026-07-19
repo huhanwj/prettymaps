@@ -33,8 +33,8 @@ def classify_building(name_en, hostel_type):
     return "other"
 
 
-def assign_types(osm_buildings, official_points, max_dist_m=60):
-    """OSM 建筑面 ← 官方点两段匹配，返回与 osm 对齐的 bt Series。
+def assign_attributes(osm_buildings, official_points, max_dist_m=60):
+    """OSM 建筑面 ← 官方点两段匹配，返回与 osm 对齐的 bt/campus_id。
 
     Pass 1 包含优先：点落在面内（UTM 下 within）→ 该面得分类；
     嵌套包含时取质心离点最近的面。
@@ -42,35 +42,52 @@ def assign_types(osm_buildings, official_points, max_dist_m=60):
     同一建筑被多个点命中时严格更近者赢，与点的输入顺序无关。
     """
     if osm_buildings.empty:
-        return pd.Series([], dtype=str)
+        return pd.DataFrame(
+            {"bt": pd.Series(dtype=str), "campus_id": pd.Series(dtype=str)},
+            index=osm_buildings.index,
+        )
     osm_u = osm_buildings.to_crs(osm_buildings.estimate_utm_crs())
     centroids = osm_u.geometry.centroid
     if official_points.empty:
-        return pd.Series(["other"] * len(osm_u), index=osm_buildings.index)
+        return pd.DataFrame(
+            {"bt": ["other"] * len(osm_u), "campus_id": [""] * len(osm_u)},
+            index=osm_buildings.index,
+        )
     off_u = official_points.to_crs(osm_u.crs)
 
-    best = {}  # 建筑位置 → (获胜距离, 分类)；只在严格更近时覆盖
+    best = {}  # 建筑位置 → (获胜距离, 分类, 区域)；只在严格更近时覆盖
     fallback = []  # 不在任何面内的点，留到 Pass 2
     for _, off in off_u.iterrows():
         cls = classify_building(off.get("name_en"), off.get("hostel_type"))
+        raw_campus_id = off.get("campus_id", "")
+        campus_id = "" if pd.isna(raw_campus_id) else str(raw_campus_id).strip()
         containing = [i for i, ok in enumerate(osm_u.contains(off.geometry)) if ok]
         if containing:
             i = min(containing, key=lambda j: centroids.iloc[j].distance(off.geometry))
             d = float(centroids.iloc[i].distance(off.geometry))
             if i not in best or d < best[i][0]:
-                best[i] = (d, cls)
+                best[i] = (d, cls, campus_id)
         else:
-            fallback.append((off.geometry, cls))
+            fallback.append((off.geometry, cls, campus_id))
 
-    for geom, cls in fallback:
+    for geom, cls, campus_id in fallback:
         dists = centroids.distance(geom)
         nearest = dists.idxmin()
         d = float(dists.loc[nearest])
         i = osm_u.index.get_loc(nearest)
         if d <= max_dist_m and (i not in best or d < best[i][0]):
-            best[i] = (d, cls)
+            best[i] = (d, cls, campus_id)
 
-    result = ["other"] * len(osm_u)
-    for i, (_, cls) in best.items():
-        result[i] = cls
-    return pd.Series(result, index=osm_buildings.index)
+    types = ["other"] * len(osm_u)
+    campus_ids = [""] * len(osm_u)
+    for i, (_, cls, campus_id) in best.items():
+        types[i] = cls
+        campus_ids[i] = campus_id
+    return pd.DataFrame(
+        {"bt": types, "campus_id": campus_ids}, index=osm_buildings.index
+    )
+
+
+def assign_types(osm_buildings, official_points, max_dist_m=60):
+    """兼容入口：只返回建筑功能分类。"""
+    return assign_attributes(osm_buildings, official_points, max_dist_m)["bt"]

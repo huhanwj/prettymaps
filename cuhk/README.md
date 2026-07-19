@@ -1,7 +1,7 @@
 # CUHK 校园迎新地图
 
 面向新生的香港中文大学交互式网页地图：prettymaps 插画风、中英双语地点标注、
-等高线 + 山体阴影 + 3D 建筑表现山城高差。纯静态、零外部依赖，可离线运行。
+官方书院配色、天桥/楼梯和带方向的校巴线路。纯静态、零前端外部依赖，可离线运行。
 
 ## 快速开始
 
@@ -25,18 +25,23 @@ bash cuhk/site/start.sh
 ## 修改内容
 
 - 改地点：编辑 `cuhk/data/pois.yml`（43 条中英双语 POI），重跑管线
-- 改样式：编辑 `cuhk/site/style.json`（配色取自 prettymaps default preset），刷新页面即可
+- 改样式：编辑 `cuhk/site/style.json`（书院配色取自官方校园 PDF），刷新页面即可
 - 改交互：编辑 `cuhk/site/app.js`
 
-## 功能开关
+## 主要功能
 
-- **校巴模式**：点顶栏「校巴線」显示/隐藏 19 条校巴线路（官方配色）与 51 个站点，点击看详情
-- **3D 视角**：点顶栏「3D 視角」倾斜视角，建筑拉起 + 真实地形起伏（SRTM terrain-RGB）
+- **书院配色**：建筑按官方 `campus_id` 区分中央校园及九所书院，底图以白色留白为主
+- **天桥与楼梯**：实心蓝线表示天桥，蓝色虚线表示楼梯或明显高差通道
+- **校巴线路**：可关闭、显示全部或筛选单条官方线路；线路上重复显示行驶方向箭头
 - **URL 分享**：地址栏 hash 携带 zoom/lat/lon/pitch，可直接分享当前视角
+
+3D 因 V2 存在切换卡屏且无法恢复的问题，在 V3 暂时停用。详情见
+[KNOWN_ISSUES.md](KNOWN_ISSUES.md)。
 
 ## 数据来源
 
-- 校园建筑/地标/校巴/步行捷径：© 香港中文大學官方校園地圖（cuhk.edu.hk）
+- 校园建筑/地标/校巴：© 香港中文大學官方校園地圖（cuhk.edu.hk）
+- 书院配色及人工补齐的天桥/楼梯：`data/official/Campus-Map-YIA-LT2.pdf`
 - 校外与底图要素：© OpenStreetMap contributors (ODbL)
 - 高程：NASA SRTM
 
