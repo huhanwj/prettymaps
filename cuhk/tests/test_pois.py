@@ -118,3 +118,37 @@ def test_load_pois_bad_lonlat(tmp_path):
     )
     with pytest.raises(ValueError, match="经纬度"):
         pois.load_pois(outside_hk)
+
+
+def test_resolve_prefers_official(features):
+    official = gp.GeoDataFrame(
+        {
+            "name_en": ["New Asia College"],
+            "name_zh": ["新亞書院"],
+            "geometry": [box(114.2090, 22.4210, 114.2100, 22.4220)],
+        },
+        crs="EPSG:4326",
+    )
+    entries = [
+        {"id": "na", "name_zh": "新亞書院", "name_en": "New Asia College",
+         "category": "life", "desc": "", "official_name": "New Asia College",
+         "osm_name": "New Asia College"}
+    ]
+    gdf, unmatched = pois.resolve_pois(entries, features, official=official)
+    assert unmatched == []
+    # official 与 OSM fixture 同一坐标，证明走了哪条通道需要看 source 列
+    assert gdf.iloc[0]["source"] == "official"
+
+
+def test_resolve_official_falls_back_to_osm(features):
+    official = gp.GeoDataFrame(
+        {"name_en": [], "name_zh": [], "geometry": []}, crs="EPSG:4326"
+    )
+    entries = [
+        {"id": "na", "name_zh": "新亞書院", "name_en": "New Asia College",
+         "category": "life", "desc": "", "official_name": "No Such Place Zzz",
+         "osm_name": "New Asia College"}
+    ]
+    gdf, unmatched = pois.resolve_pois(entries, features, official=official)
+    assert unmatched == []
+    assert gdf.iloc[0]["source"] == "osm"

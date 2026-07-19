@@ -177,3 +177,28 @@ def test_real_file_products_smoke(recwarn):
     }
     skips = [w for w in recwarn.list if "无法定位" in str(w.message)]
     assert skips == []
+
+
+def test_official_poi_sources_combines_layers():
+    """POI 校正合集 = buildings + landmarks + colleges + shuttle_stops，列齐。"""
+    db = {
+        "buildings": [
+            {"bldg_name_en": "B1", "bldg_name_xb5": "樓一", "lat_lng": "(22.41, 114.20)"},
+            {"bldg_name_en": "B2", "bldg_name_xb5": "樓二", "lat_lng": "(22.42, 114.21)"},
+        ],
+        "landmarks": [
+            {"landmark_name_en": "L1", "landmark_name_xb5": "標一", "lat_lng": "(22.43, 114.22)"},
+        ],
+        "colleges": [
+            {"name_en": "C1", "name_xb5": "院一", "lat_lng": "(22.44, 114.23)"},
+        ],
+        "shuttle_bus_stops": [
+            {"bus_stop_name_en": "S1", "bus_stop_name_xb5": "站一", "lat_lng": "(22.45, 114.24)"},
+            {"bus_stop_name_en": "S2", "bus_stop_name_xb5": "站二", "lat_lng": "(22.46, 114.25)"},
+            {"bus_stop_name_en": "S3", "bus_stop_name_xb5": "站三", "lat_lng": "(22.47, 114.26)"},
+        ],
+    }
+    gdf = official.official_poi_sources(db)
+    assert len(gdf) == 2 + 1 + 1 + 3
+    assert set(gdf.columns) >= {"name_en", "name_zh", "geometry"}
+    assert gdf.crs.to_string() == "EPSG:4326"

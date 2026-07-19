@@ -246,6 +246,17 @@ def load_official_db(path=None):
     return parse_map_data(text)
 
 
+def official_poi_sources(db):
+    """POI 校正用的官方点位合集：buildings + landmarks + colleges + shuttle_stops。"""
+    parts = [
+        official_buildings(db)[["name_en", "name_zh", "geometry"]],
+        official_landmarks(db)[["name_en", "name_zh", "geometry"]],
+        official_colleges(db)[["name_en", "name_zh", "geometry"]],
+        shuttle_stops(db)[["name_en", "name_zh", "geometry"]],
+    ]
+    return gp.GeoDataFrame(pd.concat(parts, ignore_index=True), crs="EPSG:4326")
+
+
 def build_official_products(db):
     """一次性产出全部官方图层：{name: GeoDataFrame}。"""
     return {

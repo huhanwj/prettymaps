@@ -1,8 +1,9 @@
 """POI 解析：pois.yml → pois.geojson。
 
-定位二选一：lon/lat 直接给点；osm_name 与抓取的命名要素做模糊匹配，
-取匹配要素的 representative_point()（保证落在要素内部）。
-匹配失败的条目全量报错（不静默丢弃）。
+定位三通道（按优先级）：official_name 与官方点位（buildings/landmarks/
+colleges/shuttle_stops 合集）模糊匹配 → lon/lat 直接给点 → osm_name 与抓取的
+命名要素模糊匹配。匹配取命中要素的 representative_point()（保证落在要素内部）。
+解析结果带 source 列（official/manual/osm）。匹配失败的条目全量报错（不静默丢弃）。
 """
 
 import difflib
@@ -49,6 +50,10 @@ def load_pois(path):
             not isinstance(e["osm_name"], str) or not e["osm_name"].strip()
         ):
             raise ValueError(f"POI {e['id']} osm_name 必须是非空字符串")
+        if "official_name" in e and (
+            not isinstance(e["official_name"], str) or not e["official_name"].strip()
+        ):
+            raise ValueError(f"POI {e['id']} official_name 必须是非空字符串")
         if "lon" in e or "lat" in e:
             if not ("lon" in e and "lat" in e):
                 raise ValueError(f"POI {e['id']} lon/lat 必须成对给出")
@@ -59,8 +64,8 @@ def load_pois(path):
             )
             if not numeric or not (113.8 <= lon <= 114.5 and 22.1 <= lat <= 22.6):
                 raise ValueError(f"POI {e['id']} 经纬度越出香港范围：{lon}, {lat}")
-        if not (("lon" in e and "lat" in e) or "osm_name" in e):
-            raise ValueError(f"POI {e['id']} 必须给 lon/lat 或 osm_name")
+        if not (("lon" in e and "lat" in e) or "osm_name" in e or "official_name" in e):
+            raise ValueError(f"POI {e['id']} 必须给 lon/lat、osm_name 或 official_name")
         if e["id"] in ids:
             raise ValueError(f"POI id 重复：{e['id']}")
         ids.add(e["id"])
@@ -92,43 +97,57 @@ def _similarity(a, b):
     return difflib.SequenceMatcher(None, a.lower(), b.lower()).ratio()
 
 
-def _match_feature(osm_name, features):
-    """在要素的 name/name:en/name:zh 中找最佳匹配，返回 (row, score)。"""
+def _match_feature(query, features, cols=("name", "name:en", "name:zh")):
+    """在要素的候选名称列中找最佳匹配，返回 (row, score)。空 features 返回 (None, 0.0)。"""
     best_row, best_score = None, 0.0
     for _, row in features.iterrows():
         candidates = [
-            str(row[c]) for c in ("name", "name:en", "name:zh")
+            str(row[c]) for c in cols
             if c in row and pd.notna(row[c])
         ]
-        score = max((_similarity(osm_name, c) for c in candidates), default=0.0)
+        score = max((_similarity(query, c) for c in candidates), default=0.0)
         if score > best_score:
             best_row, best_score = row, score
     return best_row, best_score
 
 
-def resolve_pois(entries, features):
-    """条目 → 点要素。返回 (GeoDataFrame, unmatched_id_list)。"""
+def resolve_pois(entries, features, official=None):
+    """条目 → 点要素。返回 (GeoDataFrame, unmatched_id_list)。
+
+    解析链：official_name 命中官方点位（source=official）
+    → lon/lat（source=manual）→ osm_name 命中 OSM 要素（source=osm）。
+    """
     rows, unmatched = [], []
+    has_official = official is not None and not official.empty
     for e in entries:
-        if "lon" in e and "lat" in e:
-            point = Point(e["lon"], e["lat"])
-        else:
+        point, source = None, None
+        if e.get("official_name") and has_official:
+            row, score = _match_feature(
+                e["official_name"], official, cols=("name_en", "name_zh")
+            )
+            if row is not None and score >= MATCH_THRESHOLD:
+                point, source = row.geometry.representative_point(), "official"
+        if point is None and "lon" in e and "lat" in e:
+            point, source = Point(e["lon"], e["lat"]), "manual"
+        if point is None and e.get("osm_name"):
             row, score = _match_feature(e["osm_name"], features)
-            if row is None or score < MATCH_THRESHOLD:
-                unmatched.append(e["id"])
-                continue
-            point = row.geometry.representative_point()
+            if row is not None and score >= MATCH_THRESHOLD:
+                point, source = row.geometry.representative_point(), "osm"
+        if point is None:
+            unmatched.append(e["id"])
+            continue
         rows.append({
             "id": e["id"],
             "name_zh": e["name_zh"],
             "name_en": e["name_en"],
             "category": e["category"],
             "desc": e["desc"],
+            "source": source,
             "geometry": point,
         })
     if not rows:
         empty = gp.GeoDataFrame(
-            {c: [] for c in ("id", "name_zh", "name_en", "category", "desc")},
+            {c: [] for c in ("id", "name_zh", "name_en", "category", "desc", "source")},
             geometry=gp.GeoSeries([], crs="EPSG:4326"),
         )
         return empty, unmatched
