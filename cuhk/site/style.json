@@ -16,6 +16,7 @@
     "boundary":  { "type": "geojson", "data": "data/boundary.geojson" },
     "shuttle_routes": { "type": "geojson", "data": "data/shuttle_routes.geojson" },
     "shuttle_stops": { "type": "geojson", "data": "data/shuttle_stops.geojson" },
+    "walking": { "type": "geojson", "data": "data/walking.geojson" },
     "dem": {
       "type": "raster-dem",
       "tiles": ["tiles/terrain-rgb/{z}/{x}/{y}.png"],
@@ -93,6 +94,17 @@
         "line-color": "#6b7a7a",
         "line-width": ["interpolate", ["linear"], ["zoom"], 13, 0.5, 16, 2.0],
         "line-dasharray": [2, 1.5]
+      }
+    },
+    {
+      "id": "walking",
+      "type": "line",
+      "source": "walking",
+      "paint": {
+        "line-color": "#4a8f52",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 13, 1.2, 16, 2.5],
+        "line-dasharray": [3, 2],
+        "line-opacity": 0.9
       }
     },
     {
