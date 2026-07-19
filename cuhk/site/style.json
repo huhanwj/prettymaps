@@ -21,7 +21,9 @@
       "tiles": ["tiles/terrain-rgb/{z}/{x}/{y}.png"],
       "tileSize": 256,
       "encoding": "mapbox",
-      "maxzoom": 16
+      "minzoom": 10,
+      "maxzoom": 16,
+      "bounds": [114.18972222222222, 22.403055555555554, 114.22416666666666, 22.436944444444446]
     }
   },
   "layers": [

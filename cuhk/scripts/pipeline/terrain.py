@@ -16,10 +16,14 @@ from scipy.ndimage import map_coordinates
 
 ZMIN, ZMAX = 10, 16
 TILE_SIZE = 256
+MAX_LAT = 85.0511287798066  # Web Mercator 纬度极限
 
 
 def encode_height(h):
+    if not math.isfinite(h):
+        raise ValueError(f"无法编码非有限高度：{h}")
     v = int(round((h + 10000) * 10))
+    v = max(0, min(v, 0xFFFFFF))  # 钳制到 24bit，防位移溢出回绕
     return (v >> 16) & 255, (v >> 8) & 255, v & 255
 
 
@@ -46,24 +50,40 @@ def tiley2lat(y, z):
 
 
 def tiles_covering(minlon, minlat, maxlon, maxlat, z):
+    """覆盖 bbox 的 z 级瓦片列表 [(z, x, y), ...]。
+
+    东/南边缘按半开区间处理：bbox 边缘恰好落在瓦片边界上时，不把东侧/
+    南侧的相邻瓦片算进来。纬度钳制在 Web Mercator 有效范围 ±MAX_LAT，
+    瓦片索引钳制在 [0, 2^z - 1]。跨越反经线（antimeridian）的 bbox 不支持。
+    """
+    minlat = max(minlat, -MAX_LAT)
+    maxlat = min(maxlat, MAX_LAT)
     x0 = int(math.floor(lon2tilex(minlon, z)))
-    x1 = int(math.floor(lon2tilex(maxlon, z)))
+    x1 = int(math.floor(math.nextafter(lon2tilex(maxlon, z), -math.inf)))
     y0 = int(math.floor(lat2tiley(maxlat, z)))  # 北在上
-    y1 = int(math.floor(lat2tiley(minlat, z)))
+    y1 = int(math.floor(math.nextafter(lat2tiley(minlat, z), -math.inf)))
+    n = 2**z
+    x0, x1 = max(x0, 0), min(x1, n - 1)
+    y0, y1 = max(y0, 0), min(y1, n - 1)
     return [(z, x, y) for x in range(x0, x1 + 1) for y in range(y0, y1 + 1)]
 
 
 def render_tile(dem, lons, lats, z, x, y, size=TILE_SIZE):
     """从 (dem, lons, lats) 双线性采样出一张 size×size×3 的 terrain-RGB 瓦片。"""
     west, east = tilex2lon(x, z), tilex2lon(x + 1, z)
-    north, south = tiley2lat(y, z), tiley2lat(y + 1, z)
     out_lons = np.linspace(west, east, size, endpoint=False) + (east - west) / (2 * size)
-    out_lats = np.linspace(north, south, size, endpoint=False) + (south - north) / (2 * size)
+    # XYZ 像素在 Web Mercator y 上均匀分布（经度方向线性、纬度方向非线性）：
+    # 逐行算分数瓦片 y → 纬度，不能按纬度线性插值
+    py = y + (np.arange(size) + 0.5) / size
+    out_lats = np.degrees(np.arctan(np.sinh(math.pi - 2 * math.pi * py / 2**z)))
     cols = (out_lons - lons[0]) / (lons[-1] - lons[0]) * (len(lons) - 1)
     rows = (lats[0] - out_lats) / (lats[0] - lats[-1]) * (len(lats) - 1)
     rr, cc = np.meshgrid(rows, cols, indexing="ij")
-    sampled = map_coordinates(dem, [rr, cc], order=1, mode="nearest")
+    # 边缘策略：DEM 覆盖范围外的像素按海平面（0m）渲染——海岸地图未知即海；
+    # 不能用 mode="nearest"（会把 DEM 边缘高程复制成假的台地）
+    sampled = map_coordinates(dem, [rr, cc], order=1, mode="constant", cval=0.0)
     v = np.rint((sampled + 10000) * 10).astype(np.int64)
+    v = np.clip(v, 0, 0xFFFFFF)  # 与 encode_height 一致的 24bit 钳制
     rgb = np.stack(
         [(v >> 16) & 255, (v >> 8) & 255, v & 255], axis=-1
     ).astype(np.uint8)
