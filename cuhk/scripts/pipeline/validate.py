@@ -12,6 +12,9 @@ REQUIRED_MIN = {
     "railway": 1,
     "sea": 1,
     "contours": 5,
+    "official_buildings": 150,
+    "shuttle_routes": 10,
+    "walking": 2,
 }
 MIN_POIS = 30
 

@@ -28,6 +28,18 @@ bash cuhk/site/start.sh
 - 改样式：编辑 `cuhk/site/style.json`（配色取自 prettymaps default preset），刷新页面即可
 - 改交互：编辑 `cuhk/site/app.js`
 
+## 功能开关
+
+- **校巴模式**：点顶栏「校巴線」显示/隐藏 19 条校巴线路（官方配色）与 51 个站点，点击看详情
+- **3D 视角**：点顶栏「3D 視角」倾斜视角，建筑拉起 + 真实地形起伏（SRTM terrain-RGB）
+- **URL 分享**：地址栏 hash 携带 zoom/lat/lon/pitch，可直接分享当前视角
+
+## 数据来源
+
+- 校园建筑/地标/校巴/步行捷径：© 香港中文大學官方校園地圖（cuhk.edu.hk）
+- 校外与底图要素：© OpenStreetMap contributors (ODbL)
+- 高程：NASA SRTM
+
 ## 测试
 
 ```bash

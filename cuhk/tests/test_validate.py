@@ -14,6 +14,9 @@ def good_gdfs():
         "railway": g([LineString([(114.2, 22.41), (114.21, 22.42)])]),
         "sea": g([box(114.22, 22.41, 114.23, 22.42)]),
         "contours": g([LineString([(114.2, 22.41), (114.21, 22.42)])] * 6),
+        "official_buildings": g([box(114.20, 22.41, 114.201, 22.411)] * 151),
+        "shuttle_routes": g([LineString([(114.2, 22.41), (114.21, 22.42)])] * 11),
+        "walking": g([LineString([(114.2, 22.41), (114.21, 22.42)])] * 2),
     }
 
 
