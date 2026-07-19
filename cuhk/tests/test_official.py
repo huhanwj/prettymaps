@@ -94,8 +94,61 @@ def test_walking_routes():
     assert len(gdf.iloc[0].geometry.coords) == 3
 
 
+def test_decode_polyline_malformed_raises_valueerror():
+    with pytest.raises(ValueError, match="截断/非法"):
+        official.decode_polyline("_p~iF")  # 只有 lat 缺 lng，截断
+
+
+def test_shuttle_anchor_prefers_encoded_start_pt():
+    """锚点级联：encoded_start_pt（绝对编码单点）优先于 start_bus_stop。"""
+    db = {
+        "shuttle_bus_route": [
+            {"route_id": "1", "route_name_en": "R", "route_name_xb5": "", "route_color": "#000000"},
+        ],
+        "shuttle_bus_route_seg": [{"route_id": "1", "seg_id": "1", "order": "1"}],
+        "shuttle_bus_seg": [{
+            "bus_route_seg_id": "1", "start_bus_stop_id": "9", "end_bus_stop_id": "",
+            "encoded_start_pt": "ksxgCkpaxT",  # 绝对点 (22.4135, 114.2095)
+            "encoded_line": "SS{@oA",  # 相对点 (0.0001,0.0001),(0.0004,0.0005)
+        }],
+        "shuttle_bus_stops": [
+            {"bus_stop_id": "9", "bus_stop_name_en": "S", "bus_stop_name_xb5": "", "lat_lng": "(22.4000, 114.2000)"},
+        ],
+    }
+    gdf = official.shuttle_routes(db)
+    flat = [c for pt in gdf.iloc[0].geometry.geoms[0].coords for c in pt]
+    # 锚 encoded_start_pt → (114.2096,22.4136),(114.2100,22.4139)；若错锚 stop9 则全在 (114.2,22.4) 附近
+    assert flat == pytest.approx([114.2096, 22.4136, 114.2100, 22.4139], abs=1e-6)
+
+
+def test_shuttle_seg_unanchorable_warns():
+    """无 encoded_start_pt 且 start 站缺失 → warnings.warn 跳过；路线因此为空则不产出。"""
+    db = {
+        "shuttle_bus_route": [{"route_id": "1", "route_name_en": "R", "route_name_xb5": "", "route_color": ""}],
+        "shuttle_bus_route_seg": [{"route_id": "1", "seg_id": "1", "order": "1"}],
+        "shuttle_bus_seg": [
+            {"bus_route_seg_id": "1", "start_bus_stop_id": "X", "end_bus_stop_id": "", "encoded_line": "SS{@oA"},
+        ],
+        "shuttle_bus_stops": [],
+    }
+    with pytest.warns(UserWarning, match="无法定位"):
+        gdf = official.shuttle_routes(db)
+    assert len(gdf) == 0  # 空 GeoDataFrame 也不炸
+    assert "geometry" in gdf.columns
+
+
+def test_empty_layers_no_crash():
+    """空输入 → 带列结构的空 GeoDataFrame，不报错。"""
+    assert len(official.official_buildings({})) == 0
+    assert len(official.official_landmarks({})) == 0
+    assert len(official.official_colleges({})) == 0
+    assert len(official.shuttle_routes({})) == 0
+    assert len(official.walking_routes({})) == 0
+    assert list(official.shuttle_stops({}).columns) == ["name_en", "name_zh", "geometry"]
+
+
 def test_shuttle_real_file_lands_on_campus():
-    """真实存档回归：shuttle seg 锚定 start 站后，所有坐标须落在中大及周边 bbox。"""
+    """真实存档回归：shuttle seg 锚定 encoded_start_pt 后，所有坐标须落在中大及周边 bbox。"""
     db = official.load_official_db()
     gdf = official.shuttle_routes(db)
     assert len(gdf) == 19
@@ -107,3 +160,20 @@ def test_shuttle_real_file_lands_on_campus():
     # 真实文件 19 条 shuttle 路线全部带显式 route_color，无 #2F3737 回退
     assert (gdf["color"] != "").all()
     assert (gdf["color"] != "#2F3737").all()
+
+
+def test_real_file_products_smoke(recwarn):
+    """真实存档冒烟：各图层计数 + encoded_start_pt 全覆盖（零跳过告警）。"""
+    db = official.load_official_db()
+    p = official.build_official_products(db)
+    counts = {k: len(v) for k, v in p.items()}
+    assert counts == {
+        "official_buildings": 159,
+        "official_landmarks": 26,
+        "official_colleges": 9,
+        "shuttle_routes": 19,
+        "shuttle_stops": 51,
+        "walking": 2,
+    }
+    skips = [w for w in recwarn.list if "无法定位" in str(w.message)]
+    assert skips == []

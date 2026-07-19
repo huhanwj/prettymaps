@@ -3,16 +3,21 @@
 数据源：https://www.cuhk.edu.hk/english/js/campus/cuhk_location_db.js
 文件以 cuhk/data/official/cuhk_location_db.js 存档（可复现、可离线）。
 解析策略：定位各顶层 `key : [` 数组段，括号配平（字符串感知）切出每条 JSON 记录。
+注意：括号扫描器仅识别双引号字符串、不感知 JS 注释（本文件无注释；单引号数组段
+如 InfoWindow_Display 已被 SECTIONS 排除）。
 折线为 Google encoded polyline（shuttle_bus_seg.encoded_line / walking_route.ecoded_line）。
-注意：walking 折线为绝对编码；shuttle seg 折线为相对其 start_bus_stop 站点的
-增量编码（实测验证：独立解码落点全在 (0,0) 附近，锚定站点后落点与站点吻合）。
+注意：walking 折线为绝对编码；shuttle seg 折线为相对增量编码（实测验证：独立解码
+落点全在 (0,0) 附近），锚点取 seg 自带的 encoded_start_pt（绝对编码单点，46/46 全有，
+距 start 站 ≤9m），缺失时退 start_bus_stop 站点坐标。
 """
 
 import json
 import re
+import warnings
 from pathlib import Path
 
 import geopandas as gp
+import pandas as pd
 from shapely.geometry import LineString, MultiLineString, Point
 
 OFFICIAL_DB_PATH = Path(__file__).resolve().parents[2] / "data" / "official" / "cuhk_location_db.js"
@@ -58,7 +63,7 @@ def parse_map_data(text):
         m = re.search(rf"\n{section}\s*:\s*\[", text)
         if not m:
             continue
-        arr_start = text.index("[", m.end() - 1)
+        arr_start = m.end() - 1  # 正则已吞掉 '['，其位置即数组起点
         arr_end = _scan_balanced(text, arr_start, "[", "]")
         body = text[arr_start + 1 : arr_end]
         records = []
@@ -75,24 +80,28 @@ def parse_map_data(text):
 
 
 def decode_polyline(encoded):
-    """Google encoded polyline → [(lat, lng), ...]。"""
+    """Google encoded polyline → [(lat, lng), ...]。
+    输入截断/非法时抛 ValueError（含输入片段），而非裸 IndexError。"""
     points, index, lat, lng = [], 0, 0, 0
-    while index < len(encoded):
-        for is_lng in (False, True):
-            shift = result = 0
-            while True:
-                b = ord(encoded[index]) - 63
-                index += 1
-                result |= (b & 0x1F) << shift
-                shift += 5
-                if b < 0x20:
-                    break
-            delta = ~(result >> 1) if result & 1 else result >> 1
-            if is_lng:
-                lng += delta
-            else:
-                lat += delta
-        points.append((lat / 1e5, lng / 1e5))
+    try:
+        while index < len(encoded):
+            for is_lng in (False, True):
+                shift = result = 0
+                while True:
+                    b = ord(encoded[index]) - 63
+                    index += 1
+                    result |= (b & 0x1F) << shift
+                    shift += 5
+                    if b < 0x20:
+                        break
+                delta = ~(result >> 1) if result & 1 else result >> 1
+                if is_lng:
+                    lng += delta
+                else:
+                    lat += delta
+            points.append((lat / 1e5, lng / 1e5))
+    except IndexError:
+        raise ValueError(f"encoded polyline 截断/非法: {encoded[:40]!r}") from None
     return points
 
 
@@ -107,8 +116,14 @@ def parse_lat_lng(raw):
     return (lng, lat)
 
 
+def _empty_gdf(columns):
+    """带完整列结构的空 GeoDataFrame（gp.GeoDataFrame([], crs=...) 缺 geometry 列会报错）。"""
+    return gp.GeoDataFrame(pd.DataFrame([], columns=columns), geometry="geometry", crs="EPSG:4326")
+
+
 def _points_gdf(records, name_fields, extra_fields=()):
     """通用：records → Point GeoDataFrame（跳过无坐标）。"""
+    columns = [k for k, _ in name_fields] + list(extra_fields) + ["geometry"]
     rows = []
     for rec in records:
         ll = parse_lat_lng(rec.get("lat_lng"))
@@ -119,12 +134,14 @@ def _points_gdf(records, name_fields, extra_fields=()):
             row[k] = rec.get(k, "")
         row["geometry"] = Point(ll)
         rows.append(row)
+    if not rows:
+        return _empty_gdf(columns)
     return gp.GeoDataFrame(rows, crs="EPSG:4326")
 
 
 def official_buildings(db):
     return _points_gdf(
-        db["buildings"],
+        db.get("buildings", []),
         [("name_en", "bldg_name_en"), ("name_zh", "bldg_name_xb5")],
         extra_fields=("bldg_code", "campus_id", "hostel_type", "type"),
     )
@@ -132,7 +149,7 @@ def official_buildings(db):
 
 def official_landmarks(db):
     return _points_gdf(
-        db["landmarks"],
+        db.get("landmarks", []),
         [("name_en", "landmark_name_en"), ("name_zh", "landmark_name_xb5")],
         extra_fields=("campus_id",),
     )
@@ -140,14 +157,14 @@ def official_landmarks(db):
 
 def official_colleges(db):
     return _points_gdf(
-        db["colleges"],
+        db.get("colleges", []),
         [("name_en", "name_en"), ("name_zh", "name_xb5")],
     )
 
 
 def shuttle_stops(db):
     return _points_gdf(
-        db["shuttle_bus_stops"],
+        db.get("shuttle_bus_stops", []),
         [("name_en", "bus_stop_name_en"), ("name_zh", "bus_stop_name_xb5")],
     )
 
@@ -155,38 +172,41 @@ def shuttle_stops(db):
 def shuttle_routes(db):
     """按 route_id 组装有序 seg 折线 → MultiLineString。
 
-    seg 折线是相对其 start_bus_stop 的增量编码：优先锚定该站坐标；
-    start 站缺失时锚定上一 seg 终点（链式）；首 seg 且无站可锚则跳过并告警。
+    seg 折线为相对增量编码，锚点级联：① encoded_start_pt（绝对编码单点）
+    → ② start_bus_stop 站点坐标 → ③ 告警跳过。
     """
-    segs = {s["bus_route_seg_id"]: s for s in db["shuttle_bus_seg"]}
-    stops = {s["bus_stop_id"]: s for s in db["shuttle_bus_stops"]}
+    segs = {s["bus_route_seg_id"]: s for s in db.get("shuttle_bus_seg", [])}
+    stops = {s["bus_stop_id"]: s for s in db.get("shuttle_bus_stops", [])}
     order = {}
-    for r in db["shuttle_bus_route_seg"]:
+    for r in db.get("shuttle_bus_route_seg", []):
         order.setdefault(r["route_id"], []).append((int(r["order"]), r["seg_id"]))
 
     rows = []
-    for route in db["shuttle_bus_route"]:
+    for route in db.get("shuttle_bus_route", []):
         rid = route["route_id"]
         lines = []
-        prev_end = None  # 上一 seg 终点 (lat, lng)，作链式锚
         for _, seg_id in sorted(order.get(rid, [])):
             seg = segs.get(seg_id)
             if not seg or not seg.get("encoded_line"):
                 continue
-            pts = decode_polyline(seg["encoded_line"])  # 相对 (0,0) 的增量
+            pts = decode_polyline(seg["encoded_line"])  # 相对锚点的增量
             anchor = None
-            stop = stops.get(seg.get("start_bus_stop_id", ""))
-            if stop:
-                ll = parse_lat_lng(stop.get("lat_lng"))  # → (lng, lat)
+            esp = seg.get("encoded_start_pt")
+            if esp:
+                try:
+                    head = decode_polyline(esp)
+                    anchor = head[0] if head else None
+                except ValueError:
+                    anchor = None
+            if anchor is None:
+                stop = stops.get(seg.get("start_bus_stop_id", ""))
+                ll = parse_lat_lng(stop.get("lat_lng")) if stop else None
                 if ll is not None:
-                    anchor = (ll[1], ll[0])
+                    anchor = (ll[1], ll[0])  # parse_lat_lng 返回 (lng, lat)
             if anchor is None:
-                anchor = prev_end
-            if anchor is None:
-                print(f"[official] 警告：route {rid} seg {seg_id} 无法定位，已跳过")
+                warnings.warn(f"[official] 警告：route {rid} seg {seg_id} 无法定位，已跳过")
                 continue
             abs_pts = [(anchor[0] + lat, anchor[1] + lng) for lat, lng in pts]
-            prev_end = abs_pts[-1]
             if len(abs_pts) >= 2:
                 lines.append(LineString([(lng, lat) for lat, lng in abs_pts]))
         if not lines:
@@ -197,12 +217,14 @@ def shuttle_routes(db):
             "color": route.get("route_color") or "#2F3737",
             "geometry": MultiLineString(lines),
         })
+    if not rows:
+        return _empty_gdf(["name_en", "name_zh", "color", "geometry"])
     return gp.GeoDataFrame(rows, crs="EPSG:4326")
 
 
 def walking_routes(db):
     rows = []
-    for rec in db["walking_route"]:
+    for rec in db.get("walking_route", []):
         encoded = rec.get("ecoded_line") or rec.get("encoded_line") or ""
         pts = decode_polyline(encoded)
         if len(pts) < 2:
@@ -212,6 +234,8 @@ def walking_routes(db):
             "name_zh": rec.get("walking_route_name_xb5", ""),
             "geometry": LineString([(lng, lat) for lat, lng in pts]),
         })
+    if not rows:
+        return _empty_gdf(["name_en", "name_zh", "geometry"])
     return gp.GeoDataFrame(rows, crs="EPSG:4326")
 
 
