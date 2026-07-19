@@ -75,6 +75,7 @@ def main():
         print(f"  {name}: {len(gdf)}")
 
     # ⑤c 建筑功能分类（依赖 ⑤b 的官方建筑点，故必须在 ⑤b 之后）
+    print("== ⑤c 建筑分类 ==")
     gdfs["buildings"]["bt"] = building_types.assign_types(
         gdfs["buildings"], gdfs["official_buildings"]
     )
