@@ -1,8 +1,8 @@
 """POI 解析：pois.yml → pois.geojson。
 
 定位三通道（按优先级）：official_name 与官方点位（buildings/landmarks/
-colleges/shuttle_stops 合集）模糊匹配 → lon/lat 直接给点 → osm_name 与抓取的
-命名要素模糊匹配。匹配取命中要素的 representative_point()（保证落在要素内部）。
+colleges/facilities/shuttle_stops 合集）模糊匹配 → lon/lat 直接给点 → osm_name
+与抓取的命名要素模糊匹配。匹配取命中要素的 representative_point()（保证落在要素内部）。
 解析结果带 source 列（official/manual/osm）。匹配失败的条目全量报错（不静默丢弃）。
 """
 

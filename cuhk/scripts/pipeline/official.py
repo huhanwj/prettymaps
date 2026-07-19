@@ -23,7 +23,7 @@ from shapely.geometry import LineString, MultiLineString, Point
 OFFICIAL_DB_PATH = Path(__file__).resolve().parents[2] / "data" / "official" / "cuhk_location_db.js"
 
 SECTIONS = [
-    "campus", "colleges", "buildings", "landmarks",
+    "campus", "colleges", "buildings", "landmarks", "facilities",
     "shuttle_bus_route", "shuttle_bus_route_seg", "shuttle_bus_seg",
     "shuttle_bus_stops", "walking_route",
 ]
@@ -162,6 +162,14 @@ def official_colleges(db):
     )
 
 
+def official_facilities(db):
+    return _points_gdf(
+        db.get("facilities", []),
+        [("name_en", "facilities_name_en"), ("name_zh", "facilities_name_xb5")],
+        extra_fields=("type_id", "building_id"),
+    )
+
+
 def shuttle_stops(db):
     return _points_gdf(
         db.get("shuttle_bus_stops", []),
@@ -247,11 +255,12 @@ def load_official_db(path=None):
 
 
 def official_poi_sources(db):
-    """POI 校正用的官方点位合集：buildings + landmarks + colleges + shuttle_stops。"""
+    """POI 校正用的官方点位合集：buildings + landmarks + colleges + facilities + shuttle_stops。"""
     parts = [
         official_buildings(db)[["name_en", "name_zh", "geometry"]],
         official_landmarks(db)[["name_en", "name_zh", "geometry"]],
         official_colleges(db)[["name_en", "name_zh", "geometry"]],
+        official_facilities(db)[["name_en", "name_zh", "geometry"]],
         shuttle_stops(db)[["name_en", "name_zh", "geometry"]],
     ]
     return gp.GeoDataFrame(pd.concat(parts, ignore_index=True), crs="EPSG:4326")
@@ -263,6 +272,7 @@ def build_official_products(db):
         "official_buildings": official_buildings(db),
         "official_landmarks": official_landmarks(db),
         "official_colleges": official_colleges(db),
+        "official_facilities": official_facilities(db),
         "shuttle_routes": shuttle_routes(db),
         "shuttle_stops": shuttle_stops(db),
         "walking": walking_routes(db),

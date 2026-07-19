@@ -142,6 +142,7 @@ def test_empty_layers_no_crash():
     assert len(official.official_buildings({})) == 0
     assert len(official.official_landmarks({})) == 0
     assert len(official.official_colleges({})) == 0
+    assert len(official.official_facilities({})) == 0
     assert len(official.shuttle_routes({})) == 0
     assert len(official.walking_routes({})) == 0
     assert list(official.shuttle_stops({}).columns) == ["name_en", "name_zh", "geometry"]
@@ -171,6 +172,7 @@ def test_real_file_products_smoke(recwarn):
         "official_buildings": 159,
         "official_landmarks": 26,
         "official_colleges": 9,
+        "official_facilities": 372,
         "shuttle_routes": 19,
         "shuttle_stops": 51,
         "walking": 2,
@@ -179,8 +181,22 @@ def test_real_file_products_smoke(recwarn):
     assert skips == []
 
 
+def test_official_facilities_real_file():
+    """真实存档回归：facilities 段解析出 ≥300 条，三个官方食堂/运动场点位在列。"""
+    db = official.load_official_db()
+    gdf = official.official_facilities(db)
+    assert len(gdf) >= 300
+    names = set(gdf["name_en"])
+    assert "New Asia College Student Canteen" in names
+    assert "United College Student Canteen" in names
+    assert "Sir Philip Haddon-Cave Sports Field" in names
+    assert set(gdf.columns) == {
+        "name_en", "name_zh", "type_id", "building_id", "geometry"
+    }
+
+
 def test_official_poi_sources_combines_layers():
-    """POI 校正合集 = buildings + landmarks + colleges + shuttle_stops，列齐。"""
+    """POI 校正合集 = buildings + landmarks + colleges + facilities + shuttle_stops，列齐。"""
     db = {
         "buildings": [
             {"bldg_name_en": "B1", "bldg_name_xb5": "樓一", "lat_lng": "(22.41, 114.20)"},
@@ -192,6 +208,9 @@ def test_official_poi_sources_combines_layers():
         "colleges": [
             {"name_en": "C1", "name_xb5": "院一", "lat_lng": "(22.44, 114.23)"},
         ],
+        "facilities": [
+            {"facilities_name_en": "F1", "facilities_name_xb5": "施一", "lat_lng": "(22.48, 114.27)"},
+        ],
         "shuttle_bus_stops": [
             {"bus_stop_name_en": "S1", "bus_stop_name_xb5": "站一", "lat_lng": "(22.45, 114.24)"},
             {"bus_stop_name_en": "S2", "bus_stop_name_xb5": "站二", "lat_lng": "(22.46, 114.25)"},
@@ -199,7 +218,7 @@ def test_official_poi_sources_combines_layers():
         ],
     }
     gdf = official.official_poi_sources(db)
-    assert len(gdf) == 2 + 1 + 1 + 3
+    assert len(gdf) == 2 + 1 + 1 + 1 + 3
     assert set(gdf.columns) == {"name_en", "name_zh", "geometry"}
     assert gdf.index.is_unique
     assert gdf.crs.to_string() == "EPSG:4326"
