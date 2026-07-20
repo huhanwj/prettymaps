@@ -72,8 +72,8 @@ assert.deepEqual(
 assert.ok(core.labelPriority({ id: "yia", category: "study" }) < core.labelPriority({ id: "orchid-lodge", category: "life" }));
 
 assert.equal(core.normalizeLabelName(" University-Station (North) "), "universitystationnorth");
-assert.equal(core.buildingLabelsEnabled(14.9), false);
-assert.equal(core.buildingLabelsEnabled(15), true);
+assert.equal(core.buildingLabelsEnabled(15.7), false);
+assert.equal(core.buildingLabelsEnabled(15.8), true);
 assert.equal(core.labelCollisionPadding(15.5), 5);
 assert.equal(core.labelCollisionPadding(16), 1);
 assert.ok(core.officialBuildingPriority({ type: "" }) < core.officialBuildingPriority({ type: "student" }));

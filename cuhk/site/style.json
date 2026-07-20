@@ -37,32 +37,25 @@
       "id": "sea",
       "type": "fill",
       "source": "sea",
-      "paint": { "fill-color": "#a8e1e6" }
+      "paint": { "fill-color": "#6CCFF6" }
     },
     {
       "id": "water",
       "type": "fill",
       "source": "water",
-      "paint": { "fill-color": "#a8e1e6", "fill-outline-color": "#2F3737" }
+      "paint": { "fill-color": "#6CCFF6", "fill-outline-color": "#59adcf" }
     },
     {
       "id": "green",
       "type": "fill",
       "source": "green",
-      "paint": { "fill-color": "#FFFFFF", "fill-outline-color": "#E4E9ED" }
+      "paint": { "fill-color": "#72C07A", "fill-outline-color": "#64a38d" }
     },
     {
       "id": "forest",
       "type": "fill",
       "source": "forest",
-      "paint": { "fill-color": "#FFFFFF", "fill-outline-color": "#E4E9ED" }
-    },
-    {
-      "id": "sports-fields",
-      "type": "fill",
-      "source": "sports",
-      "filter": ["==", ["get", "sports_kind"], "field"],
-      "paint": { "fill-color": "#DCE8C8", "fill-outline-color": "#B7C99C", "fill-opacity": 0.92 }
+      "paint": { "fill-color": "#72C07A", "fill-outline-color": "#64a38d" }
     },
     {
       "id": "sports-tracks",
@@ -70,6 +63,13 @@
       "source": "sports",
       "filter": ["==", ["get", "sports_kind"], "track"],
       "paint": { "fill-color": "#EFC7B8", "fill-outline-color": "#D8A18E", "fill-opacity": 0.92 }
+    },
+    {
+      "id": "sports-fields",
+      "type": "fill",
+      "source": "sports",
+      "filter": ["==", ["get", "sports_kind"], "field"],
+      "paint": { "fill-color": "#DCE8C8", "fill-outline-color": "#B7C99C", "fill-opacity": 0.92 }
     },
     {
       "id": "sports-pools",
@@ -82,7 +82,7 @@
       "id": "beach",
       "type": "fill",
       "source": "beach",
-      "paint": { "fill-color": "#FCE19C", "fill-outline-color": "#2F3737" }
+      "paint": { "fill-color": "#F2E3BC", "fill-outline-color": "#EBD499" }
     },
     {
       "id": "parking",
@@ -105,7 +105,7 @@
       "id": "waterway",
       "type": "line",
       "source": "waterway",
-      "paint": { "line-color": "#a8e1e6", "line-width": 2 }
+      "paint": { "line-color": "#6CCFF6", "line-width": 2 }
     },
     {
       "id": "roads-path",
@@ -123,7 +123,7 @@
       "source": "roads",
       "filter": ["in", ["get", "road_class"], ["literal", ["medium", "minor"]]],
       "paint": {
-        "line-color": "#A5BFD2",
+        "line-color": "#898989",
         "line-width": ["interpolate", ["linear"], ["zoom"], 13, 1.0, 16, 4.0]
       }
     },
@@ -133,7 +133,7 @@
       "source": "roads",
       "filter": ["==", ["get", "road_class"], "major"],
       "paint": {
-        "line-color": "#A5BFD2",
+        "line-color": "#898989",
         "line-width": ["interpolate", ["linear"], ["zoom"], 13, 1.5, 16, 6.0]
       }
     },

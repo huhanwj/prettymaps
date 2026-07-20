@@ -133,7 +133,7 @@
   }
 
   function buildingLabelsEnabled(zoom) {
-    return Number(zoom) >= 15;
+    return Number(zoom) >= 15.8;
   }
 
   function labelCollisionPadding(zoom) {

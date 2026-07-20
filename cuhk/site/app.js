@@ -1,4 +1,4 @@
-/* CUHK V3 校园地图：MapLibre 初始化 + POI marker + 分类筛选 + 校巴方向
+/* CUHK V3 校园地图：Tijuca 底图 + 放大建筑名 + 校巴方向
  * 数据全部来自本地 ./data/（由 cuhk/scripts/build_data.py 生成），零外部请求。
  */
 
@@ -35,7 +35,6 @@ const escapeHTML = (s) =>
   }[c]));
 
 let mapReady = false;
-const poiMarkers = [];
 const officialBuildingMarkers = [];
 let routeCatalog = [];
 let shuttleRoutesGeoJSON = null;
@@ -70,18 +69,19 @@ function makeDotsImage(color) {
   return { width: size, height: size, data: new Uint8Array(img.data.buffer) };
 }
 
-function addWaterHatchLayer() {
-  if (!map.hasImage("dots-water")) {
-    map.addImage("dots-water", makeDotsImage("#9bc3d4"));
+function addSurfaceHatch(layerId, source, color, beforeId) {
+  const imageId = `${layerId}-dots`;
+  if (!map.hasImage(imageId)) {
+    map.addImage(imageId, makeDotsImage(color));
   }
   map.addLayer(
     {
-      id: "water-hatch",
+      id: layerId,
       type: "fill",
-      source: "water",
-      paint: { "fill-pattern": "dots-water" },
+      source,
+      paint: { "fill-pattern": imageId },
     },
-    "green"
+    beforeId
   );
 }
 
@@ -122,7 +122,7 @@ function wireTerrainButton() {
   });
 }
 
-/* ---------- POI markers ---------- */
+/* ---------- 放大后建筑名 ---------- */
 
 function popupHTML(props) {
   const description = props.desc ? `<p>${escapeHTML(props.desc)}</p>` : "";
@@ -133,28 +133,10 @@ function popupHTML(props) {
   </div>`;
 }
 
-function addPOIMarkers(geojson) {
-  for (const feat of geojson.features) {
-    const p = feat.properties;
-    const el = document.createElement("div");
-    el.className = `poi-marker cat-${p.category}`;
-    el.classList.add(`poi-${p.id}`);
-    el.innerHTML = `<div class="dot"></div>
-      <div class="lbl"><div class="zh">${escapeHTML(p.name_zh)}</div><div class="en">${escapeHTML(p.name_en)}</div></div>`;
-    const popup = new maplibregl.Popup({ maxWidth: "280px", offset: 12 }).setHTML(popupHTML(p));
-    const marker = new maplibregl.Marker({ element: el })
-      .setLngLat(feat.geometry.coordinates)
-      .setPopup(popup)
-      .addTo(map);
-    poiMarkers.push({ id: `poi-${p.id}`, kind: "poi", props: p, coordinates: feat.geometry.coordinates, el, marker });
-  }
-  updatePOILabels();
-}
-
-function addOfficialBuildingLabels(geojson, poisGeoJSON) {
+function addOfficialBuildingLabels(geojson) {
   const features = CUHKAppCore.dedupeBuildingFeatures(
     geojson.features || [],
-    (poisGeoJSON && poisGeoJSON.features) || []
+    []
   );
   features.forEach((feat, index) => {
     const p = feat.properties || {};
@@ -180,36 +162,24 @@ function addOfficialBuildingLabels(geojson, poisGeoJSON) {
 
 function estimateLabelBox(item) {
   const point = map.project(item.coordinates);
-  const building = item.kind === "building";
-  const zhWidth = Array.from(String(item.props.name_zh || "")).length * (building ? 10 : 12);
-  const enWidth = String(item.props.name_en || "").length * (building ? 5.2 : 6.1);
-  const width = Math.max(building ? 34 : 42, zhWidth, enWidth) + 4;
-  const height = building ? 24 : 30;
-  if (building) {
-    return [point.x - width / 2, point.y - height / 2, point.x + width / 2, point.y + height / 2];
-  }
-  const placeLeft = item.props.id === "university-station-west";
-  const x1 = placeLeft ? point.x - 15 - width : point.x + 15;
-  return [x1, point.y - height / 2, x1 + width, point.y + height / 2];
+  const zhWidth = Array.from(String(item.props.name_zh || "")).length * 10;
+  const enWidth = String(item.props.name_en || "").length * 5.2;
+  const width = Math.max(34, zhWidth, enWidth) + 4;
+  const height = 24;
+  return [point.x - width / 2, point.y - height / 2, point.x + width / 2, point.y + height / 2];
 }
 
 function updatePOILabels() {
-  if (!poiMarkers.length && !officialBuildingMarkers.length) return;
+  if (!officialBuildingMarkers.length) return;
   const zoom = map.getZoom();
-  const allowPOILabels = zoom >= 13.8;
   const allowBuildingLabels = CUHKAppCore.buildingLabelsEnabled(zoom);
   const canvas = map.getCanvas();
-  const activeItems = [
-    ...(allowPOILabels ? poiMarkers : []),
-    ...(allowBuildingLabels ? officialBuildingMarkers : []),
-  ];
+  const activeItems = allowBuildingLabels ? officialBuildingMarkers : [];
   const candidates = activeItems
     .filter((item) => !item.el.classList.contains("hidden"))
     .map((item) => ({
       id: item.id,
-      priority: item.kind === "building"
-        ? CUHKAppCore.officialBuildingPriority(item.props)
-        : CUHKAppCore.labelPriority(item.props),
+      priority: CUHKAppCore.officialBuildingPriority(item.props),
       box: estimateLabelBox(item),
     }))
     .filter((item) => (
@@ -222,26 +192,9 @@ function updatePOILabels() {
       CUHKAppCore.labelCollisionPadding(zoom)
     )
   );
-  for (const item of [...poiMarkers, ...officialBuildingMarkers]) {
+  for (const item of officialBuildingMarkers) {
     item.el.classList.toggle("label-hidden", !visible.has(item.id));
   }
-}
-
-/* ---------- 分类筛选 chips ---------- */
-
-function wireChips() {
-  document.querySelectorAll(".chip").forEach((chip) => {
-    chip.addEventListener("click", () => {
-      const cat = chip.dataset.cat;
-      chip.classList.toggle("off");
-      const show = !chip.classList.contains("off");
-      chip.setAttribute("aria-pressed", String(show));
-      document
-        .querySelectorAll(`.poi-marker.cat-${cat}`)
-        .forEach((m) => m.classList.toggle("hidden", !show));
-      updatePOILabels();
-    });
-  });
 }
 
 /* ---------- 校巴筛选与方向 ---------- */
@@ -531,28 +484,22 @@ map.on("load", async () => {
     showError();
     return;
   }
-  addWaterHatchLayer();
-  // 非核心资源各自降级：缺高程着色 / POI 不影响地图其余部分
+  addSurfaceHatch("green-hatch", "green", "#64a38d", "forest");
+  addSurfaceHatch("forest-hatch", "forest", "#64a38d", "sports-fields");
+  addSurfaceHatch("water-hatch", "water", "#59adcf", "green");
+  // 非核心资源各自降级：缺高程着色不影响地图其余部分
   try {
     await addTerrainTint();
     wireTerrainButton();
   } catch (e) {
     console.warn("terrain tint 加载失败，地形开关已停用：", e);
   }
-  let pois = { features: [] };
-  try {
-    pois = await loadJSON("data/pois.geojson");
-    addPOIMarkers(pois);
-  } catch (e) {
-    console.warn("pois.geojson 加载失败，跳过 POI 标注：", e);
-  }
   try {
     const officialBuildings = await loadJSON("data/official_buildings.geojson");
-    addOfficialBuildingLabels(officialBuildings, pois);
+    addOfficialBuildingLabels(officialBuildings);
   } catch (e) {
     console.warn("official_buildings.geojson 加载失败，跳过官方楼名：", e);
   }
-  wireChips();
   addBusArrowLayer();
   await wireBusRouteSelect();
   wireRouteRecorder();

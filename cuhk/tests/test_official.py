@@ -74,6 +74,47 @@ def test_official_buildings_gdf():
     assert row.geometry.x == pytest.approx(114.20518487691879)
 
 
+def test_inter_university_hall_is_not_mislabeled_as_postgraduate_hall_3():
+    db = {
+        "buildings": [{
+            "building_id": "77",
+            "bldg_code": "C30",
+            "bldg_name_en": "Inter-University Hall (Postgraduate Hall No.3)",
+            "bldg_name_xb5": "博文苑（研究生宿舍三座）",
+            "lat_lng": "(22.413136190153267, 114.2094549536705)",
+            "campus_id": "2",
+            "hostel_type": "",
+            "type": "",
+        }]
+    }
+
+    row = official.official_buildings(db).iloc[0]
+
+    assert row["name_en"] == "Inter-University Hall"
+    assert row["name_zh"] == "博文苑"
+
+
+def test_current_postgraduate_hall_3_stays_beside_hall_2_in_area_39():
+    buildings = official.official_buildings(official.load_official_db())
+    hall2 = buildings.loc[buildings["bldg_code"] == "PGH2"].iloc[0]
+    hall3 = buildings.loc[buildings["bldg_code"] == "PGH3"].iloc[0]
+
+    assert hall3["name_en"] == "Jockey Club Postgraduate Hall 3"
+    assert hall3["name_zh"] == "賽馬會研究生宿舍（三座）"
+    assert abs(hall3.geometry.x - hall2.geometry.x) < 0.001
+    assert abs(hall3.geometry.y - hall2.geometry.y) < 0.001
+
+
+def test_n12_is_named_mei_yun_tang_beside_mong_man_wai():
+    buildings = official.official_buildings(official.load_official_db())
+    mei_yun = buildings.loc[buildings["bldg_code"] == "N12"].iloc[0]
+
+    assert mei_yun["name_en"] == "Mei Yun Tang"
+    assert mei_yun["name_zh"] == "梅雲堂"
+    assert mei_yun.geometry.x == pytest.approx(114.20836, abs=0.00005)
+    assert mei_yun.geometry.y == pytest.approx(22.42033, abs=0.00005)
+
+
 def test_shuttle_routes_ordered_assembly():
     db = official.parse_map_data(SAMPLE_JS)
     gdf = official.shuttle_routes(db)

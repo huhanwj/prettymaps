@@ -1,5 +1,5 @@
 import geopandas as gp
-from shapely.geometry import LineString, box
+from shapely.geometry import LineString, Point, Polygon, box
 
 from pipeline import layers
 
@@ -120,5 +120,48 @@ def test_split_green_and_sports_keeps_only_generic_land_in_green():
     assert list(sports["sports_kind"]) == ["field", "track", "pool"]
 
 
+def test_split_green_and_sports_fills_track_interior_as_field():
+    track = Polygon(
+        shell=[(114.200, 22.410), (114.204, 22.410),
+               (114.204, 22.414), (114.200, 22.414)],
+        holes=[[(114.201, 22.411), (114.203, 22.411),
+                (114.203, 22.413), (114.201, 22.413)]],
+    )
+    source = gp.GeoDataFrame(
+        {"leisure": ["track"], "geometry": [track]}, crs="EPSG:4326"
+    )
+
+    _, sports = layers.split_green_and_sports(source)
+
+    assert list(sports["sports_kind"]) == ["track", "field"]
+    field = sports.loc[sports["sports_kind"] == "field"].geometry.iloc[0]
+    assert field.equals(Polygon(track.interiors[0]))
+
+
 def test_green_query_fetches_swimming_pools():
     assert "swimming_pool" in layers.LAYER_TAGS["green"]["leisure"]
+
+
+def test_remove_green_courtyards_only_removes_target_building_green():
+    green = gp.GeoDataFrame(
+        {"geometry": [
+            box(114.200, 22.410, 114.201, 22.411),
+            box(114.202, 22.410, 114.203, 22.411),
+        ]},
+        crs="EPSG:4326",
+    )
+    buildings = gp.GeoDataFrame(
+        {
+            "bldg_code": ["H24", "OTHER"],
+            "geometry": [
+                Point(114.2005, 22.4105),
+                Point(114.2025, 22.4105),
+            ],
+        },
+        crs="EPSG:4326",
+    )
+
+    result = layers.remove_green_courtyards(green, buildings, {"H24"})
+
+    assert len(result) == 1
+    assert result.geometry.iloc[0].covers(Point(114.2025, 22.4105))

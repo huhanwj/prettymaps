@@ -8,6 +8,7 @@ from pathlib import Path
 import geopandas as gp
 import osmnx as ox
 import pandas as pd
+from shapely.geometry import Polygon
 
 
 LAYER_TAGS = {
@@ -65,7 +66,48 @@ def split_green_and_sports(gdf):
             else "field"
         )
     )
+    # OSM athletic tracks are commonly mapped as polygon rings.  Export their
+    # interior rings as explicit fields so renderers always show a pale-green
+    # centre instead of treating the whole stadium as the orange track.
+    interior_fields = []
+    for _, row in sports.loc[sports["sports_kind"] == "track"].iterrows():
+        geometry = row.geometry
+        if geometry.geom_type == "Polygon":
+            polygons = [geometry]
+        elif geometry.geom_type == "MultiPolygon":
+            polygons = list(geometry.geoms)
+        else:
+            continue
+        for polygon in polygons:
+            for interior in polygon.interiors:
+                field = row.copy()
+                field["geometry"] = Polygon(interior)
+                field["sports_kind"] = "field"
+                interior_fields.append(field)
+    if interior_fields:
+        sports = gp.GeoDataFrame(
+            pd.concat(
+                [sports, gp.GeoDataFrame(interior_fields, crs=sports.crs)],
+                ignore_index=True,
+            ),
+            crs=sports.crs,
+        )
     return gdf.loc[~sports_mask].copy(), sports
+
+
+def remove_green_courtyards(green, official_buildings, building_codes):
+    """Remove green polygons occupying selected, now-paved building courtyards."""
+    if green.empty or official_buildings.empty:
+        return green.copy()
+    targets = official_buildings.loc[
+        official_buildings["bldg_code"].isin(building_codes), "geometry"
+    ]
+    if targets.empty:
+        return green.copy()
+    remove_mask = green.geometry.map(
+        lambda polygon: any(polygon.covers(point) for point in targets)
+    )
+    return green.loc[~remove_mask].copy()
 
 
 def classify_roads(gdf):

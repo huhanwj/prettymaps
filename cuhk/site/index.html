@@ -20,15 +20,7 @@
   .maplibregl-ctrl-top-right { top: 56px; }
   .title { font-size: 18px; font-weight: 700; color: #2F3737; }
   .title .sub { font-size: 12px; font-weight: 400; color: #475657; margin-left: 10px; }
-  #chips { display: flex; gap: 8px; align-items: center; }
-  .chip {
-    font: inherit;
-    display: flex; align-items: center; gap: 6px; cursor: pointer;
-    padding: 4px 12px; border: 1.5px solid #2F3737; border-radius: 999px;
-    background: #fff; font-size: 13px; color: #2F3737; user-select: none;
-  }
-  .chip .swatch { width: 10px; height: 10px; border-radius: 50%; }
-  .chip.off { opacity: 0.35; }
+  #controls { display: flex; gap: 8px; align-items: center; }
   .bus-filter {
     display: flex; align-items: center; gap: 6px; font-size: 13px; color: #2F3737;
   }
@@ -49,21 +41,6 @@
   }
   #btnRecordRoute.active { color: #fff; background: #D84A3A; }
 
-  .poi-marker { display: flex; align-items: center; gap: 4px; cursor: pointer; }
-  .poi-marker .dot {
-    width: 11px; height: 11px; border-radius: 50%;
-    border: 2px solid #fff; box-shadow: 0 0 2px rgba(0,0,0,0.6); flex: none;
-  }
-  .poi-marker .lbl {
-    display: block; line-height: 1.15; pointer-events: none;
-    position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
-  }
-  .poi-marker .zh { font-size: 12px; font-weight: 700; color: #2F3737; text-shadow: 0 0 3px #fff, 0 0 3px #fff; white-space: nowrap; }
-  .poi-marker .en { font-size: 10px; color: #475657; text-shadow: 0 0 3px #fff, 0 0 3px #fff; white-space: nowrap; }
-  .poi-marker.label-hidden .lbl { display: none; }
-  .poi-marker.hidden { display: none; }
-  .poi-university-station-west .lbl { left: auto; right: 15px; text-align: right; }
-
   .building-label-marker { width: 1px; height: 1px; cursor: pointer; }
   .building-label-marker .lbl {
     position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
@@ -73,12 +50,6 @@
   .building-label-marker .zh { font-size: 10px; font-weight: 600; color: #4A5658; }
   .building-label-marker .en { font-size: 8.5px; color: #6E7A7C; }
   .building-label-marker.label-hidden .lbl { display: none; }
-
-  .cat-study .dot, .chip[data-cat="study"] .swatch { background: #2F3737; }
-  .cat-life .dot, .chip[data-cat="life"] .swatch { background: #FF5E5B; }
-  .cat-sports .dot, .chip[data-cat="sports"] .swatch { background: #64B96A; }
-  .cat-transport .dot, .chip[data-cat="transport"] .swatch { background: #2f6fb5; }
-  .cat-landmark .dot, .chip[data-cat="landmark"] .swatch { background: #E8B64C; }
 
   .maplibregl-popup-content { border: 2px solid #2F3737; border-radius: 6px; }
   .pop .zh { font-size: 15px; font-weight: 700; color: #2F3737; }
@@ -138,7 +109,6 @@
   #recorderExport { border-color: #D84A3A; color: #A52E24; font-weight: 700; }
   #recorderPoints { margin: 9px 0 0; padding-left: 26px; font-size: 11px; line-height: 1.55; }
   #recorderPoints .waypoint { color: #7A5A1D; }
-  .route-recording-active .poi-marker,
   .route-recording-active .building-label-marker { pointer-events: none; }
   .route-badge {
     padding: 3px 7px; border: 2px solid #fff; border-radius: 999px;
@@ -158,12 +128,7 @@
 <div id="map"></div>
 <div id="topbar">
   <div class="title">香港中文大學校園地圖<span class="sub">CUHK Campus Map · V3</span></div>
-  <div id="chips">
-    <button type="button" class="chip" data-cat="study" aria-pressed="true"><span class="swatch"></span>學習</button>
-    <button type="button" class="chip" data-cat="life" aria-pressed="true"><span class="swatch"></span>生活</button>
-    <button type="button" class="chip" data-cat="sports" aria-pressed="true"><span class="swatch"></span>體育</button>
-    <button type="button" class="chip" data-cat="transport" aria-pressed="true"><span class="swatch"></span>交通</button>
-    <button type="button" class="chip" data-cat="landmark" aria-pressed="true"><span class="swatch"></span>地標</button>
+  <div id="controls">
     <button type="button" id="btnTerrain" aria-pressed="false" disabled>地形</button>
     <button type="button" id="btnRecordRoute" aria-pressed="false">录线</button>
     <label class="bus-filter" for="busRouteSelect">校巴
@@ -207,7 +172,7 @@
   </div>
 </div>
 <script src="vendor/maplibre-gl.js"></script>
-<script src="app-core.js?v=20260720-route-recording-2"></script>
-<script src="app.js?v=20260720-route-recording-2"></script>
+<script src="app-core.js?v=20260720-tijuca-3"></script>
+<script src="app.js?v=20260720-tijuca-3"></script>
 </body>
 </html>

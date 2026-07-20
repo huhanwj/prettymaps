@@ -22,6 +22,14 @@ from shapely.geometry import LineString, MultiLineString, Point
 
 OFFICIAL_DB_PATH = Path(__file__).resolve().parents[2] / "data" / "official" / "cuhk_location_db.js"
 
+# The archived CUHK database still carries the former PGH3 designation in
+# C30's display name.  C30 is now Inter-University Hall / 博文苑; the current
+# Jockey Club Postgraduate Hall 3 is PGH3 beside PGH2 in Area 39.
+BUILDING_NAME_OVERRIDES = {
+    "C30": ("Inter-University Hall", "博文苑"),
+    "N12": ("Mei Yun Tang", "梅雲堂"),
+}
+
 SECTIONS = [
     "campus", "colleges", "buildings", "landmarks", "facilities",
     "shuttle_bus_route_type", "shuttle_bus_route_service_time",
@@ -141,11 +149,15 @@ def _points_gdf(records, name_fields, extra_fields=()):
 
 
 def official_buildings(db):
-    return _points_gdf(
+    buildings = _points_gdf(
         db.get("buildings", []),
         [("name_en", "bldg_name_en"), ("name_zh", "bldg_name_xb5")],
         extra_fields=("bldg_code", "campus_id", "hostel_type", "type"),
     )
+    for code, (name_en, name_zh) in BUILDING_NAME_OVERRIDES.items():
+        mask = buildings["bldg_code"] == code
+        buildings.loc[mask, ["name_en", "name_zh"]] = [name_en, name_zh]
+    return buildings
 
 
 def official_landmarks(db):

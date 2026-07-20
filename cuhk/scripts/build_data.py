@@ -79,6 +79,10 @@ def main():
     db = official.load_official_db()
     products = official.build_official_products(db)
     gdfs.update(products)
+    # Lady Shaw Building's former planted courtyard is now paved/white.
+    gdfs["green"] = layers.remove_green_courtyards(
+        gdfs["green"], gdfs["official_buildings"], {"H24"}
+    )
     for name, gdf in products.items():
         print(f"  {name}: {len(gdf)}")
     shuttle_products = shuttle.build_products(

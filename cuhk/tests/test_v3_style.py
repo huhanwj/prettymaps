@@ -19,13 +19,15 @@ def _layer(style, layer_id):
     return next(layer for layer in style["layers"] if layer["id"] == layer_id)
 
 
-def test_v3_uses_white_background_and_official_road_blue():
+def test_v3_uses_tijuca_palette_except_for_college_buildings():
     style = _style()
     assert _layer(style, "background")["paint"]["background-color"] == "#FFFFFF"
-    assert _layer(style, "green")["paint"]["fill-color"] == "#FFFFFF"
-    assert _layer(style, "forest")["paint"]["fill-color"] == "#FFFFFF"
-    assert _layer(style, "roads-minor")["paint"]["line-color"] == "#A5BFD2"
-    assert _layer(style, "roads-major")["paint"]["line-color"] == "#A5BFD2"
+    assert _layer(style, "green")["paint"]["fill-color"] == "#72C07A"
+    assert _layer(style, "forest")["paint"]["fill-color"] == "#72C07A"
+    assert _layer(style, "water")["paint"]["fill-color"] == "#6CCFF6"
+    assert _layer(style, "beach")["paint"]["fill-color"] == "#F2E3BC"
+    assert _layer(style, "roads-minor")["paint"]["line-color"] == "#898989"
+    assert _layer(style, "roads-major")["paint"]["line-color"] == "#898989"
 
 
 def test_v3_restores_separate_sports_surfaces():
@@ -35,6 +37,8 @@ def test_v3_restores_separate_sports_surfaces():
     assert _layer(style, "sports-tracks")["paint"]["fill-color"] == "#EFC7B8"
     assert _layer(style, "sports-pools")["filter"] == ["==", ["get", "sports_kind"], "pool"]
     assert _layer(style, "sports-pools")["paint"]["fill-color"] == "#B9E3F2"
+    layer_ids = [layer["id"] for layer in style["layers"]]
+    assert layer_ids.index("sports-tracks") < layer_ids.index("sports-fields")
 
 
 def test_v3_building_palette_covers_all_official_campus_ids():
@@ -85,7 +89,6 @@ def test_v3_hides_3d_and_exposes_bus_selector_and_link_legend():
     assert 'id="bus-route-info"' in html
     assert "天橋" in html and "樓梯" in html
     assert "wire3DButton()" not in app
-    assert "green-hatch" not in app
 
 
 def test_v3_uses_collision_managed_labels_instead_of_category_zoom_hiding():
@@ -94,6 +97,23 @@ def test_v3_uses_collision_managed_labels_instead_of_category_zoom_hiding():
     assert "body.z-mid .poi-marker.cat-landmark" not in html
     assert "selectNonOverlappingLabels" in app
     assert "updateZoomClass" not in app
+
+
+def test_v3_has_no_general_poi_dots_or_category_chips():
+    html = INDEX_PATH.read_text(encoding="utf-8")
+    app = APP_PATH.read_text(encoding="utf-8")
+    assert 'class="chip"' not in html
+    assert ".poi-marker" not in html
+    assert "addPOIMarkers" not in app
+    assert 'loadJSON("data/pois.geojson")' not in app
+    assert "addOfficialBuildingLabels(officialBuildings)" in app
+
+
+def test_v3_adds_tijuca_surface_hatches():
+    app = APP_PATH.read_text(encoding="utf-8")
+    assert 'addSurfaceHatch("green-hatch", "green", "#64a38d"' in app
+    assert 'addSurfaceHatch("forest-hatch", "forest", "#64a38d"' in app
+    assert 'addSurfaceHatch("water-hatch", "water", "#59adcf"' in app
 
 
 def test_v3_loads_zoom_progressive_official_building_labels():
@@ -142,7 +162,7 @@ def test_v3_exposes_interactive_route_recorder():
     assert 'id="recorderExport"' in html
     assert "recording-stop-candidates" in app
     assert "routeRecordingGeoJSON" in app
-    assert ".route-recording-active .poi-marker" in html
+    assert ".route-recording-active .building-label-marker" in html
     assert 'classList.toggle("route-recording-active"' in app
 
 
@@ -160,8 +180,8 @@ def test_v3_can_overlay_recorded_points_for_visual_review():
     assert 'cuhk-shuttle-${routeId}-recording.json' in app
     assert "showRecordingPreviewFromQuery" in app
     assert 'glob("cuhk-shuttle-*-recording.json")' in build_data
-    assert 'app-core.js?v=20260720-route-recording-2' in html
-    assert 'app.js?v=20260720-route-recording-2' in html
+    assert 'app-core.js?v=20260720-tijuca-3' in html
+    assert 'app.js?v=20260720-tijuca-3' in html
     assert 'map.setLayoutProperty("route-recording-line", "visibility", "none");' in app
 
 
