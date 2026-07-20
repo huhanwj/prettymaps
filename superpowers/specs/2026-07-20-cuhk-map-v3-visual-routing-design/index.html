@@ -1,0 +1,677 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://yourusername.github.io/prettymaps/superpowers/specs/2026-07-20-cuhk-map-v3-visual-routing-design/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>CUHK Campus Map V3 视觉与路线设计 - prettymaps</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="pink">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cuhk-campus-map-v3" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="prettymaps" class="md-header__button md-logo" aria-label="prettymaps" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            prettymaps
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CUHK Campus Map V3 视觉与路线设计
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="prettymaps" class="md-nav__button md-logo" aria-label="prettymaps" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    prettymaps
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 范围
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 视觉方向
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 建筑区域数据
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 天桥、楼梯与普通步道
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 校巴筛选与方向
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-3d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 3D 状态
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 组件边界
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 测试与验收
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 成功标准
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="cuhk-campus-map-v3">CUHK Campus Map V3 视觉与路线设计</h1>
+<p><strong>日期：</strong> 2026-07-20<br />
+<strong>状态：</strong> 已确认<br />
+<strong>目标：</strong> 将 V2 调整为以 CUHK 官方校园 PDF 为信息逻辑、以 prettymaps 为视觉语言的白底 2D 校园地图，并完善天桥、楼梯和校巴方向表达。</p>
+<h2 id="1">1. 范围</h2>
+<p>V3 包含以下工作：</p>
+<ol>
+<li>采用白色校园底图，移除大面积绿色填充。</li>
+<li>使用官方 <code>campus_id</code> 按书院或校园区域为建筑着色。</li>
+<li>区分普通步道、天桥和楼梯，并按照官方 PDF 补齐 OSM 缺失的连接线。</li>
+<li>将校巴开关升级为线路筛选器，并沿线路显示方向箭头。</li>
+<li>从界面和启动流程停用 3D，同时明确记录现有卡屏问题。</li>
+</ol>
+<p>V3 不修复 3D 渲染问题，不实现路线规划，也不从 PDF 自动生成完整地理数据。</p>
+<h2 id="2">2. 视觉方向</h2>
+<p>采用已确认的“A：官方 PDF × prettymaps”方向：</p>
+<ul>
+<li>校园主体和未分类区域使用白色 <code>#FFFFFF</code>。</li>
+<li>OSM <code>green</code> 和 <code>forest</code> 不再绘制大面积绿色填充或绿色点阵。</li>
+<li>运动场等有明确功能的区域可保留极浅绿色；水体保留浅青色。</li>
+<li>道路使用官方 PDF 的浅蓝灰 <code>#A5BFD2</code>，主次道路仅以宽度区分。</li>
+<li>建筑保留清晰白色描边，以书院或校园区域色作为主要填充。</li>
+<li>POI、弹窗和顶部控件使用中性深灰，避免与书院色竞争。</li>
+</ul>
+<p>建筑配色以 PDF 矢量对象的颜色和页面标注为准：</p>
+<table>
+<thead>
+<tr>
+<th>区域</th>
+<th style="text-align: right;"><code>campus_id</code></th>
+<th>建议色</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>中央校园</td>
+<td style="text-align: right;">1</td>
+<td><code>#C396C5</code></td>
+</tr>
+<tr>
+<td>崇基书院</td>
+<td style="text-align: right;">2</td>
+<td><code>#F59288</code></td>
+</tr>
+<tr>
+<td>新亚书院</td>
+<td style="text-align: right;">3</td>
+<td><code>#7ED3F7</code></td>
+</tr>
+<tr>
+<td>联合书院</td>
+<td style="text-align: right;">4</td>
+<td><code>#59C5C2</code></td>
+</tr>
+<tr>
+<td>逸夫书院</td>
+<td style="text-align: right;">5</td>
+<td><code>#FBB04C</code></td>
+</tr>
+<tr>
+<td>宿舍区</td>
+<td style="text-align: right;">6</td>
+<td><code>#C396C5</code></td>
+</tr>
+<tr>
+<td>校园东区</td>
+<td style="text-align: right;">7</td>
+<td><code>#C396C5</code></td>
+</tr>
+<tr>
+<td>晨兴书院</td>
+<td style="text-align: right;">8</td>
+<td><code>#FFE06A</code></td>
+</tr>
+<tr>
+<td>善衡书院</td>
+<td style="text-align: right;">9</td>
+<td><code>#4069B2</code></td>
+</tr>
+<tr>
+<td>敬文书院</td>
+<td style="text-align: right;">10</td>
+<td><code>#EC66A6</code></td>
+</tr>
+<tr>
+<td>伍宜孙书院</td>
+<td style="text-align: right;">11</td>
+<td><code>#D0D094</code></td>
+</tr>
+<tr>
+<td>和声书院</td>
+<td style="text-align: right;">12</td>
+<td><code>#F27072</code></td>
+</tr>
+<tr>
+<td>第三十九区</td>
+<td style="text-align: right;">13</td>
+<td><code>#C396C5</code></td>
+</tr>
+</tbody>
+</table>
+<p>未匹配到官方区域的建筑使用浅灰紫回退色，而不是随机交替色。现有功能分类字段 <code>bt</code> 继续保留在数据中，但默认样式改用 <code>campus_id</code>。</p>
+<h2 id="3">3. 建筑区域数据</h2>
+<p>官方建筑点已经包含 <code>campus_id</code>。数据管线把该字段传递给 OSM 建筑面：</p>
+<ol>
+<li>官方点落在某一建筑面内部时，优先匹配该建筑面。</li>
+<li>否则在既有距离阈值内匹配最近建筑面。</li>
+<li>多个官方点命中同一建筑时，采用距离建筑质心最近的记录。</li>
+<li>未命中的建筑保留空区域标识并使用回退色。</li>
+</ol>
+<p>建筑功能分类和区域分类由同一次空间匹配生成，避免两套匹配逻辑产生不同归属。</p>
+<h2 id="4">4. 天桥、楼梯与普通步道</h2>
+<p>V3 生成统一的 <code>pedestrian_links.geojson</code>，每条要素至少包含：</p>
+<ul>
+<li><code>kind</code>: <code>bridge</code> 或 <code>stairs</code>；</li>
+<li><code>source</code>: <code>osm</code> 或 <code>official_pdf</code>；</li>
+<li><code>name</code> 或 <code>note</code>: 可选的人类可读说明；</li>
+<li><code>geometry</code>: <code>LineString</code>。</li>
+</ul>
+<p>来源分为两部分：</p>
+<ol>
+<li><strong>OSM 自动识别</strong></li>
+<li><code>highway=steps</code> 识别为 <code>stairs</code>；</li>
+<li>步行类道路带 <code>bridge=yes</code>、正 <code>layer</code> 或等价天桥语义时识别为 <code>bridge</code>；</li>
+<li>数据抓取和写出过程保留识别所需的 OSM 标签。</li>
+<li><strong>PDF 人工补齐</strong></li>
+<li>在受版本控制的 GeoJSON 中逐条校准 PDF 中存在但 OSM 缺失的连接线；</li>
+<li>人工数据与 OSM 数据合并前做字段、几何类型和校园范围校验；</li>
+<li>重叠要素按空间接近度去重，人工记录优先。</li>
+</ol>
+<p>地图样式：</p>
+<ul>
+<li>普通步道为细灰线；</li>
+<li>天桥为较粗的实心蓝线；</li>
+<li>楼梯或明显高差通道为蓝色虚线；</li>
+<li>天桥和楼梯绘制在建筑层之上；</li>
+<li>图例明确解释三种线型。</li>
+</ul>
+<h2 id="5">5. 校巴筛选与方向</h2>
+<p>顶部“校巴”按钮改为线路选择器，状态包括：</p>
+<ul>
+<li>关闭；</li>
+<li>全部线路；</li>
+<li>官方数据中的任意单条线路。</li>
+</ul>
+<p>默认状态为关闭。单选线路时只显示该线路及相关站点；“全部线路”用于查看整体网络。</p>
+<p>数据管线为线路写出稳定的 <code>route_id</code>，并根据线路分段的起止站关系为站点写出 <code>route_ids</code>。路线、站点和方向箭头共用同一筛选状态。</p>
+<p>方向箭头使用 MapLibre 沿线符号层重复绘制，方向来自官方有序线路几何本身。箭头图像在浏览器中本地生成，不引入网络字体或外部图片。路线弹窗继续显示中英文线路名；站点弹窗继续显示中英文站名。</p>
+<p>当数据加载失败时，地图主体仍可使用；校巴控件保持关闭或禁用，并在控制台记录清晰警告。</p>
+<h2 id="6-3d">6. 3D 状态</h2>
+<p>V2 存在以下未修复问题：切换到 3D 后渲染可能卡住，切回 2D 不能恢复。</p>
+<p>V3 的缓解措施：</p>
+<ul>
+<li>页面不显示 3D 按钮；</li>
+<li>启动流程不注册 3D 切换事件；</li>
+<li>正常 UI 路径不调用 <code>map.setTerrain</code>；</li>
+<li>3D 建筑层保持不可见；</li>
+<li>在 <code>cuhk/KNOWN_ISSUES.md</code> 记录状态、复现步骤、影响和当前缓解措施；</li>
+<li>README 移除 3D 功能声明并链接已知问题。</li>
+</ul>
+<p>地形数据生成代码可以保留，以便未来单独调查，但不属于 V3 的用户功能。</p>
+<h2 id="7">7. 组件边界</h2>
+<ul>
+<li><code>pipeline/building_types.py</code>：官方建筑点与 OSM 建筑面的统一匹配，并写出功能分类和区域标识。</li>
+<li><code>pipeline/layers.py</code>：保留道路标签并识别 OSM 天桥、楼梯。</li>
+<li>新的行人连接模块：加载人工 GeoJSON、合并 OSM 连接、去重和校验。</li>
+<li><code>pipeline/official.py</code>：写出校巴 <code>route_id</code>，计算站点 <code>route_ids</code>。</li>
+<li><code>site/style.json</code>：白底、书院色、天桥/楼梯图层和校巴方向符号层。</li>
+<li><code>site/app.js</code>：线路选择状态、MapLibre 过滤器、箭头图像和弹窗交互。</li>
+<li><code>site/index.html</code>：线路选择器、图例和隐藏 3D 控件。</li>
+</ul>
+<h2 id="8">8. 测试与验收</h2>
+<p>测试优先覆盖以下行为：</p>
+<ol>
+<li>建筑匹配正确传递 <code>campus_id</code>，且不破坏现有 <code>bt</code> 分类。</li>
+<li><code>steps</code>、<code>bridge=yes</code> 和普通步道得到不同分类。</li>
+<li>人工连接 GeoJSON 只接受校园范围内的 <code>LineString</code> 和合法 <code>kind</code>。</li>
+<li>人工连接与 OSM 连接合并时能够去重。</li>
+<li>官方校巴路线包含 <code>route_id</code>，站点包含正确的 <code>route_ids</code>。</li>
+<li>样式背景为白色，完整覆盖全部区域色，天桥与楼梯线型不同，3D 默认不可见。</li>
+<li>前端没有可见 3D 控件；关闭、全部线路和单线状态使用一致的路线、站点、箭头过滤器。</li>
+</ol>
+<p>实现完成后运行：</p>
+<ul>
+<li>CUHK 全量 Python 测试；</li>
+<li>JSON 解析和 JavaScript 语法检查；</li>
+<li>数据管线构建与现有数量下限校验；</li>
+<li>本地浏览器的 2D、捷径、单条校巴和全部校巴视觉检查。</li>
+</ul>
+<h2 id="9">9. 成功标准</h2>
+<ul>
+<li>默认地图没有大面积绿色底色，整体观感与确认的 A 方案一致。</li>
+<li>建筑颜色能直接表达官方书院或校园区域归属。</li>
+<li>用户能从线型区分普通步道、天桥和楼梯。</li>
+<li>PDF 中重要但 OSM 缺失的天桥和楼梯可以通过受版本控制的数据补齐。</li>
+<li>用户能选择全部或单条校巴线路，并看见可靠的行驶方向箭头。</li>
+<li>用户无法通过正常界面触发已知 3D 卡屏问题，且该问题有明确文档记录。</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

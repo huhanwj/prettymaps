@@ -1,0 +1,729 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://yourusername.github.io/prettymaps/superpowers/plans/2026-07-20-cuhk-public-shuttle-route-geometry/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>CUHK Public Shuttle Route Geometry Implementation Plan - prettymaps</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="pink">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cuhk-public-shuttle-route-geometry-implementation-plan" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="prettymaps" class="md-header__button md-logo" aria-label="prettymaps" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            prettymaps
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CUHK Public Shuttle Route Geometry Implementation Plan
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="prettymaps" class="md-nav__button md-logo" aria-label="prettymaps" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    prettymaps
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#file-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="File structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-curated-public-route-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1: Curated public route definitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-road-graph-route-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2: Road-graph route generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-pipeline-integration-and-real-route-regression-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3: Pipeline integration and real-route regression tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-public-id-frontend-filtering-and-conditional-branches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4: Public-ID frontend filtering and conditional branches
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-final-route-by-route-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5: Final route-by-route verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="cuhk-public-shuttle-route-geometry-implementation-plan">CUHK Public Shuttle Route Geometry Implementation Plan</h1>
+<blockquote>
+<p><strong>For agentic workers:</strong> REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (<code>- [ ]</code>) syntax for tracking.</p>
+</blockquote>
+<p><strong>Goal:</strong> Generate and display the twelve current CUHK public shuttle routes from audited stop sequences instead of mapping them to archived route IDs 1-19.</p>
+<p><strong>Architecture:</strong> A curated YAML file defines public routes, stop sequences, conditional branches, and forbidden stops. A focused Python module builds a routable graph from the motor-road layer, snaps stops and waypoints, and emits public route/stop GeoDataFrames. The frontend filters the generated public identifiers directly and styles conditional branches separately.</p>
+<p><strong>Tech Stack:</strong> Python 3.12, GeoPandas, Shapely, NetworkX, PyYAML, MapLibre GL JS, Node assert, pytest.</p>
+<hr />
+<h2 id="file-structure">File structure</h2>
+<ul>
+<li>Create <code>cuhk/data/shuttle_routes.yml</code>: audited public route catalog, stop coordinates, ordered sequences, variants, and forbidden stops.</li>
+<li>Create <code>cuhk/scripts/pipeline/shuttle.py</code>: road graph construction, snapping, shortest-path assembly, validation, and GeoDataFrame output.</li>
+<li>Modify <code>cuhk/scripts/build_data.py</code>: build public shuttle products after OSM roads and official DB are loaded; export variant fields.</li>
+<li>Modify <code>cuhk/scripts/pipeline/official.py</code>: keep archived parsing utilities but stop publishing archived shuttle routes/stops from <code>build_official_products</code>.</li>
+<li>Create <code>cuhk/tests/test_shuttle.py</code>: focused unit and real-data route constraint tests.</li>
+<li>Modify <code>cuhk/tests/test_official.py</code>: update official-product expectations so archived shuttle data is no longer a frontend product.</li>
+<li>Modify <code>cuhk/site/app-core.js</code>: filter public <code>route_id</code> values directly and expose conditional branch labels.</li>
+<li>Modify <code>cuhk/site/app.js</code>: render public route information and conditional variants without archived-ID mappings.</li>
+<li>Modify <code>cuhk/site/style.json</code>: add a dashed conditional-route layer and keep arrows on both base and conditional geometry.</li>
+<li>Modify <code>cuhk/tests/js/test_app_core.js</code>: lock public filtering and route catalog behavior.</li>
+</ul>
+<h3 id="task-1-curated-public-route-definitions">Task 1: Curated public route definitions</h3>
+<p><strong>Files:</strong>
+- Create: <code>cuhk/data/shuttle_routes.yml</code>
+- Test: <code>cuhk/tests/test_shuttle.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Write the failing catalog test</strong></li>
+</ul>
+<pre><code class="language-python">from pathlib import Path
+
+from pipeline import shuttle
+
+
+CONFIG = Path(__file__).parents[1] / &quot;data&quot; / &quot;shuttle_routes.yml&quot;
+
+
+def test_public_route_catalog_and_explicit_constraints():
+    config = shuttle.load_config(CONFIG)
+    routes = config[&quot;routes&quot;]
+    assert list(routes) == [&quot;1A&quot;, &quot;1B&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;8&quot;, &quot;5&quot;, &quot;6A&quot;, &quot;6B&quot;, &quot;7&quot;, &quot;N&quot;, &quot;H&quot;]
+    assert &quot;postgraduate_hall_1&quot; in routes[&quot;1B&quot;][&quot;stops&quot;]
+    assert &quot;residence_10&quot; not in routes[&quot;3&quot;][&quot;stops&quot;]
+    assert routes[&quot;4&quot;][&quot;stops&quot;].index(&quot;cw_chu_down&quot;) &lt; routes[&quot;4&quot;][&quot;stops&quot;].index(&quot;area_39_up&quot;)
+    assert routes[&quot;5&quot;][&quot;stops&quot;][-1] == &quot;cw_chu_down&quot;
+    assert routes[&quot;5&quot;][&quot;departures&quot;] == [18, 22, 26]
+    assert routes[&quot;6A&quot;][&quot;stops&quot;][0] == &quot;cw_chu_down&quot;
+    assert routes[&quot;6B&quot;][&quot;stops&quot;][-2:] == [&quot;station_piazza&quot;, &quot;chung_chi_teaching&quot;]
+    assert routes[&quot;7&quot;][&quot;stops&quot;][-2:] == [&quot;station_piazza&quot;, &quot;chung_chi_teaching&quot;]
+    assert &quot;residence_10&quot; not in routes[&quot;N&quot;][&quot;stops&quot;]
+    assert routes[&quot;H&quot;][&quot;stops&quot;][0] == &quot;residence_10&quot;
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 2: Run the test and verify RED</strong></li>
+</ul>
+<p>Run:</p>
+<pre><code class="language-powershell">$env:UV_CACHE_DIR='J:\work\prettymaps\.uv-cache'
+$env:UV_PYTHON_INSTALL_DIR='J:\work\prettymaps\.uv-python'
+uv run --offline --with-requirements cuhk\requirements.txt python -m pytest cuhk\tests\test_shuttle.py::test_public_route_catalog_and_explicit_constraints -q --basetemp=J:\work\prettymaps\.pytest-cuhk-shuttle
+</code></pre>
+<p>Expected: FAIL because <code>pipeline.shuttle</code> and the YAML catalog do not exist.</p>
+<ul>
+<li>[ ] <strong>Step 3: Create the audited YAML catalog</strong></li>
+</ul>
+<p>Define named stops with <code>official_stop_id</code> where available and explicit <code>[longitude, latitude]</code> only for current stops not represented by the archived stop table. Define these route sequences from the current Transport Office diagrams:</p>
+<pre><code class="language-yaml">routes:
+  1A:
+    stops: [shaw_hall, sports_centre, admin_building, sh_ho, university_station]
+  1B:
+    stops: [shaw_hall, sports_centre, postgraduate_hall_1, admin_building, sh_ho, postgraduate_hall_1, university_station]
+  2:
+    stops: [united_up, fung_king_hey, sports_centre, new_asia, united_down, admin_building, sh_ho, station_piazza, university_station]
+    variants:
+      - id: minute_45_00_shaw_hall
+        condition_zh: 逢45及00分班次停邵逸夫堂
+        condition_en: Departures at minutes 45 and 00 serve Sir Run Run Shaw Hall
+        insert_after: {fung_king_hey: shaw_hall}
+  3:
+    stops: [cw_chu_down, shaw_up, wu_yee_sun_up, fung_king_hey, science_centre, sports_centre, residence_15, uc_staff_residence, chan_chun_ha, shaw_down, wu_yee_sun_down, admin_building, sh_ho, yiap, station_piazza]
+    forbidden_stops: [residence_10]
+  4:
+    stops: [uc_staff_residence, residence_15, cw_chu_down, area_39_up, cw_chu_up, circuit_east_up, chan_chun_ha, shaw_down, wu_yee_sun_down, new_asia, united_down, admin_building, sh_ho, yiap, university_station]
+  8:
+    stops: [new_asia_circle, science_centre, admin_building, wu_yee_sun_down, shaw_down, chan_chun_ha, uc_staff_residence, cw_chu_down, united_down, wu_yee_sun_up, shaw_up, area_39_down, circuit_north, circuit_east_down, university_station]
+    variants:
+      - id: non_teaching_terminal
+        condition_zh: 非教学日停大学站广场及崇基教学楼，不停大学站
+        condition_en: Non-teaching days serve Station Piazza and Chung Chi Teaching Building instead of University Station
+        replace_tail: {from: circuit_east_down, with: [station_piazza, area_39_up, chung_chi_teaching]}
+  5:
+    departures: [18, 22, 26]
+    stops: [chung_chi_teaching, sports_centre, shaw_hall, fung_king_hey, united_up, new_asia, wu_yee_sun_down, chan_chun_ha, uc_staff_residence, cw_chu_down]
+  6A:
+    stops: [cw_chu_down, uc_staff_residence, chan_chun_ha, wu_yee_sun_down, new_asia, united_down, admin_building, sh_ho, station_piazza, chung_chi_teaching]
+  6B:
+    stops: [new_asia, united_down, admin_building, sh_ho, station_piazza, chung_chi_teaching]
+  7:
+    stops: [shaw_down, wu_yee_sun_down, new_asia, united_down, admin_building, sh_ho, station_piazza, chung_chi_teaching]
+  N:
+    stops: [cw_chu_down, area_39_up, shaw_up, wu_yee_sun_up, united_down, new_asia_circle, shaw_hall, sports_centre, residence_15, uc_staff_residence, chan_chun_ha, shaw_down, wu_yee_sun_down, new_asia, united_down, admin_building, sh_ho, university_station]
+    forbidden_stops: [residence_10]
+    variants:
+      - id: minute_00_pgh1
+        condition_zh: 逢00分班次停研究生宿舍一座
+        condition_en: Departures at minute 00 serve Postgraduate Hall 1
+        insert_after: {sports_centre: postgraduate_hall_1, sh_ho: postgraduate_hall_1}
+  H:
+    stops: [residence_10, cw_chu_down, shaw_up, wu_yee_sun_up, united_down, new_asia_circle, shaw_hall, sports_centre, residence_15, uc_staff_residence, chan_chun_ha, shaw_down, wu_yee_sun_down, new_asia, united_down, admin_building, sh_ho, university_station]
+    variants:
+      - id: minute_00_area39_pgh1
+        condition_zh: 逢00分班次停39区及研究生宿舍一座
+        condition_en: Departures at minute 00 serve Area 39 and Postgraduate Hall 1
+        insert_after: {cw_chu_down: area_39_up, sports_centre: postgraduate_hall_1, sh_ho: postgraduate_hall_1}
+</code></pre>
+<p>Add bilingual metadata and one stable display color to every route. Do not define any archived route ID.</p>
+<ul>
+<li>[ ] <strong>Step 4: Implement <code>load_config</code> with schema validation</strong></li>
+</ul>
+<pre><code class="language-python">def load_config(path):
+    data = yaml.safe_load(Path(path).read_text(encoding=&quot;utf-8&quot;))
+    if list(data.get(&quot;routes&quot;, {})) != PUBLIC_ROUTE_IDS:
+        raise ValueError(&quot;public shuttle route order must match the approved catalog&quot;)
+    for route_id, route in data[&quot;routes&quot;].items():
+        if len(route.get(&quot;stops&quot;, [])) &lt; 2:
+            raise ValueError(f&quot;route {route_id}: at least two ordered stops are required&quot;)
+    return data
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 5: Run the focused test and verify GREEN</strong></li>
+</ul>
+<p>Expected: one passing test.</p>
+<h3 id="task-2-road-graph-route-generation">Task 2: Road-graph route generation</h3>
+<p><strong>Files:</strong>
+- Modify: <code>cuhk/scripts/pipeline/shuttle.py</code>
+- Test: <code>cuhk/tests/test_shuttle.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Write failing graph and route tests</strong></li>
+</ul>
+<p>Create a small road network with a forbidden spur and assert that <code>build_route_geometry</code> follows ordered waypoints, preserves direction, and never enters the spur. Add a disconnected-road test expecting <code>ValueError("route X: no road path from A to B")</code>.</p>
+<pre><code class="language-python">import geopandas as gp
+from shapely.geometry import LineString, Point
+
+
+def sample_roads_with_residence_10_spur():
+    return gp.GeoDataFrame(
+        {&quot;road_class&quot;: [&quot;minor&quot;, &quot;minor&quot;, &quot;minor&quot;]},
+        geometry=[
+            LineString([(0, 0), (2, 0)]),
+            LineString([(2, 0), (4, 0)]),
+            LineString([(2, 0), (2, 1)]),
+        ],
+        crs=&quot;EPSG:32650&quot;,
+    )
+
+
+def test_ordered_route_avoids_unrequested_spur():
+    roads = sample_roads_with_residence_10_spur()
+    stops = {&quot;start&quot;: Point(0, 0), &quot;middle&quot;: Point(2, 0), &quot;end&quot;: Point(4, 0)}
+    line = shuttle.build_route_geometry(&quot;X&quot;, [&quot;start&quot;, &quot;middle&quot;, &quot;end&quot;], stops, roads)
+    assert list(line.coords)[0] == (0, 0)
+    assert list(line.coords)[-1] == (4, 0)
+    assert line.distance(Point(2, 1)) &gt; 0.5
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 2: Run the focused tests and verify RED</strong></li>
+</ul>
+<p>Expected: FAIL because graph generation is missing.</p>
+<ul>
+<li>[ ] <strong>Step 3: Implement the minimal graph builder</strong></li>
+</ul>
+<p>Project roads to EPSG:32650, exclude <code>road_class</code> values <code>path</code> and <code>steps</code>, split every line into consecutive coordinate-pair edges, and add both directions to a <code>networkx.MultiDiGraph</code>. Store edge geometry and metric length. Snap each stop/waypoint to the nearest graph node using a Shapely <code>STRtree</code>; reject snaps over the configured maximum distance.</p>
+<ul>
+<li>[ ] <strong>Step 4: Implement ordered path assembly</strong></li>
+</ul>
+<p>For each consecutive stop pair, run weighted shortest path, orient edge coordinates, remove duplicated junction coordinates, and concatenate. Include the exact route ID and stop names in all errors. Convert back to EPSG:4326 only after route validation.</p>
+<ul>
+<li>[ ] <strong>Step 5: Build route and stop GeoDataFrames</strong></li>
+</ul>
+<p>Return route features with <code>route_id</code>, bilingual names, <code>color</code>, <code>variant</code>, bilingual conditions, <code>is_conditional</code>, and geometry. Return one stop feature per named stop with <code>route_ids</code> containing public identifiers only.</p>
+<ul>
+<li>[ ] <strong>Step 6: Run focused tests and verify GREEN</strong></li>
+</ul>
+<p>Expected: all <code>test_shuttle.py</code> unit tests pass.</p>
+<h3 id="task-3-pipeline-integration-and-real-route-regression-tests">Task 3: Pipeline integration and real-route regression tests</h3>
+<p><strong>Files:</strong>
+- Modify: <code>cuhk/scripts/build_data.py</code>
+- Modify: <code>cuhk/scripts/pipeline/official.py</code>
+- Modify: <code>cuhk/tests/test_official.py</code>
+- Modify: <code>cuhk/tests/test_shuttle.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Write failing real-data tests</strong></li>
+</ul>
+<p>Build products from cached roads, official stops, and the curated catalog. Assert exactly twelve route IDs, continuous geometry, public-only stop memberships, and the approved route constraints. Use projected distance checks for forbidden stops and ordered-point projection checks for route 4, 6B, and 7.</p>
+<ul>
+<li>[ ] <strong>Step 2: Run the real-data tests and verify RED</strong></li>
+</ul>
+<p>Expected: FAIL because <code>build_data.py</code> still publishes archived route products.</p>
+<ul>
+<li>[ ] <strong>Step 3: Integrate public route generation</strong></li>
+</ul>
+<p>Load official non-shuttle products first, then call:</p>
+<pre><code class="language-python">shuttle_products = shuttle.build_products(
+    roads=gdfs[&quot;roads&quot;],
+    official_db=db,
+    config_path=REPO_CUHK / &quot;data&quot; / &quot;shuttle_routes.yml&quot;,
+)
+gdfs.update(shuttle_products)
+</code></pre>
+<p>Remove archived <code>shuttle_routes</code> and <code>shuttle_stops</code> from <code>official.build_official_products</code>. Preserve the archived parsing functions for tests and reference only.</p>
+<ul>
+<li>[ ] <strong>Step 4: Export variant fields</strong></li>
+</ul>
+<p>Add <code>variant</code>, <code>condition_zh</code>, <code>condition_en</code>, and <code>is_conditional</code> to the <code>shuttle_routes</code> keep list in <code>build_data.py</code>.</p>
+<ul>
+<li>[ ] <strong>Step 5: Generate site data from cache</strong></li>
+</ul>
+<p>Run <code>cuhk/scripts/build_data.py</code> with the existing cached OSM data and the standard output directory. Expected output: twelve public route IDs plus conditional-variant features, with no archived ID 1-19 route features.</p>
+<ul>
+<li>[ ] <strong>Step 6: Run Python tests and verify GREEN</strong></li>
+</ul>
+<p>Expected: the full <code>cuhk/tests</code> suite passes.</p>
+<h3 id="task-4-public-id-frontend-filtering-and-conditional-branches">Task 4: Public-ID frontend filtering and conditional branches</h3>
+<p><strong>Files:</strong>
+- Modify: <code>cuhk/site/app-core.js</code>
+- Modify: <code>cuhk/site/app.js</code>
+- Modify: <code>cuhk/site/style.json</code>
+- Modify: <code>cuhk/tests/js/test_app_core.js</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Replace mapping tests with failing direct-filter tests</strong></li>
+</ul>
+<pre><code class="language-javascript">assert.deepEqual(core.routeFilter(&quot;N&quot;), [&quot;==&quot;, [&quot;get&quot;, &quot;route_id&quot;], &quot;N&quot;]);
+assert.deepEqual(core.stopFilter(&quot;H&quot;), [&quot;in&quot;, &quot;|H|&quot;, [&quot;get&quot;, &quot;route_ids&quot;]]);
+assert.ok(core.publicRouteCatalog().every((route) =&gt; !(route.sourceRouteIds || []).length));
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 2: Run Node tests and verify RED</strong></li>
+</ul>
+<p>Expected: FAIL because the frontend still maps public IDs to archived IDs.</p>
+<ul>
+<li>[ ] <strong>Step 3: Remove archived mappings</strong></li>
+</ul>
+<p>Keep only metadata in <code>PUBLIC_ROUTES</code>. Make <code>routeFilter</code> and <code>stopFilter</code> use the public identifiers directly. Find route badges by public <code>route_id</code>.</p>
+<ul>
+<li>[ ] <strong>Step 4: Add conditional route styling</strong></li>
+</ul>
+<p>Split shuttle rendering into a solid base layer filtered by <code>is_conditional == false</code> and a dashed conditional layer filtered by <code>is_conditional == true</code>. Add arrows to both layers. Show bilingual condition text in the route information panel.</p>
+<ul>
+<li>[ ] <strong>Step 5: Run Node tests and verify GREEN</strong></li>
+</ul>
+<p>Expected: <code>app-core tests passed</code> and both JavaScript files pass <code>node --check</code>.</p>
+<h3 id="task-5-final-route-by-route-verification">Task 5: Final route-by-route verification</h3>
+<p><strong>Files:</strong>
+- Test: generated <code>cuhk/site/data/shuttle_routes.geojson</code>
+- Test: generated <code>cuhk/site/data/shuttle_stops.geojson</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Run all automated verification</strong></li>
+</ul>
+<pre><code class="language-powershell">node cuhk\tests\js\test_app_core.js
+node --check cuhk\site\app-core.js
+node --check cuhk\site\app.js
+$env:UV_CACHE_DIR='J:\work\prettymaps\.uv-cache'
+$env:UV_PYTHON_INSTALL_DIR='J:\work\prettymaps\.uv-python'
+uv run --offline --with-requirements cuhk\requirements.txt python -m pytest cuhk\tests -q --basetemp=J:\work\prettymaps\.pytest-cuhk-shuttle
+git diff --check
+</code></pre>
+<p>Expected: Node tests pass, JavaScript syntax checks exit 0, all Python tests pass, and <code>git diff --check</code> exits 0.</p>
+<ul>
+<li>[ ] <strong>Step 2: Inspect every route in the local browser</strong></li>
+</ul>
+<p>Select <code>1A</code>, <code>1B</code>, <code>2</code>, <code>3</code>, <code>4</code>, <code>8</code>, <code>5</code>, <code>6A</code>, <code>6B</code>, <code>7</code>, <code>N</code>, and <code>H</code> one by one. Confirm route line, stops, badge, panel, arrows, and conditional dashed branches. Capture screenshots for 1B, 3, 4, 5, 6A, 6B, 7, N, and H.</p>
+<ul>
+<li>[ ] <strong>Step 3: Check the reported failure locations</strong></li>
+</ul>
+<p>Verify visually that 1B enters Postgraduate Hall 1; 3 and N do not enter Residence No. 10; 4 traverses CW Chu then Area 39; 5 ends at CW Chu; 6A starts at CW Chu; 6B and 7 use the correct Station Piazza approach; and H begins at Residence No. 10 with only its minute-00 conditional branch entering Area 39/Postgraduate Hall 1.</p>
+<ul>
+<li>[ ] <strong>Step 4: Commit the implementation intentionally</strong></li>
+</ul>
+<p>Stage only shuttle-route implementation, generated shuttle GeoJSON, tests, and directly related frontend changes. Do not include unrelated existing map edits.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

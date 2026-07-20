@@ -1,0 +1,2888 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://yourusername.github.io/prettymaps/superpowers/plans/2026-07-18-cuhk-interactive-map/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>CUHK 交互式网页地图 · 实现计划 - prettymaps</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="pink">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cuhk" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="prettymaps" class="md-header__button md-logo" aria-label="prettymaps" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            prettymaps
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CUHK 交互式网页地图 · 实现计划
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="prettymaps" class="md-nav__button md-logo" aria-label="prettymaps" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    prettymaps
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        目录结构（最终形态）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务 1：项目脚手架
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2overpass-overpasspy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务 2：Overpass 客户端（overpass.py）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3boundarypy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务 3：校园边界（boundary.py）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4osm-layerspy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务 4：OSM 图层抓取（layers.py）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5seapy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务 5：海面多边形（sea.py）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6elevationpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务 6：高程模块（elevation.py）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7heightspy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务 7：建筑高度估算（heights.py）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8poi-poispy-poisyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务 8：POI 模块（pois.py + pois.yml）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9validatepy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务 9：产出校验（validate.py）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10build_datapy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务 10：管线编排（build_data.py）+ 真实运行
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11vendor-maplibre-gl-js" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务 11：Vendor MapLibre GL JS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12stylejson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务 12：地图样式（style.json）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13indexhtml-appjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务 13：前端页面与交互（index.html + app.js）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-readme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务 14：启动脚本 + README
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        修改内容
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        测试
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见问题
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        数据与许可
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务 15：端到端验证
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        计划自审记录
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="cuhk">CUHK 交互式网页地图 · 实现计划</h1>
+<blockquote>
+<p><strong>For agentic workers:</strong> REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (<code>- [ ]</code>) syntax for tracking.</p>
+</blockquote>
+<p><strong>Goal:</strong> 构建一个面向 CUHK 新生的交互式网页地图：prettymaps 插画风、中英双语 POI 标注+弹窗、等高线+山体阴影+3D 建筑表现山城高差，纯静态本地运行。</p>
+<p><strong>Architecture:</strong> 两段式。Python 数据管线（<code>cuhk/scripts/</code>）离线跑一次：Overpass 抓 OSM（relation 7802779 校园边界 +800m 缓冲）、S3 下载 SRTM 生成山体阴影与等高线、手工 pois.yml 解析坐标，产出 GeoJSON/PNG 到 <code>cuhk/site/data/</code>；前端（<code>cuhk/site/</code>）用本地 vendor 的 MapLibre GL JS 渲染，POI 用 HTML marker（浏览器字体，无需 glyph PBF）。</p>
+<p><strong>Tech Stack:</strong> Python 3.11（osmnx 2.0.7 / geopandas / shapely / numpy / matplotlib / scipy / pyyaml / pytest，<strong>全部已装，零新依赖</strong>）、MapLibre GL JS 4.7.1（vendor 本地）。</p>
+<p><strong>已验证的外部依赖（2026-07-18 本机实测）：</strong>
+- ✅ <code>https://overpass-api.de/api/interpreter</code> 可达（正则全局查询会超时 → 一律用 relation ID + bbox + 精确名查询）
+- ❌ Nominatim 被墙 → <strong>禁止</strong> <code>ox.geocode*</code>，边界用 Overpass 直查 <code>relation(7802779)</code>
+- ✅ <code>https://s3.amazonaws.com/elevation-tiles-prod/skadi/N22/N22E114.hgt.gz</code> 返回 200
+- ✅ jsdelivr 可达 → 一次性 vendor <code>maplibre-gl@4.7.1</code>
+- CUHK 校园边界 = OSM relation <strong>7802779</strong>（outer 6 ways + inner 1 way，lon 114.1989–114.2149，lat 22.4118–22.4283）</p>
+<p><strong>与 spec 的一处偏差（有意简化）：</strong> spec §7 建筑高度回退"按类别默认值（书院 15m/教学 12m/其他 8m）"——OSM 没有可靠的楼宇类别标签，实现为 <code>height</code> 标签 → <code>building:levels × 3</code> → 默认 8m。视觉差异可忽略。</p>
+<hr />
+<h2 id="_1">目录结构（最终形态）</h2>
+<pre><code>cuhk/
+├── README.md                      # 快速开始（任务 14）
+├── data/
+│   ├── pois.yml                   # 手工 POI 表（任务 8）
+│   └── boundary_fallback.geojson  # 校园边界备份（任务 3，真实数据生成后提交）
+├── cache/                         # gitignore：Overpass/osmnx/SRTM 缓存
+├── scripts/
+│   ├── build_data.py              # 管线编排入口（任务 10）
+│   └── pipeline/
+│       ├── __init__.py            # 空文件（任务 1）
+│       ├── overpass.py            # Overpass 客户端：缓存/重试/可配端点（任务 2）
+│       ├── boundary.py            # 边界抓取+组装+buffer（任务 3）
+│       ├── layers.py              # OSM 图层抓取+道路分级+裁剪（任务 4）
+│       ├── sea.py                 # 海面多边形（任务 5）
+│       ├── elevation.py           # SRTM 下载/解析/hillshade/等高线（任务 6）
+│       ├── heights.py             # 建筑高度估算（任务 7）
+│       ├── pois.py                # pois.yml 解析+模糊匹配（任务 8）
+│       └── validate.py            # 产出校验（任务 9）
+├── site/
+│   ├── index.html                 # 页面+CSS（任务 13）
+│   ├── app.js                     # 地图初始化+marker+交互（任务 13）
+│   ├── style.json                 # 矢量样式（任务 12）
+│   ├── vendor/maplibre-gl.{js,css}# 任务 11
+│   ├── data/                      # gitignore：管线产出
+│   └── start.bat / start.sh       # 任务 14
+└── tests/
+    ├── conftest.py                # sys.path + 合成 fixtures（任务 1）
+    ├── test_overpass.py           # 任务 2
+    ├── test_boundary.py           # 任务 3
+    ├── test_layers.py             # 任务 4
+    ├── test_sea.py                # 任务 5
+    ├── test_elevation.py          # 任务 6
+    ├── test_heights.py            # 任务 7
+    ├── test_pois.py               # 任务 8
+    └── test_validate.py           # 任务 9
+</code></pre>
+<p>约定：所有命令在仓库根目录 <code>J:\work\prettymaps</code> 下执行；pytest 统一用 <code>python -m pytest cuhk/tests -v</code>。shell 命令按 <strong>Git Bash</strong> 写法；PowerShell 下设置环境变量的等价写法为 <code>$env:VAR='值'</code>（如 <code>$env:PYTHONPATH='cuhk/scripts'</code>）。</p>
+<hr />
+<h2 id="1">任务 1：项目脚手架</h2>
+<p><strong>Files:</strong>
+- Create: <code>cuhk/scripts/pipeline/__init__.py</code>
+- Create: <code>cuhk/tests/conftest.py</code>
+- Create: <code>cuhk/tests/test_scaffold.py</code>
+- Modify: <code>.gitignore</code></p>
+<ul>
+<li>[ ] <strong>Step 1: 创建目录与空文件</strong></li>
+</ul>
+<pre><code class="language-bash">mkdir -p cuhk/scripts/pipeline cuhk/tests cuhk/data cuhk/cache cuhk/site/vendor cuhk/site/data cuhk/screenshots
+</code></pre>
+<p>创建空的 <code>cuhk/scripts/pipeline/__init__.py</code>（内容为空）。</p>
+<ul>
+<li>[ ] <strong>Step 2: 更新 .gitignore</strong></li>
+</ul>
+<p>在 <code>.gitignore</code> 末尾追加：</p>
+<pre><code class="language-gitignore">
+# CUHK project
+cuhk/cache/
+cuhk/site/data/
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 3: 写 conftest.py（sys.path 引导 + 共享 fixtures）</strong></li>
+</ul>
+<p><code>cuhk/tests/conftest.py</code>：</p>
+<pre><code class="language-python">import pathlib
+import sys
+
+import pytest
+from shapely.geometry import LineString, Polygon, box
+
+# 让测试可以 import cuhk/scripts/pipeline 下的模块
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / &quot;scripts&quot;))
+
+HK_BBOX = (113.8, 22.1, 114.5, 22.6)  # (min_lon, min_lat, max_lon, max_lat)
+
+
+@pytest.fixture
+def campus_square():
+    &quot;&quot;&quot;合成'校园'多边形：约 1km 见方，位于 CUHK 真实位置。&quot;&quot;&quot;
+    return box(114.200, 22.415, 114.210, 22.425)
+
+
+@pytest.fixture
+def synthetic_relation():
+    &quot;&quot;&quot;合成 Overpass relation JSON：两条 outer way 拼成正方形 + 一条 inner way 挖洞。&quot;&quot;&quot;
+    def way(wid, coords, role):
+        return {
+            &quot;type&quot;: &quot;way&quot;,
+            &quot;id&quot;: wid,
+            &quot;role&quot;: role,
+            &quot;geometry&quot;: [{&quot;lat&quot;: lat, &quot;lon&quot;: lon} for lon, lat in coords],
+        }
+
+    outer1 = [(114.200, 22.415), (114.210, 22.415), (114.210, 22.425)]
+    outer2 = [(114.210, 22.425), (114.200, 22.425), (114.200, 22.415)]
+    inner = [(114.204, 22.419), (114.206, 22.419), (114.206, 22.421), (114.204, 22.421), (114.204, 22.419)]
+    return {
+        &quot;elements&quot;: [
+            {
+                &quot;type&quot;: &quot;relation&quot;,
+                &quot;id&quot;: 7802779,
+                &quot;members&quot;: [
+                    way(101, outer1, &quot;outer&quot;),
+                    way(102, outer2, &quot;outer&quot;),
+                    way(103, inner, &quot;inner&quot;),
+                ],
+            }
+        ]
+    }
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 4: 写冒烟测试并运行通过</strong></li>
+</ul>
+<p><code>cuhk/tests/test_scaffold.py</code>：</p>
+<pre><code class="language-python">def test_pipeline_importable():
+    import pipeline  # noqa: F401
+
+def test_fixtures(campus_square, synthetic_relation):
+    assert campus_square.area &gt; 0
+    assert synthetic_relation[&quot;elements&quot;][0][&quot;id&quot;] == 7802779
+</code></pre>
+<p>Run: <code>python -m pytest cuhk/tests/test_scaffold.py -v</code>
+Expected: 2 passed</p>
+<ul>
+<li>[ ] <strong>Step 5: Commit</strong></li>
+</ul>
+<pre><code class="language-bash">git add cuhk/ .gitignore
+git commit -m &quot;cuhk: project scaffold (dirs, conftest, gitignore)&quot;
+</code></pre>
+<hr />
+<h2 id="2overpass-overpasspy">任务 2：Overpass 客户端（overpass.py）</h2>
+<p><strong>Files:</strong>
+- Create: <code>cuhk/scripts/pipeline/overpass.py</code>
+- Test: <code>cuhk/tests/test_overpass.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: 写失败测试</strong></li>
+</ul>
+<p><code>cuhk/tests/test_overpass.py</code>：</p>
+<pre><code class="language-python">import json
+
+import pytest
+import requests
+
+from pipeline import overpass
+
+
+class FakeResponse:
+    def __init__(self, payload, status=200):
+        self.payload = payload
+        self.status_code = status
+
+    def raise_for_status(self):
+        if self.status_code != 200:
+            raise requests.HTTPError(f&quot;status {self.status_code}&quot;)
+
+    def json(self):
+        return self.payload
+
+
+def test_query_caches_result(tmp_path, monkeypatch):
+    calls = []
+
+    def fake_post(url, data, timeout, headers):
+        calls.append(url)
+        return FakeResponse({&quot;elements&quot;: []})
+
+    monkeypatch.setattr(requests, &quot;post&quot;, fake_post)
+    ov = overpass.OverpassClient(cache_dir=tmp_path)
+    ov.query('[out:json];node(1);out;')
+    ov.query('[out:json];node(1);out;')  # 第二次应命中缓存
+    assert len(calls) == 1
+
+
+def test_query_retries_on_failure(tmp_path, monkeypatch):
+    attempts = {&quot;n&quot;: 0}
+
+    def flaky_post(url, data, timeout, headers):
+        attempts[&quot;n&quot;] += 1
+        if attempts[&quot;n&quot;] &lt; 3:
+            raise requests.ConnectionError(&quot;boom&quot;)
+        return FakeResponse({&quot;ok&quot;: True})
+
+    monkeypatch.setattr(requests, &quot;post&quot;, flaky_post)
+    monkeypatch.setattr(overpass.time, &quot;sleep&quot;, lambda s: None)
+    ov = overpass.OverpassClient(cache_dir=tmp_path)
+    assert ov.query(&quot;q&quot;) == {&quot;ok&quot;: True}
+    assert attempts[&quot;n&quot;] == 3
+
+
+def test_query_raises_after_max_retries(tmp_path, monkeypatch):
+    def always_fail(url, data, timeout, headers):
+        raise requests.ConnectionError(&quot;boom&quot;)
+
+    monkeypatch.setattr(requests, &quot;post&quot;, always_fail)
+    monkeypatch.setattr(overpass.time, &quot;sleep&quot;, lambda s: None)
+    ov = overpass.OverpassClient(cache_dir=tmp_path, max_retries=2)
+    with pytest.raises(RuntimeError, match=&quot;Overpass&quot;):
+        ov.query(&quot;q&quot;)
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 2: 运行确认失败</strong></li>
+</ul>
+<p>Run: <code>python -m pytest cuhk/tests/test_overpass.py -v</code>
+Expected: FAIL，<code>ModuleNotFoundError: No module named 'pipeline.overpass'</code></p>
+<ul>
+<li>[ ] <strong>Step 3: 实现 overpass.py</strong></li>
+</ul>
+<p><code>cuhk/scripts/pipeline/overpass.py</code>：</p>
+<pre><code class="language-python">&quot;&quot;&quot;Overpass API 客户端：POST 查询、磁盘缓存、重试、端点可配。
+
+端点优先级：构造参数 &gt; 环境变量 CUHK_OVERPASS_URL &gt; 默认 overpass-api.de。
+注意：本机实测 Nominatim 不可达，正则全局查询会超时——查询一律带 bbox/ID。
+&quot;&quot;&quot;
+
+import hashlib
+import json
+import os
+import time
+from pathlib import Path
+
+import requests
+
+DEFAULT_ENDPOINT = &quot;https://overpass-api.de/api/interpreter&quot;
+USER_AGENT = &quot;cuhk-campus-map (github fork of marceloprates/prettymaps)&quot;
+
+
+class OverpassClient:
+    def __init__(self, cache_dir, endpoint=None, max_retries=3, timeout=90):
+        self.cache_dir = Path(cache_dir)
+        (self.cache_dir / &quot;overpass&quot;).mkdir(parents=True, exist_ok=True)
+        self.endpoint = (
+            endpoint
+            or os.environ.get(&quot;CUHK_OVERPASS_URL&quot;)
+            or DEFAULT_ENDPOINT
+        )
+        self.max_retries = max_retries
+        self.timeout = timeout
+
+    def _cache_path(self, ql):
+        key = hashlib.sha1(ql.encode(&quot;utf-8&quot;)).hexdigest()
+        return self.cache_dir / &quot;overpass&quot; / f&quot;{key}.json&quot;
+
+    def query(self, ql, use_cache=True):
+        &quot;&quot;&quot;执行 Overpass QL 查询，返回解析后的 dict。失败重试 max_retries 次。&quot;&quot;&quot;
+        cache_path = self._cache_path(ql)
+        if use_cache and cache_path.exists():
+            return json.loads(cache_path.read_text(encoding=&quot;utf-8&quot;))
+
+        last_err = None
+        for attempt in range(1, self.max_retries + 1):
+            try:
+                resp = requests.post(
+                    self.endpoint,
+                    data={&quot;data&quot;: ql},
+                    timeout=self.timeout,
+                    headers={&quot;User-Agent&quot;: USER_AGENT},
+                )
+                resp.raise_for_status()
+                payload = resp.json()
+                cache_path.write_text(
+                    json.dumps(payload, ensure_ascii=False), encoding=&quot;utf-8&quot;
+                )
+                return payload
+            except (requests.RequestException, ValueError) as e:
+                last_err = e
+                time.sleep(2 * attempt)
+        raise RuntimeError(
+            f&quot;Overpass 查询失败（{self.max_retries} 次重试后）：{last_err}\n&quot;
+            f&quot;可尝试设置环境变量 CUHK_OVERPASS_URL 切换镜像端点。&quot;
+        )
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 4: 运行确认通过</strong></li>
+</ul>
+<p>Run: <code>python -m pytest cuhk/tests/test_overpass.py -v</code>
+Expected: 3 passed</p>
+<ul>
+<li>[ ] <strong>Step 5: Commit</strong></li>
+</ul>
+<pre><code class="language-bash">git add cuhk/scripts/pipeline/overpass.py cuhk/tests/test_overpass.py
+git commit -m &quot;cuhk: Overpass client with cache/retry/configurable endpoint&quot;
+</code></pre>
+<hr />
+<h2 id="3boundarypy">任务 3：校园边界（boundary.py）</h2>
+<p><strong>Files:</strong>
+- Create: <code>cuhk/scripts/pipeline/boundary.py</code>
+- Create: <code>cuhk/data/boundary_fallback.geojson</code>（由 Step 5 生成后提交）
+- Test: <code>cuhk/tests/test_boundary.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: 写失败测试</strong></li>
+</ul>
+<p><code>cuhk/tests/test_boundary.py</code>：</p>
+<pre><code class="language-python">from pipeline import boundary
+
+
+def test_assemble_multipolygon_with_hole(synthetic_relation):
+    geom = boundary.assemble_multipolygon(synthetic_relation[&quot;elements&quot;][0])
+    # 外正方形面积 0.01*0.01，内洞 0.002*0.002
+    assert abs(geom.area - (0.01 * 0.01 - 0.002 * 0.002)) &lt; 1e-12
+
+
+def test_buffer_polygon_meters(synthetic_relation):
+    geom = boundary.assemble_multipolygon(synthetic_relation[&quot;elements&quot;][0])
+    buffered = boundary.buffer_polygon_meters(geom, 800)
+    # buffer 后面积必须变大，且仍然合法
+    assert buffered.area &gt; geom.area
+    assert buffered.is_valid
+    # CRS 必须是经纬度
+    assert abs(buffered.bounds[0] - 114.2) &lt; 0.05
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 2: 运行确认失败</strong></li>
+</ul>
+<p>Run: <code>python -m pytest cuhk/tests/test_boundary.py -v</code>
+Expected: FAIL，<code>ModuleNotFoundError: No module named 'pipeline.boundary'</code></p>
+<ul>
+<li>[ ] <strong>Step 3: 实现 boundary.py</strong></li>
+</ul>
+<p><code>cuhk/scripts/pipeline/boundary.py</code>：</p>
+<pre><code class="language-python">&quot;&quot;&quot;CUHK 校园边界：Overpass 直查 relation 7802779，组装多边形，米制 buffer。
+
+Nominatim 在本机不可达，因此不用 osmnx geocoder；一律走 OverpassClient。
+&quot;&quot;&quot;
+
+import json
+from pathlib import Path
+
+import geopandas as gp
+from shapely.geometry import Polygon
+from shapely.ops import polygonize, unary_union
+
+CUHK_RELATION_ID = 7802779
+FALLBACK_PATH = Path(__file__).resolve().parents[2] / &quot;data&quot; / &quot;boundary_fallback.geojson&quot;
+
+
+def assemble_multipolygon(relation):
+    &quot;&quot;&quot;把 Overpass `out geom` 的 relation JSON 组装成 shapely 多边形（含洞）。&quot;&quot;&quot;
+    outers, inners = [], []
+    for member in relation[&quot;members&quot;]:
+        if member[&quot;type&quot;] != &quot;way&quot; or &quot;geometry&quot; not in member:
+            continue
+        coords = [(p[&quot;lon&quot;], p[&quot;lat&quot;]) for p in member[&quot;geometry&quot;]]
+        if member[&quot;role&quot;] == &quot;outer&quot;:
+            outers.append(coords)
+        elif member[&quot;role&quot;] == &quot;inner&quot;:
+            inners.append(coords)
+
+    outer_rings = list(polygonize(outers))
+    if not outer_rings:
+        raise ValueError(&quot;relation 的 outer ways 无法拼成闭合多边形&quot;)
+    shell = unary_union(outer_rings)
+
+    holes = []
+    for ring in polygonize(inners):
+        holes.append(list(ring.exterior.coords))
+
+    # shell 可能是 Polygon 或 MultiPolygon；洞统一扣掉
+    result = shell
+    for hole in holes:
+        result = result.difference(Polygon(hole))
+    return result
+
+
+def buffer_polygon_meters(geom, meters):
+    &quot;&quot;&quot;在投影坐标系（自动选 UTM）下 buffer，返回 EPSG:4326 多边形。&quot;&quot;&quot;
+    gdf = gp.GeoDataFrame(geometry=[geom], crs=&quot;EPSG:4326&quot;)
+    projected = gdf.to_crs(gdf.estimate_utm_crs())
+    projected[&quot;geometry&quot;] = projected.geometry.buffer(meters)
+    return projected.to_crs(&quot;EPSG:4326&quot;).geometry.iloc[0]
+
+
+def fetch_campus_boundary(client, buffer_m=800):
+    &quot;&quot;&quot;主流程：Overpass 取 relation → 组装 → buffer → GeoDataFrame(4326)。
+    失败时回退到 cuhk/data/boundary_fallback.geojson。&quot;&quot;&quot;
+    ql = f&quot;[out:json][timeout:60];relation({CUHK_RELATION_ID});out geom;&quot;
+    try:
+        payload = client.query(ql)
+        geom = assemble_multipolygon(payload[&quot;elements&quot;][0])
+    except Exception as e:
+        if not FALLBACK_PATH.exists():
+            raise RuntimeError(
+                f&quot;Overpass 取边界失败且无 fallback 文件：{e}&quot;
+            ) from e
+        print(f&quot;[boundary] Overpass 失败（{e}），使用 fallback 文件&quot;)
+        return gp.read_file(FALLBACK_PATH)
+
+    campus = gp.GeoDataFrame(geometry=[geom], crs=&quot;EPSG:4326&quot;)
+    if buffer_m:
+        buffered = buffer_polygon_meters(geom, buffer_m)
+        campus = gp.GeoDataFrame(geometry=[buffered], crs=&quot;EPSG:4326&quot;)
+    return campus
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 4: 运行确认通过</strong></li>
+</ul>
+<p>Run: <code>python -m pytest cuhk/tests/test_boundary.py -v</code>
+Expected: 2 passed</p>
+<ul>
+<li>[ ] <strong>Step 5: 生成并提交 fallback 边界（真实数据）</strong></li>
+</ul>
+<p>运行这段一次性脚本：</p>
+<pre><code class="language-bash">PYTHONPATH=cuhk/scripts python -c &quot;
+from pipeline.overpass import OverpassClient
+from pipeline import boundary
+client = OverpassClient(cache_dir='cuhk/cache')
+campus = boundary.fetch_campus_boundary(client, buffer_m=0)
+campus.to_file('cuhk/data/boundary_fallback.geojson', driver='GeoJSON')
+print('fallback saved, bounds:', campus.total_bounds)
+&quot;
+</code></pre>
+<p>Expected: 打印 <code>fallback saved, bounds: [114.19... 22.41... 114.21... 22.42...]</code>
+注意：fallback 保存<strong>未 buffer</strong> 的原始边界（buffer 在 fetch 时做）。</p>
+<ul>
+<li>[ ] <strong>Step 6: Commit</strong></li>
+</ul>
+<pre><code class="language-bash">git add cuhk/scripts/pipeline/boundary.py cuhk/tests/test_boundary.py cuhk/data/boundary_fallback.geojson
+git commit -m &quot;cuhk: campus boundary fetch (relation 7802779) + fallback geojson&quot;
+</code></pre>
+<hr />
+<h2 id="4osm-layerspy">任务 4：OSM 图层抓取（layers.py）</h2>
+<p><strong>Files:</strong>
+- Create: <code>cuhk/scripts/pipeline/layers.py</code>
+- Test: <code>cuhk/tests/test_layers.py</code></p>
+<p>图层定义沿用 prettymaps <code>default.json</code> 的 tag 组合，新增步道/楼梯与铁路：</p>
+<table>
+<thead>
+<tr>
+<th>layer</th>
+<th>tags</th>
+<th>输出 class 规则</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>buildings</td>
+<td><code>{"building": True}</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>roads</td>
+<td><code>{"highway": True}</code></td>
+<td>见 <code>classify_roads</code></td>
+</tr>
+<tr>
+<td>railway</td>
+<td><code>{"railway": ["rail", "light_rail"]}</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>water</td>
+<td><code>{"natural": ["water", "bay"]}</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>waterway</td>
+<td><code>{"waterway": ["river", "stream", "drain"]}</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>forest</td>
+<td><code>{"landuse": "forest"}</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>green</td>
+<td><code>{"landuse": ["grass", "orchard", "meadow"], "natural": ["wood", "wetland"], "leisure": ["garden", "golf_course", "park", "pitch", "sports_centre", "track"]}</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>beach</td>
+<td><code>{"natural": "beach"}</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>parking</td>
+<td><code>{"amenity": "parking"}</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>[ ] <strong>Step 1: 写失败测试</strong></li>
+</ul>
+<p><code>cuhk/tests/test_layers.py</code>：</p>
+<pre><code class="language-python">import geopandas as gp
+import pandas as pd
+from shapely.geometry import LineString, Point, Polygon, box
+
+from pipeline import layers
+
+
+def test_road_classification():
+    gdf = gp.GeoDataFrame(
+        {
+            &quot;highway&quot;: [&quot;primary&quot;, &quot;residential&quot;, &quot;footway&quot;, &quot;steps&quot;, &quot;service&quot;, &quot;path&quot;],
+            &quot;geometry&quot;: [LineString([(0, 0), (1, 1)])] * 6,
+        },
+        crs=&quot;EPSG:4326&quot;,
+    )
+    out = layers.classify_roads(gdf)
+    assert list(out[&quot;road_class&quot;]) == [
+        &quot;major&quot;, &quot;minor&quot;, &quot;path&quot;, &quot;steps&quot;, &quot;minor&quot;, &quot;path&quot;,
+    ]
+
+
+def test_clip_to_boundary():
+    gdf = gp.GeoDataFrame(
+        {&quot;geometry&quot;: [box(0, 0, 2, 2), box(10, 10, 11, 11)]}, crs=&quot;EPSG:4326&quot;
+    )
+    boundary = gp.GeoDataFrame({&quot;geometry&quot;: [box(1, 1, 3, 3)]}, crs=&quot;EPSG:4326&quot;)
+    out = layers.clip_to_boundary(gdf, boundary)
+    assert len(out) == 1
+    assert abs(out.geometry.iloc[0].area - 1.0) &lt; 1e-9
+
+
+def test_layer_tags_complete():
+    for name, spec in layers.LAYER_TAGS.items():
+        assert spec, f&quot;{name} tags 为空&quot;
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 2: 运行确认失败</strong></li>
+</ul>
+<p>Run: <code>python -m pytest cuhk/tests/test_layers.py -v</code>
+Expected: FAIL，<code>ModuleNotFoundError: No module named 'pipeline.layers'</code></p>
+<ul>
+<li>[ ] <strong>Step 3: 实现 layers.py</strong></li>
+</ul>
+<p><code>cuhk/scripts/pipeline/layers.py</code>：</p>
+<pre><code class="language-python">&quot;&quot;&quot;OSM 图层抓取：tag 组合（沿用 prettymaps default preset）+ 道路分级 + 边界裁剪。
+
+osmnx 自带 HTTP 缓存，cache_folder 指到 cuhk/cache/osmnx，重复跑不重抓。
+&quot;&quot;&quot;
+
+import geopandas as gp
+import osmnx as ox
+import pandas as pd
+
+ox.settings.use_cache = True
+ox.settings.cache_folder = None  # 由 fetch_all_layers 按 cache_dir 设置
+
+LAYER_TAGS = {
+    &quot;buildings&quot;: {&quot;building&quot;: True},
+    &quot;roads&quot;: {&quot;highway&quot;: True},
+    &quot;railway&quot;: {&quot;railway&quot;: [&quot;rail&quot;, &quot;light_rail&quot;]},
+    &quot;water&quot;: {&quot;natural&quot;: [&quot;water&quot;, &quot;bay&quot;]},
+    &quot;waterway&quot;: {&quot;waterway&quot;: [&quot;river&quot;, &quot;stream&quot;, &quot;drain&quot;]},
+    &quot;forest&quot;: {&quot;landuse&quot;: &quot;forest&quot;},
+    &quot;green&quot;: {
+        &quot;landuse&quot;: [&quot;grass&quot;, &quot;orchard&quot;, &quot;meadow&quot;],
+        &quot;natural&quot;: [&quot;wood&quot;, &quot;wetland&quot;],
+        &quot;leisure&quot;: [
+            &quot;garden&quot;, &quot;golf_course&quot;, &quot;park&quot;, &quot;pitch&quot;, &quot;sports_centre&quot;, &quot;track&quot;,
+        ],
+    },
+    &quot;beach&quot;: {&quot;natural&quot;: &quot;beach&quot;},
+    &quot;parking&quot;: {&quot;amenity&quot;: &quot;parking&quot;},
+}
+
+ROAD_CLASS = {
+    &quot;motorway&quot;: &quot;major&quot;, &quot;trunk&quot;: &quot;major&quot;, &quot;primary&quot;: &quot;major&quot;,
+    &quot;secondary&quot;: &quot;medium&quot;, &quot;tertiary&quot;: &quot;medium&quot;,
+    &quot;residential&quot;: &quot;minor&quot;, &quot;unclassified&quot;: &quot;minor&quot;, &quot;service&quot;: &quot;minor&quot;,
+    &quot;living_street&quot;: &quot;minor&quot;,
+    &quot;pedestrian&quot;: &quot;path&quot;, &quot;footway&quot;: &quot;path&quot;, &quot;path&quot;: &quot;path&quot;,
+    &quot;track&quot;: &quot;path&quot;, &quot;cycleway&quot;: &quot;path&quot;,
+    &quot;steps&quot;: &quot;steps&quot;,
+}
+
+
+def classify_roads(gdf):
+    &quot;&quot;&quot;按 highway 标签给道路分级：major/medium/minor/path/steps。
+    highway 列可能是 list（双向不同值），取第一个能匹配上的。&quot;&quot;&quot;
+    def to_class(value):
+        values = value if isinstance(value, list) else [value]
+        for v in values:
+            if v in ROAD_CLASS:
+                return ROAD_CLASS[v]
+        return &quot;minor&quot;
+
+    gdf = gdf.copy()
+    gdf[&quot;road_class&quot;] = gdf[&quot;highway&quot;].map(to_class)
+    return gdf
+
+
+def clip_to_boundary(gdf, boundary_gdf):
+    &quot;&quot;&quot;要素与边界求交，丢掉空几何。&quot;&quot;&quot;
+    if gdf.empty:
+        return gdf
+    boundary = boundary_gdf.geometry.union_all()
+    gdf = gdf.copy()
+    gdf[&quot;geometry&quot;] = gdf.geometry.intersection(boundary)
+    gdf = gdf[~gdf.geometry.is_empty]
+    return gdf.reset_index(drop=True)
+
+
+def fetch_all_layers(boundary_gdf, cache_dir):
+    &quot;&quot;&quot;抓取全部图层，返回 {layer_name: GeoDataFrame}（已裁剪到边界）。&quot;&quot;&quot;
+    ox.settings.cache_folder = str(cache_dir / &quot;osmnx&quot;)
+    polygon = boundary_gdf.geometry.union_all()
+    out = {}
+    for name, tags in LAYER_TAGS.items():
+        try:
+            gdf = ox.features_from_polygon(polygon, tags=tags)
+        except Exception as e:
+            print(f&quot;[layers] {name} 抓取失败：{e}&quot;)
+            gdf = gp.GeoDataFrame(geometry=[], crs=&quot;EPSG:4326&quot;)
+        # 只保留面（水/绿地）或线（道路/铁路/水道）或混合；osmnx 会混入点
+        if name in (&quot;roads&quot;, &quot;railway&quot;, &quot;waterway&quot;) and not gdf.empty:
+            gdf = gdf[gdf.geometry.geom_type.isin([&quot;LineString&quot;, &quot;MultiLineString&quot;])]
+        elif not gdf.empty:
+            gdf = gdf[
+                gdf.geometry.geom_type.isin([&quot;Polygon&quot;, &quot;MultiPolygon&quot;, &quot;LineString&quot;])
+            ]
+        if name == &quot;roads&quot; and not gdf.empty:
+            gdf = classify_roads(gdf)
+        out[name] = clip_to_boundary(gdf, boundary_gdf)
+        print(f&quot;[layers] {name}: {len(out[name])} 要素&quot;)
+    return out
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 4: 运行确认通过</strong></li>
+</ul>
+<p>Run: <code>python -m pytest cuhk/tests/test_layers.py -v</code>
+Expected: 3 passed</p>
+<ul>
+<li>[ ] <strong>Step 5: Commit</strong></li>
+</ul>
+<pre><code class="language-bash">git add cuhk/scripts/pipeline/layers.py cuhk/tests/test_layers.py
+git commit -m &quot;cuhk: OSM layer fetch + road classification + boundary clip&quot;
+</code></pre>
+<hr />
+<h2 id="5seapy">任务 5：海面多边形（sea.py）</h2>
+<p><strong>Files:</strong>
+- Create: <code>cuhk/scripts/pipeline/sea.py</code>
+- Test: <code>cuhk/tests/test_sea.py</code></p>
+<p>原理（移植自 prettymaps <code>fetch.py</code>）：bbox 矩形 减去 海岸线 buffer → 候选面 → 排除与车行道网相交的候选 → 剩下的就是海。CUHK 东临吐露港，海面必须出现。</p>
+<ul>
+<li>[ ] <strong>Step 1: 写失败测试</strong></li>
+</ul>
+<p><code>cuhk/tests/test_sea.py</code>：</p>
+<pre><code class="language-python">import geopandas as gp
+from shapely.geometry import LineString, box
+
+from pipeline import sea
+
+
+def test_sea_candidates_split_by_coastline():
+    bbox = box(0, 0, 10, 10)
+    # 一条南北向海岸线把 bbox 切成东西两半
+    coastline = gp.GeoDataFrame(
+        {&quot;geometry&quot;: [LineString([(5, -1), (5, 11)])]}, crs=&quot;EPSG:4326&quot;
+    )
+    candidates = sea.sea_candidates(bbox, coastline)
+    assert len(candidates) == 2
+    areas = sorted([g.area for g in candidates])
+    assert abs(sum(areas) - 100) &lt; 1.0  # buffer 极窄，总面积≈bbox
+
+
+def test_filter_land_side_by_roads():
+    bbox = box(0, 0, 10, 10)
+    coastline = gp.GeoDataFrame(
+        {&quot;geometry&quot;: [LineString([(5, -1), (5, 11)])]}, crs=&quot;EPSG:4326&quot;
+    )
+    candidates = sea.sea_candidates(bbox, coastline)
+    # 车行道路只在西半边（陆侧）
+    roads = gp.GeoDataFrame(
+        {&quot;geometry&quot;: [LineString([(2, 2), (2, 8)])]}, crs=&quot;EPSG:4326&quot;
+    )
+    sea_gdf = sea.pick_sea_side(candidates, roads, crs=&quot;EPSG:4326&quot;)
+    # 东半边（不与道路相交）是海
+    assert len(sea_gdf) == 1
+    assert sea_gdf.geometry.iloc[0].bounds[0] &gt; 5  # minx 在海岸线以东
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 2: 运行确认失败</strong></li>
+</ul>
+<p>Run: <code>python -m pytest cuhk/tests/test_sea.py -v</code>
+Expected: FAIL，<code>ModuleNotFoundError: No module named 'pipeline.sea'</code></p>
+<ul>
+<li>[ ] <strong>Step 3: 实现 sea.py</strong></li>
+</ul>
+<p><code>cuhk/scripts/pipeline/sea.py</code>：</p>
+<pre><code class="language-python">&quot;&quot;&quot;海面多边形：bbox - 海岸线 → 候选面 → 排除与车行道相交的一侧。
+
+移植自 prettymaps fetch.py 的 sea 逻辑（简化：不区分桥梁，车行网相交即陆侧）。
+&quot;&quot;&quot;
+
+import geopandas as gp
+import osmnx as ox
+from shapely.geometry import MultiPolygon, box
+from shapely.ops import unary_union
+
+
+def sea_candidates(bbox_polygon, coastline_gdf):
+    &quot;&quot;&quot;bbox 减海岸线 buffer，返回候选多边形列表。&quot;&quot;&quot;
+    coastline = unary_union(list(coastline_gdf.geometry))
+    diff = bbox_polygon.difference(coastline.buffer(1e-9))
+    if diff.is_empty:
+        return []
+    if diff.geom_type == &quot;Polygon&quot;:
+        return [diff]
+    return list(diff.geoms)
+
+
+def pick_sea_side(candidates, roads_gdf, crs=&quot;EPSG:4326&quot;):
+    &quot;&quot;&quot;排除与车行道路网相交的候选面，剩下的合并为海面 GeoDataFrame。&quot;&quot;&quot;
+    sea_parts = [
+        c for c in candidates if not roads_gdf.geometry.intersects(c).any()
+    ]
+    if not sea_parts:
+        return gp.GeoDataFrame(geometry=[], crs=crs)
+    merged = unary_union(MultiPolygon(sea_parts)).buffer(1e-8)
+    return gp.GeoDataFrame(geometry=[merged], crs=crs)
+
+
+def fetch_sea(boundary_gdf):
+    &quot;&quot;&quot;主流程：以边界的外接矩形为 bbox 抓海岸线和车行网，返回海面 gdf。&quot;&quot;&quot;
+    minx, miny, maxx, maxy = boundary_gdf.total_bounds
+    bbox_polygon = box(minx, miny, maxx, maxy)
+
+    coastline = ox.features_from_polygon(bbox_polygon, tags={&quot;natural&quot;: &quot;coastline&quot;})
+    coastline = coastline[coastline.geometry.geom_type.isin([&quot;LineString&quot;, &quot;MultiLineString&quot;])]
+    if coastline.empty:
+        print(&quot;[sea] 范围内无海岸线，返回空海面&quot;)
+        return gp.GeoDataFrame(geometry=[], crs=&quot;EPSG:4326&quot;)
+
+    candidates = sea_candidates(bbox_polygon, coastline)
+    graph = ox.graph_from_polygon(
+        bbox_polygon, network_type=&quot;drive&quot;, truncate_by_edge=True
+    )
+    roads = ox.graph_to_gdfs(graph, nodes=False)
+    sea_gdf = pick_sea_side(candidates, roads, crs=&quot;EPSG:4326&quot;)
+    # 海面充满整个矩形画框（不止 buffer 内），交给前端直接展示
+    print(f&quot;[sea] 海面面积 {sea_gdf.to_crs(sea_gdf.estimate_utm_crs()).area.sum():.0f} m²&quot;)
+    return sea_gdf
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 4: 运行确认通过</strong></li>
+</ul>
+<p>Run: <code>python -m pytest cuhk/tests/test_sea.py -v</code>
+Expected: 2 passed</p>
+<ul>
+<li>[ ] <strong>Step 5: Commit</strong></li>
+</ul>
+<pre><code class="language-bash">git add cuhk/scripts/pipeline/sea.py cuhk/tests/test_sea.py
+git commit -m &quot;cuhk: sea polygon from coastline (ported from prettymaps)&quot;
+</code></pre>
+<hr />
+<h2 id="6elevationpy">任务 6：高程模块（elevation.py）</h2>
+<p><strong>Files:</strong>
+- Create: <code>cuhk/scripts/pipeline/elevation.py</code>
+- Test: <code>cuhk/tests/test_elevation.py</code></p>
+<p>SRTM 数据来源：<code>https://s3.amazonaws.com/elevation-tiles-prod/skadi/N22/N22E114.hgt.gz</code>（已实测可达）。<code>.hgt</code> 是裸 int16 大端栅格，numpy 直接读，<strong>不需要 rasterio/elevation 包</strong>。瓦片命名：<code>N22E114</code> = 西南角 (lat 22, lon 114)，覆盖 22–23°N / 114–115°E，第 0 行是北边缘。</p>
+<ul>
+<li>[ ] <strong>Step 1: 写失败测试</strong></li>
+</ul>
+<p><code>cuhk/tests/test_elevation.py</code>：</p>
+<pre><code class="language-python">import numpy as np
+import pytest
+
+from pipeline import elevation
+
+
+def test_tile_bounds():
+    assert elevation.tile_bounds(&quot;N22E114&quot;) == (114.0, 22.0, 115.0, 23.0)
+
+
+def test_read_hgt_roundtrip(tmp_path):
+    dem = (np.arange(1201 * 1201) % 30000).astype(&quot;&gt;i2&quot;).reshape(1201, 1201)
+    path = tmp_path / &quot;tile.hgt&quot;
+    dem.tofile(path)
+    out = elevation.read_hgt(path)
+    assert out.shape == (1201, 1201)
+    assert out[0, 1] == 1
+
+
+def test_read_hgt_rejects_bad_size(tmp_path):
+    (tmp_path / &quot;bad.hgt&quot;).write_bytes(b&quot;\x00&quot; * 100)
+    with pytest.raises(ValueError, match=&quot;HGT&quot;):
+        elevation.read_hgt(tmp_path / &quot;bad.hgt&quot;)
+
+
+def test_fill_voids():
+    dem = np.full((5, 5), 100.0)
+    dem[2, 2] = np.nan
+    filled = elevation.fill_voids(dem)
+    assert filled[2, 2] == pytest.approx(100.0)
+
+
+def test_contours_of_tilted_plane():
+    # 沿 x 方向每度上升 1000m 的斜面 → 等高线是等间距竖直线
+    lons = np.linspace(114.0, 114.1, 101)
+    lats = np.linspace(22.0, 22.1, 101)
+    dem = np.tile((lons - 114.0) * 10000, (101, 1))  # 0..1000m
+    gdf = elevation.contour_lines(dem, lons, lats, interval=100)
+    # 100..900m 必定出现（1000m 恰好在数据边缘，是否出线是实现细节，不断言）
+    assert set(range(100, 1000, 100)) &lt;= set(gdf[&quot;ele&quot;])
+    # 100m 等高线应在 lon≈114.01 附近且南北走向
+    line = gdf[gdf[&quot;ele&quot;] == 100].geometry.iloc[0]
+    xs, ys = line.xy
+    assert abs(np.mean(xs) - 114.01) &lt; 0.002
+    assert max(xs) - min(xs) &lt; 0.002  # 竖直
+
+
+def test_hillshade_rgba_shape():
+    dem = np.random.default_rng(0).normal(100, 10, (50, 50))
+    rgba = elevation.hillshade_rgba(dem, cellsize_m=30)
+    assert rgba.shape == (50, 50, 4)
+    assert rgba.dtype == np.uint8
+    assert rgba[..., 3].max() &gt; 0  # 有阴影
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 2: 运行确认失败</strong></li>
+</ul>
+<p>Run: <code>python -m pytest cuhk/tests/test_elevation.py -v</code>
+Expected: FAIL，<code>ModuleNotFoundError: No module named 'pipeline.elevation'</code></p>
+<ul>
+<li>[ ] <strong>Step 3: 实现 elevation.py</strong></li>
+</ul>
+<p><code>cuhk/scripts/pipeline/elevation.py</code>：</p>
+<pre><code class="language-python">&quot;&quot;&quot;SRTM 高程：下载/解析 .hgt、山体阴影 PNG、等高线 GeoJSON。
+
+无 rasterio 依赖：.hgt 用 numpy 读，hillshade 用 matplotlib LightSource，
+等高线用 matplotlib contour（经纬度网格直接出地理坐标）。
+&quot;&quot;&quot;
+
+import gzip
+import io
+import json
+import urllib.request
+from pathlib import Path
+
+import geopandas as gp
+import matplotlib
+
+matplotlib.use(&quot;Agg&quot;)  # 管线无界面运行
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.colors import LightSource
+from scipy.ndimage import gaussian_filter
+from shapely.geometry import LineString
+
+SKADI_URL = &quot;https://s3.amazonaws.com/elevation-tiles-prod/skadi/{ns}/{tile}.hgt.gz&quot;
+TILE = &quot;N22E114&quot;  # CUHK 所在 SRTM 瓦片
+VOID = -32768
+
+
+def tile_bounds(tile):
+    &quot;&quot;&quot;'N22E114' -&gt; (west, south, east, north)，瓦片覆盖 1°×1°。&quot;&quot;&quot;
+    lat = int(tile[1:3]) * (1 if tile[0] == &quot;N&quot; else -1)
+    lon = int(tile[4:7]) * (1 if tile[3] == &quot;E&quot; else -1)
+    north = lat + 1 if lat &gt;= 0 else lat
+    south = north - 1
+    east = lon + 1 if lon &gt;= 0 else lon
+    west = east - 1
+    return (float(west), float(south), float(east), float(north))
+
+
+def download_hgt(tile, dest_dir):
+    &quot;&quot;&quot;从 skadi S3 下载并解压 .hgt，返回本地路径。已存在则跳过。&quot;&quot;&quot;
+    dest_dir = Path(dest_dir)
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    out = dest_dir / f&quot;{tile}.hgt&quot;
+    if out.exists():
+        return out
+    url = SKADI_URL.format(ns=tile[:3], tile=tile)
+    print(f&quot;[elevation] 下载 {url}&quot;)
+    with urllib.request.urlopen(url, timeout=120) as resp:
+        payload = resp.read()
+    out.write_bytes(gzip.decompress(payload))
+    return out
+
+
+def read_hgt(path):
+    &quot;&quot;&quot;读 .hgt 为 (n, n) float32 数组，第 0 行是北边缘。void 置 nan。&quot;&quot;&quot;
+    raw = np.fromfile(path, dtype=&quot;&gt;i2&quot;)
+    n = int(round(np.sqrt(raw.size)))
+    if n * n != raw.size or n not in (1201, 3601):
+        raise ValueError(f&quot;非法 HGT 文件大小：{path} ({raw.size} cells)&quot;)
+    dem = raw.reshape(n, n).astype(np.float32)
+    dem[dem == VOID] = np.nan
+    return dem
+
+
+def fill_voids(dem):
+    &quot;&quot;&quot;nan 用全局均值填充（SRTM 水域常为 void/0，CUHK 山地无大空洞）。&quot;&quot;&quot;
+    if not np.isnan(dem).any():
+        return dem
+    fill = np.nanmean(dem)
+    return np.where(np.isnan(dem), fill, dem)
+
+
+def crop_to_bounds(dem, tile, west, south, east, north):
+    &quot;&quot;&quot;把整瓦片裁到目标范围，返回 (dem_crop, lons, lats)（1° 瓦片内）。&quot;&quot;&quot;
+    tw, ts, te, tn = tile_bounds(tile)
+    n = dem.shape[0]
+    col = lambda lon: int(round((lon - tw) / (te - tw) * (n - 1)))
+    row = lambda lat: int(round((tn - lat) / (tn - ts) * (n - 1)))
+    c0, c1 = sorted((col(west), col(east)))
+    r0, r1 = sorted((row(north), row(south)))
+    c0, r0 = max(c0, 0), max(r0, 0)
+    c1, r1 = min(c1, n - 1), min(r1, n - 1)
+    lons = np.linspace(tw + c0 / (n - 1), tw + c1 / (n - 1), c1 - c0 + 1)
+    lats = np.linspace(tn - r0 / (n - 1), tn - r1 / (n - 1), r1 - r0 + 1)
+    return dem[r0 : r1 + 1, c0 : c1 + 1], lons, lats
+
+
+def cellsize_m(lons, lats):
+    &quot;&quot;&quot;经纬度步长换算成米（等距圆柱近似）。&quot;&quot;&quot;
+    mean_lat = np.deg2rad(np.mean(lats))
+    dx = np.abs(lons[1] - lons[0]) * 111320 * np.cos(mean_lat)
+    dy = np.abs(lats[1] - lats[0]) * 110540
+    return dx, dy
+
+
+def hillshade_rgba(dem, cellsize_m=30, azdeg=315, altdeg=45, vert_exag=1.5):
+    &quot;&quot;&quot;山体阴影 → RGBA：黑色阴影，alpha 随坡度阴影增强（海面已被置 0 → 无阴影）。&quot;&quot;&quot;
+    ls = LightSource(azdeg=azdeg, altdeg=altdeg)
+    shade = ls.hillshade(dem, vert_exag=vert_exag, dx=cellsize_m, dy=cellsize_m)
+    rgba = np.zeros((*shade.shape, 4), dtype=np.uint8)
+    rgba[..., 3] = ((1 - shade) * 255 * 0.85).astype(np.uint8)
+    return rgba
+
+
+def contour_lines(dem, lons, lats, interval=10, min_ele=None):
+    &quot;&quot;&quot;等高线 → GeoDataFrame(LineString, 属性 ele)。经纬度网格直接出地理坐标。&quot;&quot;&quot;
+    lo = float(np.nanmin(dem))
+    hi = float(np.nanmax(dem))
+    start = max(interval, int(np.ceil(lo / interval)) * interval)
+    if min_ele is not None:
+        start = max(start, min_ele)
+    levels = list(range(int(start), int(hi) + 1, interval))
+    X, Y = np.meshgrid(lons, lats)
+    cs = plt.contour(X, Y, dem, levels=levels)
+    rows = []
+    for level, segs in zip(cs.levels, cs.allsegs):
+        for seg in segs:
+            if len(seg) &gt;= 2:
+                rows.append({&quot;ele&quot;: int(level), &quot;geometry&quot;: LineString(seg)})
+    plt.close(&quot;all&quot;)
+    return gp.GeoDataFrame(rows, crs=&quot;EPSG:4326&quot;)
+
+
+def build_elevation_products(boundary_gdf, cache_dir, out_dir, interval=10):
+    &quot;&quot;&quot;主流程：下载瓦片 → 裁剪到边界 bbox(含 5% 余量) → 填洞/平滑 →
+    写出 hillshade.png + hillshade.json（四角坐标）+ contours.geojson。&quot;&quot;&quot;
+    hgt = download_hgt(TILE, Path(cache_dir) / &quot;srtm&quot;)
+    dem = read_hgt(hgt)
+
+    minx, miny, maxx, maxy = boundary_gdf.total_bounds
+    pad_x = (maxx - minx) * 0.05
+    pad_y = (maxy - miny) * 0.05
+    dem, lons, lats = crop_to_bounds(
+        dem, TILE, minx - pad_x, miny - pad_y, maxx + pad_x, maxy + pad_y
+    )
+    dem = fill_voids(dem)
+    dem = np.clip(dem, 0, None)  # 海面置 0
+    dem = gaussian_filter(dem, sigma=2)
+
+    out_dir = Path(out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    rgba = hillshade_rgba(dem, cellsize_m=cellsize_m(lons, lats)[0])
+    plt.imsave(out_dir / &quot;hillshade.png&quot;, rgba)
+    coords = [
+        [float(lons[0]), float(lats[0])],   # NW
+        [float(lons[-1]), float(lats[0])],  # NE
+        [float(lons[-1]), float(lats[-1])], # SE
+        [float(lons[0]), float(lats[-1])],  # SW
+    ]
+    (out_dir / &quot;hillshade.json&quot;).write_text(
+        json.dumps({&quot;coordinates&quot;: coords}), encoding=&quot;utf-8&quot;
+    )
+
+    contours = contour_lines(dem, lons, lats, interval=interval, min_ele=10)
+    contours.to_file(out_dir / &quot;contours.geojson&quot;, driver=&quot;GeoJSON&quot;)
+    print(f&quot;[elevation] hillshade {rgba.shape[:2]}, 等高线 {len(contours)} 条&quot;)
+    return contours
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 4: 运行确认通过</strong></li>
+</ul>
+<p>Run: <code>python -m pytest cuhk/tests/test_elevation.py -v</code>
+Expected: 6 passed</p>
+<ul>
+<li>[ ] <strong>Step 5: Commit</strong></li>
+</ul>
+<pre><code class="language-bash">git add cuhk/scripts/pipeline/elevation.py cuhk/tests/test_elevation.py
+git commit -m &quot;cuhk: SRTM download/parse, hillshade PNG, contour GeoJSON&quot;
+</code></pre>
+<hr />
+<h2 id="7heightspy">任务 7：建筑高度估算（heights.py）</h2>
+<p><strong>Files:</strong>
+- Create: <code>cuhk/scripts/pipeline/heights.py</code>
+- Test: <code>cuhk/tests/test_heights.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: 写失败测试</strong></li>
+</ul>
+<p><code>cuhk/tests/test_heights.py</code>：</p>
+<pre><code class="language-python">import pandas as pd
+
+from pipeline import heights
+
+
+def row(**kw):
+    return pd.Series(kw)
+
+
+def test_height_tag_parsed():
+    assert heights.estimate_height(row(height=&quot;15&quot;)) == 15.0
+    assert heights.estimate_height(row(height=&quot;12.5 m&quot;)) == 12.5
+
+
+def test_levels_fallback():
+    assert heights.estimate_height(row(height=None, **{&quot;building:levels&quot;: &quot;4&quot;})) == 12.0
+
+
+def test_default_when_missing():
+    assert heights.estimate_height(row(height=None, **{&quot;building:levels&quot;: None})) == 8.0
+
+
+def test_garbage_falls_back():
+    assert heights.estimate_height(row(height=&quot;unknown&quot;, **{&quot;building:levels&quot;: &quot;x&quot;})) == 8.0
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 2: 运行确认失败</strong></li>
+</ul>
+<p>Run: <code>python -m pytest cuhk/tests/test_heights.py -v</code>
+Expected: FAIL，<code>ModuleNotFoundError: No module named 'pipeline.heights'</code></p>
+<ul>
+<li>[ ] <strong>Step 3: 实现 heights.py</strong></li>
+</ul>
+<p><code>cuhk/scripts/pipeline/heights.py</code>：</p>
+<pre><code class="language-python">&quot;&quot;&quot;建筑高度估算：height 标签 → building:levels × 3 → 默认 8m。
+
+（spec 原本按楼宇类别给默认值；OSM 无可靠类别标签，简化为统一 8m。）
+&quot;&quot;&quot;
+
+import re
+
+DEFAULT_HEIGHT = 8.0
+METERS_PER_LEVEL = 3.0
+
+
+def _parse_number(value):
+    &quot;&quot;&quot;从 '15' / '12.5 m' / '12,5' 中提取数字；失败返回 None。&quot;&quot;&quot;
+    if value is None or (isinstance(value, float) and value != value):  # NaN
+        return None
+    match = re.search(r&quot;(\d+(?:[.,]\d+)?)&quot;, str(value))
+    if not match:
+        return None
+    return float(match.group(1).replace(&quot;,&quot;, &quot;.&quot;))
+
+
+def estimate_height(row):
+    &quot;&quot;&quot;单行建筑的高度（米）。优先级：height 标签 &gt; levels×3 &gt; 默认。&quot;&quot;&quot;
+    h = _parse_number(row.get(&quot;height&quot;))
+    if h is not None and 1 &lt;= h &lt;= 300:
+        return h
+    levels = _parse_number(row.get(&quot;building:levels&quot;))
+    if levels is not None and 0 &lt; levels &lt;= 100:
+        return levels * METERS_PER_LEVEL
+    return DEFAULT_HEIGHT
+
+
+def add_heights(buildings_gdf):
+    &quot;&quot;&quot;给建筑图层加两列：h（高度）和 c（0/1 交替配色索引，用于红/棕撞色）。&quot;&quot;&quot;
+    gdf = buildings_gdf.copy()
+    gdf[&quot;h&quot;] = gdf.apply(estimate_height, axis=1)
+    gdf[&quot;c&quot;] = range(len(gdf))
+    gdf[&quot;c&quot;] = gdf[&quot;c&quot;] % 2
+    return gdf
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 4: 运行确认通过</strong></li>
+</ul>
+<p>Run: <code>python -m pytest cuhk/tests/test_heights.py -v</code>
+Expected: 4 passed</p>
+<ul>
+<li>[ ] <strong>Step 5: Commit</strong></li>
+</ul>
+<pre><code class="language-bash">git add cuhk/scripts/pipeline/heights.py cuhk/tests/test_heights.py
+git commit -m &quot;cuhk: building height estimation + alternating color index&quot;
+</code></pre>
+<hr />
+<h2 id="8poi-poispy-poisyml">任务 8：POI 模块（pois.py + pois.yml）</h2>
+<p><strong>Files:</strong>
+- Create: <code>cuhk/scripts/pipeline/pois.py</code>
+- Create: <code>cuhk/data/pois.yml</code>
+- Test: <code>cuhk/tests/test_pois.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: 写失败测试</strong></li>
+</ul>
+<p><code>cuhk/tests/test_pois.py</code>：</p>
+<pre><code class="language-python">import geopandas as gp
+import pytest
+from shapely.geometry import Point, Polygon, box
+
+from pipeline import pois
+
+
+@pytest.fixture
+def features():
+    return gp.GeoDataFrame(
+        {
+            &quot;name&quot;: [&quot;University Library&quot;, None, &quot;New Asia College&quot;],
+            &quot;name:en&quot;: [&quot;University Library&quot;, None, &quot;New Asia College&quot;],
+            &quot;name:zh&quot;: [&quot;大學圖書館&quot;, None, &quot;新亞書院&quot;],
+            &quot;geometry&quot;: [
+                box(114.2070, 22.4195, 114.2080, 22.4205),
+                box(114.2000, 22.4100, 114.2010, 22.4110),
+                box(114.2090, 22.4210, 114.2100, 22.4220),
+            ],
+        },
+        crs=&quot;EPSG:4326&quot;,
+    )
+
+
+def test_load_pois_validates_schema(tmp_path):
+    yml = tmp_path / &quot;pois.yml&quot;
+    yml.write_text(
+        &quot;pois:\n  - id: x\n    name_zh: 测试\n    name_en: Test\n&quot;
+        &quot;    category: study\n    desc: d\n    lon: 114.2\n    lat: 22.4\n&quot;,
+        encoding=&quot;utf-8&quot;,
+    )
+    entries = pois.load_pois(yml)
+    assert entries[0][&quot;id&quot;] == &quot;x&quot;
+
+    bad = tmp_path / &quot;bad.yml&quot;
+    bad.write_text(&quot;pois:\n  - id: x\n&quot;, encoding=&quot;utf-8&quot;)
+    with pytest.raises(ValueError, match=&quot;字段&quot;):
+        pois.load_pois(bad)
+
+
+def test_resolve_lonlat_passthrough(features):
+    entries = [
+        {&quot;id&quot;: &quot;dot&quot;, &quot;name_zh&quot;: &quot;点&quot;, &quot;name_en&quot;: &quot;Dot&quot;, &quot;category&quot;: &quot;landmark&quot;,
+         &quot;desc&quot;: &quot;&quot;, &quot;lon&quot;: 114.205, &quot;lat&quot;: 22.418}
+    ]
+    gdf, unmatched = pois.resolve_pois(entries, features)
+    assert len(gdf) == 1 and unmatched == []
+    assert gdf.geometry.iloc[0].x == pytest.approx(114.205)
+
+
+def test_resolve_fuzzy_match_zh(features):
+    entries = [
+        {&quot;id&quot;: &quot;na&quot;, &quot;name_zh&quot;: &quot;新亚书院&quot;, &quot;name_en&quot;: &quot;New Asia College&quot;,
+         &quot;category&quot;: &quot;life&quot;, &quot;desc&quot;: &quot;&quot;, &quot;osm_name&quot;: &quot;New Asia College&quot;}
+    ]
+    gdf, unmatched = pois.resolve_pois(entries, features)
+    assert unmatched == []
+    # 匹配到新亚书院要素的质心
+    assert gdf.geometry.iloc[0].x == pytest.approx(114.2095)
+
+
+def test_unmatched_reported(features):
+    entries = [
+        {&quot;id&quot;: &quot;ghost&quot;, &quot;name_zh&quot;: &quot;不存在&quot;, &quot;name_en&quot;: &quot;Ghost Place&quot;,
+         &quot;category&quot;: &quot;study&quot;, &quot;desc&quot;: &quot;&quot;, &quot;osm_name&quot;: &quot;Zzz Nonexistent Qqq&quot;}
+    ]
+    _, unmatched = pois.resolve_pois(entries, features)
+    assert unmatched == [&quot;ghost&quot;]
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 2: 运行确认失败</strong></li>
+</ul>
+<p>Run: <code>python -m pytest cuhk/tests/test_pois.py -v</code>
+Expected: FAIL，<code>ModuleNotFoundError: No module named 'pipeline.pois'</code></p>
+<ul>
+<li>[ ] <strong>Step 3: 实现 pois.py</strong></li>
+</ul>
+<p><code>cuhk/scripts/pipeline/pois.py</code>：</p>
+<pre><code class="language-python">&quot;&quot;&quot;POI 解析：pois.yml → pois.geojson。
+
+定位二选一：lon/lat 直接给点；osm_name 与抓取的命名要素做模糊匹配取质心。
+匹配失败的条目全量报错（不静默丢弃）。
+&quot;&quot;&quot;
+
+import difflib
+
+import geopandas as gp
+import osmnx as ox
+import pandas as pd
+import yaml
+from shapely.geometry import Point
+
+REQUIRED_FIELDS = {&quot;id&quot;, &quot;name_zh&quot;, &quot;name_en&quot;, &quot;category&quot;, &quot;desc&quot;}
+CATEGORIES = {&quot;study&quot;, &quot;life&quot;, &quot;sports&quot;, &quot;transport&quot;, &quot;landmark&quot;}
+MATCH_THRESHOLD = 0.55
+
+NAME_TAGS = {
+    &quot;amenity&quot;: True, &quot;building&quot;: True, &quot;leisure&quot;: True, &quot;tourism&quot;: True,
+    &quot;railway&quot;: True, &quot;shop&quot;: True, &quot;office&quot;: True, &quot;historic&quot;: True,
+    &quot;man_made&quot;: True, &quot;natural&quot;: True,
+}
+
+
+def load_pois(path):
+    &quot;&quot;&quot;加载并校验 pois.yml，返回条目列表。&quot;&quot;&quot;
+    with open(path, encoding=&quot;utf-8&quot;) as f:
+        entries = yaml.safe_load(f)[&quot;pois&quot;]
+    ids = set()
+    for e in entries:
+        missing = REQUIRED_FIELDS - set(e)
+        if missing:
+            raise ValueError(f&quot;POI {e.get('id', '?')} 缺字段：{missing}&quot;)
+        if e[&quot;category&quot;] not in CATEGORIES:
+            raise ValueError(f&quot;POI {e['id']} 类别非法：{e['category']}&quot;)
+        if not ((&quot;lon&quot; in e and &quot;lat&quot; in e) or &quot;osm_name&quot; in e):
+            raise ValueError(f&quot;POI {e['id']} 必须给 lon/lat 或 osm_name&quot;)
+        if e[&quot;id&quot;] in ids:
+            raise ValueError(f&quot;POI id 重复：{e['id']}&quot;)
+        ids.add(e[&quot;id&quot;])
+    return entries
+
+
+def fetch_named_features(boundary_gdf):
+    &quot;&quot;&quot;抓边界内所有带名字的要素（一次大请求，osmnx 缓存）。&quot;&quot;&quot;
+    polygon = boundary_gdf.geometry.union_all()
+    gdf = ox.features_from_polygon(polygon, tags=NAME_TAGS)
+    if gdf.empty:
+        return gdf
+    has_name = pd.Series(False, index=gdf.index)
+    for col in (&quot;name&quot;, &quot;name:en&quot;, &quot;name:zh&quot;):
+        if col in gdf.columns:
+            has_name |= gdf[col].notna()
+    return gdf[has_name]
+
+
+def _similarity(a, b):
+    return difflib.SequenceMatcher(None, a.lower(), b.lower()).ratio()
+
+
+def _match_feature(osm_name, features):
+    &quot;&quot;&quot;在要素的 name/name:en/name:zh 中找最佳匹配，返回 (row, score)。&quot;&quot;&quot;
+    best_row, best_score = None, 0.0
+    for _, row in features.iterrows():
+        candidates = [
+            str(row[c]) for c in (&quot;name&quot;, &quot;name:en&quot;, &quot;name:zh&quot;)
+            if c in row and pd.notna(row[c])
+        ]
+        score = max((_similarity(osm_name, c) for c in candidates), default=0.0)
+        if score &gt; best_score:
+            best_row, best_score = row, score
+    return best_row, best_score
+
+
+def resolve_pois(entries, features):
+    &quot;&quot;&quot;条目 → 点要素。返回 (GeoDataFrame, unmatched_id_list)。&quot;&quot;&quot;
+    rows, unmatched = [], []
+    for e in entries:
+        if &quot;lon&quot; in e and &quot;lat&quot; in e:
+            point = Point(e[&quot;lon&quot;], e[&quot;lat&quot;])
+        else:
+            row, score = _match_feature(e[&quot;osm_name&quot;], features)
+            if row is None or score &lt; MATCH_THRESHOLD:
+                unmatched.append(e[&quot;id&quot;])
+                continue
+            point = row.geometry.representative_point()
+        rows.append({
+            &quot;id&quot;: e[&quot;id&quot;],
+            &quot;name_zh&quot;: e[&quot;name_zh&quot;],
+            &quot;name_en&quot;: e[&quot;name_en&quot;],
+            &quot;category&quot;: e[&quot;category&quot;],
+            &quot;desc&quot;: e[&quot;desc&quot;],
+            &quot;geometry&quot;: point,
+        })
+    return gp.GeoDataFrame(rows, crs=&quot;EPSG:4326&quot;), unmatched
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 4: 运行确认通过</strong></li>
+</ul>
+<p>Run: <code>python -m pytest cuhk/tests/test_pois.py -v</code>
+Expected: 4 passed</p>
+<ul>
+<li>[ ] <strong>Step 5: 编写 pois.yml（42 条初始数据）</strong></li>
+</ul>
+<p><code>cuhk/data/pois.yml</code>（osm_name 为最佳猜测，Step 6 会用真实数据核对修正）：</p>
+<pre><code class="language-yaml"># CUHK 迎新地图 POI 表
+# 定位：osm_name（与 OSM 要素模糊匹配）或 lon/lat 直接给坐标，二选一
+# category: study 学习 / life 生活 / sports 体育 / transport 交通 / landmark 地标
+pois:
+  # ===== 书院（life） =====
+  - {id: chung-chi,    name_zh: 崇基学院,   name_en: Chung Chi College,    category: life, desc: 1951年创校，历史最悠久的成员书院，未圆湖所在地。, osm_name: Chung Chi College}
+  - {id: new-asia,     name_zh: 新亚书院,   name_en: New Asia College,     category: life, desc: 1949年创立，以弘扬中国文化为宗旨，&quot;天人合一&quot;所在地。, osm_name: New Asia College}
+  - {id: united,       name_zh: 联合书院,   name_en: United College,       category: life, desc: 1956年由五家书院合并组成，坐拥吐露港景致。, osm_name: United College}
+  - {id: shaw,         name_zh: 逸夫书院,   name_en: Shaw College,         category: life, desc: 1986年创立，位于校园西北部的山坡上。, osm_name: Shaw College}
+  - {id: morningside,  name_zh: 晨兴书院,   name_en: Morningside College,  category: life, desc: 2006年创立的全宿制书院。, osm_name: Morningside College}
+  - {id: sh-ho,        name_zh: 善衡书院,   name_en: S.H. Ho College,      category: life, desc: 2006年创立，以&quot;家&quot;为理念的全宿制书院。, osm_name: S.H. Ho College}
+  - {id: cw-chu,       name_zh: 敬文书院,   name_en: C.W. Chu College,     category: life, desc: 2007年创立的小型全宿共膳书院。, osm_name: C.W. Chu College}
+  - {id: wu-yee-sun,   name_zh: 伍宜孙书院, name_en: Wu Yee Sun College,   category: life, desc: 2007年创立，邻近大学站与科学园。, osm_name: Wu Yee Sun College}
+  - {id: lee-woo-sing, name_zh: 和声书院,   name_en: Lee Woo Sing College, category: life, desc: 2007年创立，位于校园北部山坡。, osm_name: Lee Woo Sing College}
+  # ===== 学习（study） =====
+  - {id: ul,           name_zh: 大学图书馆, name_en: University Library,   category: study, desc: 中大总图书馆，百万大道旁的学术地标。, osm_name: University Library}
+  - {id: moore-lib,    name_zh: 牟路思怡图书馆, name_en: Elisabeth Luce Moore Library, category: study, desc: 崇基学院图书馆。, osm_name: Elisabeth Luce Moore Library}
+  - {id: chien-mu-lib, name_zh: 钱穆图书馆, name_en: Ch'ien Mu Library,    category: study, desc: 新亚书院图书馆，以创校校长命名。, osm_name: Ch'ien Mu Library}
+  - {id: wu-chung-lib, name_zh: 胡忠图书馆, name_en: Wu Chung Library,     category: study, desc: 联合书院多媒体图书馆。, osm_name: Wu Chung Library}
+  - {id: yia,          name_zh: 李兆基楼,   name_en: Yasumoto International Academic Park, category: study, desc: 中央校园主要教学楼之一，国际学术园。, osm_name: Yasumoto International Academic Park}
+  - {id: cyt,          name_zh: 郑裕彤楼,   name_en: Cheng Yu Tung Building, category: study, desc: 商学院教学楼，俯瞰大学站。, osm_name: Cheng Yu Tung Building}
+  - {id: shb,          name_zh: 何善衡工程学大楼, name_en: Ho Sin Hang Engineering Building, category: study, desc: 工程学院主楼。, osm_name: Ho Sin Hang Engineering Building}
+  - {id: science-centre, name_zh: 科学馆,   name_en: Science Centre,       category: study, desc: 理学院教学与实验大楼。, osm_name: Science Centre}
+  - {id: mmw,          name_zh: 蒙民伟楼,   name_en: William M.W. Mong Engineering Building, category: study, desc: 工程学院大楼，邻近大学站。, osm_name: William M.W. Mong Engineering Building}
+  - {id: elb,          name_zh: 伍何曼原楼, name_en: Esther Lee Building,  category: study, desc: 中央校园综合教学楼。, osm_name: Esther Lee Building}
+  - {id: fkh,          name_zh: 冯景禧楼,   name_en: Fung King Hey Building, category: study, desc: 位于大学道的教学楼。, osm_name: Fung King Hey Building}
+  - {id: lsk,          name_zh: 梁銶琚楼,   name_en: Leung Kau Kui Building, category: study, desc: 中央校园教学楼。, osm_name: Leung Kau Kui Building}
+  # ===== 餐饮/生活（life） =====
+  - {id: franklin,     name_zh: 范克廉楼,   name_en: Benjamin Franklin Centre, category: life, desc: 学生活动中心，餐厅与泳池所在地。, osm_name: Benjamin Franklin Centre}
+  - {id: orchid-lodge, name_zh: 兰苑,       name_en: Orchid Lodge,         category: life, desc: 崇基校园内的中式餐厅。, osm_name: Orchid Lodge}
+  - {id: cc-canteen,   name_zh: 众志堂,     name_en: Chung Chi College Canteen, category: life, desc: 崇基学生膳堂。, osm_name: Chung Chi College Canteen}
+  - {id: na-canteen,   name_zh: 新亚学生膳堂, name_en: New Asia College Canteen, category: life, desc: 新亚书院餐厅。, osm_name: New Asia College Canteen}
+  - {id: uc-canteen,   name_zh: 联合学生膳堂, name_en: United College Canteen, category: life, desc: 联合书院餐厅。, osm_name: United College Canteen}
+  # ===== 体育（sports） =====
+  - {id: sports-centre, name_zh: 大学体育中心, name_en: University Sports Centre, category: sports, desc: 室内体育馆与健身设施。, osm_name: University Sports Centre}
+  - {id: haddon-cave,  name_zh: 夏鼎基运动场, name_en: Sir Philip Haddon-Cave Sports Field, category: sports, desc: 临海田径运动场。, osm_name: Sir Philip Haddon-Cave Sports Field}
+  - {id: swimming-pool, name_zh: 大学游泳池, name_en: University Swimming Pool, category: sports, desc: 范克廉楼旁的室外泳池。, osm_name: University Swimming Pool}
+  # ===== 交通（transport） =====
+  - {id: university-station, name_zh: 港铁大学站, name_en: University Station, category: transport, desc: 东铁线车站，进出校园的门户。, osm_name: University}
+  - {id: bus-terminus, name_zh: 大学站巴士总站, name_en: University Station Bus Terminus, category: transport, desc: 校外巴士与专线小巴总站。, osm_name: University Station Bus Terminus}
+  - {id: shuttle-central, name_zh: 校巴站（本部）, name_en: Central Avenue Shuttle Stop, category: transport, desc: 校内穿梭巴士主要站点。, lon: 114.2072, lat: 22.4197}
+  # ===== 地标（landmark） =====
+  - {id: harmony,      name_zh: 天人合一,   name_en: Pavilion of Harmony,  category: landmark, desc: 新亚书院标志性景点，海天一色的打卡圣地。, osm_name: Pavilion of Harmony}
+  - {id: mall,         name_zh: 百万大道,   name_en: University Mall,      category: landmark, desc: 贯穿中央校园的大道，毕业照必拍地。, osm_name: University Mall}
+  - {id: beacon,       name_zh: 烽火台,     name_en: The Beacon,           category: landmark, desc: 大学道上的雕塑地标，俗称&quot;仲门&quot;。, osm_name: The Beacon}
+  - {id: uadmin,       name_zh: 大学行政楼, name_en: University Administration Building, category: landmark, desc: 中央校园行政中枢。, osm_name: University Administration Building}
+  - {id: chapel,       name_zh: 崇基学院礼拜堂, name_en: Chung Chi College Chapel, category: landmark, desc: 崇基校园的礼拜堂与钟楼。, osm_name: Chung Chi College Chapel}
+  - {id: shaw-hall,    name_zh: 邵逸夫堂,   name_en: Sir Run Run Shaw Hall, category: landmark, desc: 大学礼堂，大型典礼与演出场地。, osm_name: Sir Run Run Shaw Hall}
+  - {id: lake,         name_zh: 未圆湖,     name_en: Lake Ad Excellentiam, category: landmark, desc: 崇基校园的湖泊，&quot;未圆&quot;寓意学无止境。, osm_name: Lake Ad Excellentiam}
+  - {id: pier,         name_zh: 马料水码头, name_en: Ma Liu Shui Pier,     category: transport, desc: 通往塔门等离岛的渡轮码头。, osm_name: Ma Liu Shui Pier}
+  - {id: science-park, name_zh: 香港科学园, name_en: Hong Kong Science Park, category: landmark, desc: 校园北侧的创科园区，实习机会集中地。, osm_name: Hong Kong Science Park}
+  - {id: promenade,    name_zh: 白石角海滨长廊, name_en: Pak Shek Kok Promenade, category: landmark, desc: 吐露港海滨散步与骑行路线。, osm_name: Pak Shek Kok Promenade}
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 6: 用真实数据核对 osm_name</strong></li>
+</ul>
+<p>先跑一次命名要素转储（一条命令）：</p>
+<pre><code class="language-bash">PYTHONPATH=cuhk/scripts python -c &quot;
+import geopandas as gp
+from pipeline import pois
+b = gp.read_file('cuhk/data/boundary_fallback.geojson')
+from pipeline import boundary
+b = gp.GeoDataFrame(geometry=[boundary.buffer_polygon_meters(b.geometry.iloc[0], 800)], crs='EPSG:4326')
+f = pois.fetch_named_features(b)
+cols = [c for c in ('name','name:en','name:zh') if c in f.columns]
+f[cols].drop_duplicates().to_csv('cuhk/cache/names_dump.csv', index=False)
+print(len(f), 'named features -&gt; cuhk/cache/names_dump.csv')
+&quot;
+</code></pre>
+<p>打开 <code>cuhk/cache/names_dump.csv</code>，逐条核对 pois.yml 的 <code>osm_name</code> 是否在真实数据中存在（或近似存在）：
+- 拼写不一致 → 把 <code>osm_name</code> 改成数据里的真实写法（如 <code>University</code> → <code>University Station</code>）
+- 要素根本没有名字（校巴站、部分食堂很可能如此）→ 从转储里找附近要素估算坐标，改用 <code>lon</code>/<code>lat</code></p>
+<p>再跑解析自检（应输出 unmatched 为空）：</p>
+<pre><code class="language-bash">PYTHONPATH=cuhk/scripts python -c &quot;
+import geopandas as gp
+from pipeline import pois, boundary
+b = gp.read_file('cuhk/data/boundary_fallback.geojson')
+b = gp.GeoDataFrame(geometry=[boundary.buffer_polygon_meters(b.geometry.iloc[0], 800)], crs='EPSG:4326')
+f = pois.fetch_named_features(b)
+entries = pois.load_pois('cuhk/data/pois.yml')
+gdf, unmatched = pois.resolve_pois(entries, f)
+print('resolved:', len(gdf), 'unmatched:', unmatched)
+assert not unmatched, unmatched
+&quot;
+</code></pre>
+<p>反复修正直到 unmatched 为空。</p>
+<ul>
+<li>[ ] <strong>Step 7: Commit</strong></li>
+</ul>
+<pre><code class="language-bash">git add cuhk/scripts/pipeline/pois.py cuhk/tests/test_pois.py cuhk/data/pois.yml
+git commit -m &quot;cuhk: POI module + 42 curated bilingual POIs&quot;
+</code></pre>
+<hr />
+<h2 id="9validatepy">任务 9：产出校验（validate.py）</h2>
+<p><strong>Files:</strong>
+- Create: <code>cuhk/scripts/pipeline/validate.py</code>
+- Test: <code>cuhk/tests/test_validate.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: 写失败测试</strong></li>
+</ul>
+<p><code>cuhk/tests/test_validate.py</code>：</p>
+<pre><code class="language-python">import geopandas as gp
+import pytest
+from shapely.geometry import LineString, Point, box
+
+from pipeline import validate
+
+
+def good_gdfs():
+    g = lambda geoms: gp.GeoDataFrame({&quot;geometry&quot;: geoms}, crs=&quot;EPSG:4326&quot;)
+    return {
+        &quot;buildings&quot;: g([box(114.20, 22.41, 114.201, 22.411)] * 301),
+        &quot;roads&quot;: g([LineString([(114.2, 22.41), (114.21, 22.42)])] * 51),
+        &quot;green&quot;: g([box(114.20, 22.41, 114.202, 22.412)] * 21),
+        &quot;railway&quot;: g([LineString([(114.2, 22.41), (114.21, 22.42)])]),
+        &quot;sea&quot;: g([box(114.22, 22.41, 114.23, 22.42)]),
+        &quot;contours&quot;: g([LineString([(114.2, 22.41), (114.21, 22.42)])] * 6),
+    }
+
+
+def good_pois():
+    return gp.GeoDataFrame(
+        {&quot;geometry&quot;: [Point(114.2, 22.41)] * 31}, crs=&quot;EPSG:4326&quot;
+    )
+
+
+def test_valid_passes():
+    report = validate.validate(good_gdfs(), good_pois())
+    assert any(&quot;OK&quot; in line for line in report)
+
+
+def test_empty_buildings_fails():
+    gdfs = good_gdfs()
+    gdfs[&quot;buildings&quot;] = gdfs[&quot;buildings&quot;].iloc[:0]
+    with pytest.raises(RuntimeError, match=&quot;buildings&quot;):
+        validate.validate(gdfs, good_pois())
+
+
+def test_out_of_hk_fails():
+    gdfs = good_gdfs()
+    gdfs[&quot;sea&quot;] = gp.GeoDataFrame(
+        {&quot;geometry&quot;: [box(10.0, 10.0, 11.0, 11.0)]}, crs=&quot;EPSG:4326&quot;
+    )
+    with pytest.raises(RuntimeError, match=&quot;香港&quot;):
+        validate.validate(gdfs, good_pois())
+
+
+def test_too_few_pois_fails():
+    with pytest.raises(RuntimeError, match=&quot;POI&quot;):
+        validate.validate(good_gdfs(), good_pois().iloc[:5])
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 2: 运行确认失败</strong></li>
+</ul>
+<p>Run: <code>python -m pytest cuhk/tests/test_validate.py -v</code>
+Expected: FAIL，<code>ModuleNotFoundError: No module named 'pipeline.validate'</code></p>
+<ul>
+<li>[ ] <strong>Step 3: 实现 validate.py</strong></li>
+</ul>
+<p><code>cuhk/scripts/pipeline/validate.py</code>：</p>
+<pre><code class="language-python">&quot;&quot;&quot;管线产出校验：图层数量下限、香港范围检查、POI 数量下限。
+
+失败即 raise（build 中止），报告行同时返回供打印。
+&quot;&quot;&quot;
+
+HK_BBOX = (113.8, 22.1, 114.5, 22.6)  # (min_lon, min_lat, max_lon, max_lat)
+
+REQUIRED_MIN = {
+    &quot;buildings&quot;: 300,
+    &quot;roads&quot;: 50,
+    &quot;green&quot;: 20,
+    &quot;railway&quot;: 1,
+    &quot;sea&quot;: 1,
+    &quot;contours&quot;: 5,
+}
+MIN_POIS = 30
+
+
+def _check_bounds(name, gdf, problems):
+    if gdf.empty:
+        return
+    minx, miny, maxx, maxy = gdf.total_bounds
+    lon0, lat0, lon1, lat1 = HK_BBOX
+    if not (lon0 &lt;= minx and maxx &lt;= lon1 and lat0 &lt;= miny and maxy &lt;= lat1):
+        problems.append(f&quot;{name} 范围越出香港：{gdf.total_bounds}&quot;)
+
+
+def validate(gdfs, pois_gdf):
+    &quot;&quot;&quot;gdfs: {layer: GeoDataFrame}；pois_gdf: GeoDataFrame。返回报告行列表。&quot;&quot;&quot;
+    problems, report = [], []
+
+    for layer, min_count in REQUIRED_MIN.items():
+        gdf = gdfs.get(layer)
+        n = 0 if gdf is None else len(gdf)
+        if n &lt; min_count:
+            problems.append(f&quot;{layer} 只有 {n} 个要素（要求 ≥{min_count}）&quot;)
+        else:
+            report.append(f&quot;OK {layer}: {n} 个要素&quot;)
+
+    for name, gdf in gdfs.items():
+        if gdf is not None:
+            _check_bounds(name, gdf, problems)
+
+    if len(pois_gdf) &lt; MIN_POIS:
+        problems.append(f&quot;POI 只有 {len(pois_gdf)} 条（要求 ≥{MIN_POIS}）&quot;)
+    else:
+        report.append(f&quot;OK POI: {len(pois_gdf)} 条&quot;)
+
+    if problems:
+        raise RuntimeError(&quot;校验失败：\n&quot; + &quot;\n&quot;.join(problems))
+    report.append(&quot;全部校验通过&quot;)
+    return report
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 4: 运行确认通过</strong></li>
+</ul>
+<p>Run: <code>python -m pytest cuhk/tests/test_validate.py -v</code>
+Expected: 4 passed</p>
+<ul>
+<li>[ ] <strong>Step 5: Commit</strong></li>
+</ul>
+<pre><code class="language-bash">git add cuhk/scripts/pipeline/validate.py cuhk/tests/test_validate.py
+git commit -m &quot;cuhk: output validation (counts, HK bounds, POI minimum)&quot;
+</code></pre>
+<hr />
+<h2 id="10build_datapy">任务 10：管线编排（build_data.py）+ 真实运行</h2>
+<p><strong>Files:</strong>
+- Create: <code>cuhk/scripts/build_data.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: 实现 build_data.py</strong></li>
+</ul>
+<p><code>cuhk/scripts/build_data.py</code>：</p>
+<pre><code class="language-python">&quot;&quot;&quot;CUHK 地图数据管线编排。
+
+用法：python cuhk/scripts/build_data.py [--out cuhk/site/data] [--allow-unmatched]
+跑一次产出全部前端数据；OSM/SRTM 缓存于 cuhk/cache，重复跑很快。
+&quot;&quot;&quot;
+
+import argparse
+import sys
+from pathlib import Path
+
+import geopandas as gp
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from pipeline import (  # noqa: E402
+    boundary,
+    elevation,
+    heights,
+    layers,
+    pois,
+    sea,
+    validate,
+)
+from pipeline.overpass import OverpassClient  # noqa: E402
+
+REPO_CUHK = Path(__file__).resolve().parents[1]
+
+
+def main():
+    parser = argparse.ArgumentParser(description=&quot;CUHK 地图数据管线&quot;)
+    parser.add_argument(&quot;--out&quot;, default=str(REPO_CUHK / &quot;site&quot; / &quot;data&quot;))
+    parser.add_argument(&quot;--cache&quot;, default=str(REPO_CUHK / &quot;cache&quot;))
+    parser.add_argument(
+        &quot;--allow-unmatched&quot;,
+        action=&quot;store_true&quot;,
+        help=&quot;POI 匹配失败仅警告不中止（调试用）&quot;,
+    )
+    args = parser.parse_args()
+
+    out_dir, cache_dir = Path(args.out), Path(args.cache)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    client = OverpassClient(cache_dir=cache_dir)
+
+    # ① 边界（校园 + 800m 缓冲）
+    print(&quot;== ① 边界 ==&quot;)
+    campus = boundary.fetch_campus_boundary(client, buffer_m=800)
+    campus.to_file(out_dir / &quot;boundary.geojson&quot;, driver=&quot;GeoJSON&quot;)
+
+    # ② 图层
+    print(&quot;== ② OSM 图层 ==&quot;)
+    gdfs = layers.fetch_all_layers(campus, cache_dir)
+
+    # ③ 海面
+    print(&quot;== ③ 海面 ==&quot;)
+    gdfs[&quot;sea&quot;] = sea.fetch_sea(campus)
+
+    # ④ 高程（hillshade + 等高线）
+    print(&quot;== ④ 高程 ==&quot;)
+    gdfs[&quot;contours&quot;] = elevation.build_elevation_products(
+        campus, cache_dir, out_dir, interval=10
+    )
+
+    # ⑤ 建筑高度 + 配色索引
+    gdfs[&quot;buildings&quot;] = heights.add_heights(gdfs[&quot;buildings&quot;])
+
+    # ⑥ POI
+    print(&quot;== ⑥ POI ==&quot;)
+    entries = pois.load_pois(REPO_CUHK / &quot;data&quot; / &quot;pois.yml&quot;)
+    features = pois.fetch_named_features(campus)
+    pois_gdf, unmatched = pois.resolve_pois(entries, features)
+    if unmatched:
+        msg = f&quot;以下 POI 未匹配到 OSM 要素：{unmatched}（核对 pois.yml 的 osm_name 或改 lon/lat）&quot;
+        if args.allow_unmatched:
+            print(&quot;WARNING:&quot;, msg)
+        else:
+            raise SystemExit(msg)
+
+    # ⑦ 校验
+    print(&quot;== ⑦ 校验 ==&quot;)
+    for line in validate.validate(gdfs, pois_gdf):
+        print(&quot; &quot;, line)
+
+    # ⑧ 写出（所有图层都要落盘——style.json 静态引用全部 12 个文件，
+    #    空图层写成空 FeatureCollection，避免前端 404）
+    print(&quot;== ⑧ 写出 ==&quot;)
+    import json
+
+    keep = {
+        &quot;buildings&quot;: [&quot;h&quot;, &quot;c&quot;, &quot;geometry&quot;],
+        &quot;roads&quot;: [&quot;road_class&quot;, &quot;geometry&quot;],
+        &quot;railway&quot;: [&quot;geometry&quot;],
+        &quot;water&quot;: [&quot;geometry&quot;],
+        &quot;waterway&quot;: [&quot;geometry&quot;],
+        &quot;forest&quot;: [&quot;geometry&quot;],
+        &quot;green&quot;: [&quot;geometry&quot;],
+        &quot;beach&quot;: [&quot;geometry&quot;],
+        &quot;parking&quot;: [&quot;geometry&quot;],
+        &quot;sea&quot;: [&quot;geometry&quot;],
+        &quot;contours&quot;: [&quot;ele&quot;, &quot;geometry&quot;],
+    }
+    EMPTY_FC = {&quot;type&quot;: &quot;FeatureCollection&quot;, &quot;features&quot;: []}
+    for name, cols in keep.items():
+        gdf = gdfs.get(name)
+        path = out_dir / f&quot;{name}.geojson&quot;
+        if gdf is None or gdf.empty:
+            path.write_text(json.dumps(EMPTY_FC), encoding=&quot;utf-8&quot;)
+            print(f&quot;  {name}.geojson: 空图层&quot;)
+            continue
+        existing = [c for c in cols if c in gdf.columns or c == &quot;geometry&quot;]
+        gdf[existing].to_file(path, driver=&quot;GeoJSON&quot;)
+        print(f&quot;  {name}.geojson: {len(gdf)} 要素&quot;)
+    pois_gdf.to_file(out_dir / &quot;pois.geojson&quot;, driver=&quot;GeoJSON&quot;)
+    print(f&quot;  pois.geojson: {len(pois_gdf)} 条&quot;)
+    print(f&quot;完成 → {out_dir}&quot;)
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 2: 全量测试套件回归</strong></li>
+</ul>
+<p>Run: <code>python -m pytest cuhk/tests -v</code>
+Expected: 全部 passed（累计约 22 个测试）</p>
+<ul>
+<li>[ ] <strong>Step 3: 真实运行管线（需要网络，约 3–10 分钟）</strong></li>
+</ul>
+<p>Run: <code>python cuhk/scripts/build_data.py</code>
+Expected:
+- <code>== ⑦ 校验 ==</code> 全部 OK
+- <code>cuhk/site/data/</code> 下生成 boundary/buildings/roads/railway/water/waterway/forest/green/beach/parking/sea/contours/pois 共 12 个 geojson + hillshade.png + hillshade.json
+- 若 POI 有 unmatched：按任务 8 Step 6 的流程修正 yml 后重跑（缓存使重跑很快）</p>
+<p>注意：若 Overpass 偶发超时，直接重跑（客户端有重试+缓存）。若反复失败，设镜像后重试：<code>$env:CUHK_OVERPASS_URL="https://overpass.private.coffee/api/interpreter"</code>。</p>
+<ul>
+<li>[ ] <strong>Step 4: Commit</strong></li>
+</ul>
+<pre><code class="language-bash">git add cuhk/scripts/build_data.py
+git commit -m &quot;cuhk: data pipeline orchestrator (end-to-end run verified)&quot;
+</code></pre>
+<hr />
+<h2 id="11vendor-maplibre-gl-js">任务 11：Vendor MapLibre GL JS</h2>
+<p><strong>Files:</strong>
+- Create: <code>cuhk/site/vendor/maplibre-gl.js</code>
+- Create: <code>cuhk/site/vendor/maplibre-gl.css</code></p>
+<ul>
+<li>[ ] <strong>Step 1: 下载（一次性，jsdelivr 已实测可达）</strong></li>
+</ul>
+<pre><code class="language-bash">curl -L -o cuhk/site/vendor/maplibre-gl.js https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js
+curl -L -o cuhk/site/vendor/maplibre-gl.css https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 2: 校验文件</strong></li>
+</ul>
+<p>Run: <code>python -c "import os; [print(f, os.path.getsize('cuhk/site/vendor/'+f)) for f in ('maplibre-gl.js','maplibre-gl.css')]"</code>
+Expected: js ≈ 800KB+，css ≈ 100KB+；文件头非 HTML 错误页（<code>head -c 100 cuhk/site/vendor/maplibre-gl.js</code> 应为 <code>/*!</code> 或 JS 代码）</p>
+<ul>
+<li>[ ] <strong>Step 3: Commit</strong></li>
+</ul>
+<pre><code class="language-bash">git add cuhk/site/vendor/
+git commit -m &quot;cuhk: vendor maplibre-gl 4.7.1 (offline runtime)&quot;
+</code></pre>
+<hr />
+<h2 id="12stylejson">任务 12：地图样式（style.json）</h2>
+<p><strong>Files:</strong>
+- Create: <code>cuhk/site/style.json</code></p>
+<p>配色取自 prettymaps <code>default.json</code> preset。无 symbol 文字层 → 不需要 glyphs。hillshade（image source 坐标动态）与 hatch 图案层由 app.js 在运行时注入。</p>
+<ul>
+<li>[ ] <strong>Step 1: 写 style.json</strong></li>
+</ul>
+<p><code>cuhk/site/style.json</code>（完整内容）：</p>
+<pre><code class="language-json">{
+  &quot;version&quot;: 8,
+  &quot;name&quot;: &quot;cuhk-prettymaps&quot;,
+  &quot;sources&quot;: {
+    &quot;buildings&quot;: { &quot;type&quot;: &quot;geojson&quot;, &quot;data&quot;: &quot;data/buildings.geojson&quot; },
+    &quot;roads&quot;:     { &quot;type&quot;: &quot;geojson&quot;, &quot;data&quot;: &quot;data/roads.geojson&quot; },
+    &quot;railway&quot;:   { &quot;type&quot;: &quot;geojson&quot;, &quot;data&quot;: &quot;data/railway.geojson&quot; },
+    &quot;water&quot;:     { &quot;type&quot;: &quot;geojson&quot;, &quot;data&quot;: &quot;data/water.geojson&quot; },
+    &quot;waterway&quot;:  { &quot;type&quot;: &quot;geojson&quot;, &quot;data&quot;: &quot;data/waterway.geojson&quot; },
+    &quot;forest&quot;:    { &quot;type&quot;: &quot;geojson&quot;, &quot;data&quot;: &quot;data/forest.geojson&quot; },
+    &quot;green&quot;:     { &quot;type&quot;: &quot;geojson&quot;, &quot;data&quot;: &quot;data/green.geojson&quot; },
+    &quot;beach&quot;:     { &quot;type&quot;: &quot;geojson&quot;, &quot;data&quot;: &quot;data/beach.geojson&quot; },
+    &quot;parking&quot;:   { &quot;type&quot;: &quot;geojson&quot;, &quot;data&quot;: &quot;data/parking.geojson&quot; },
+    &quot;sea&quot;:       { &quot;type&quot;: &quot;geojson&quot;, &quot;data&quot;: &quot;data/sea.geojson&quot; },
+    &quot;contours&quot;:  { &quot;type&quot;: &quot;geojson&quot;, &quot;data&quot;: &quot;data/contours.geojson&quot; },
+    &quot;boundary&quot;:  { &quot;type&quot;: &quot;geojson&quot;, &quot;data&quot;: &quot;data/boundary.geojson&quot; }
+  },
+  &quot;layers&quot;: [
+    {
+      &quot;id&quot;: &quot;background&quot;,
+      &quot;type&quot;: &quot;background&quot;,
+      &quot;paint&quot;: { &quot;background-color&quot;: &quot;#F2F4CB&quot; }
+    },
+    {
+      &quot;id&quot;: &quot;sea&quot;,
+      &quot;type&quot;: &quot;fill&quot;,
+      &quot;source&quot;: &quot;sea&quot;,
+      &quot;paint&quot;: { &quot;fill-color&quot;: &quot;#a8e1e6&quot; }
+    },
+    {
+      &quot;id&quot;: &quot;water&quot;,
+      &quot;type&quot;: &quot;fill&quot;,
+      &quot;source&quot;: &quot;water&quot;,
+      &quot;paint&quot;: { &quot;fill-color&quot;: &quot;#a8e1e6&quot;, &quot;fill-outline-color&quot;: &quot;#2F3737&quot; }
+    },
+    {
+      &quot;id&quot;: &quot;green&quot;,
+      &quot;type&quot;: &quot;fill&quot;,
+      &quot;source&quot;: &quot;green&quot;,
+      &quot;paint&quot;: { &quot;fill-color&quot;: &quot;#8BB174&quot;, &quot;fill-outline-color&quot;: &quot;#2F3737&quot; }
+    },
+    {
+      &quot;id&quot;: &quot;forest&quot;,
+      &quot;type&quot;: &quot;fill&quot;,
+      &quot;source&quot;: &quot;forest&quot;,
+      &quot;paint&quot;: { &quot;fill-color&quot;: &quot;#64B96A&quot;, &quot;fill-outline-color&quot;: &quot;#2F3737&quot; }
+    },
+    {
+      &quot;id&quot;: &quot;beach&quot;,
+      &quot;type&quot;: &quot;fill&quot;,
+      &quot;source&quot;: &quot;beach&quot;,
+      &quot;paint&quot;: { &quot;fill-color&quot;: &quot;#FCE19C&quot;, &quot;fill-outline-color&quot;: &quot;#2F3737&quot; }
+    },
+    {
+      &quot;id&quot;: &quot;parking&quot;,
+      &quot;type&quot;: &quot;fill&quot;,
+      &quot;source&quot;: &quot;parking&quot;,
+      &quot;paint&quot;: { &quot;fill-color&quot;: &quot;#F2F4CB&quot;, &quot;fill-outline-color&quot;: &quot;#2F3737&quot; }
+    },
+    {
+      &quot;id&quot;: &quot;contours&quot;,
+      &quot;type&quot;: &quot;line&quot;,
+      &quot;source&quot;: &quot;contours&quot;,
+      &quot;paint&quot;: {
+        &quot;line-color&quot;: &quot;#b8b27a&quot;,
+        &quot;line-width&quot;: [&quot;interpolate&quot;, [&quot;linear&quot;], [&quot;zoom&quot;], 13, 0.4, 16, 1.0],
+        &quot;line-opacity&quot;: 0.8
+      }
+    },
+    {
+      &quot;id&quot;: &quot;waterway&quot;,
+      &quot;type&quot;: &quot;line&quot;,
+      &quot;source&quot;: &quot;waterway&quot;,
+      &quot;paint&quot;: { &quot;line-color&quot;: &quot;#a8e1e6&quot;, &quot;line-width&quot;: 2 }
+    },
+    {
+      &quot;id&quot;: &quot;roads-path&quot;,
+      &quot;type&quot;: &quot;line&quot;,
+      &quot;source&quot;: &quot;roads&quot;,
+      &quot;filter&quot;: [&quot;in&quot;, [&quot;get&quot;, &quot;road_class&quot;], [&quot;literal&quot;, [&quot;path&quot;, &quot;steps&quot;]]],
+      &quot;paint&quot;: {
+        &quot;line-color&quot;: &quot;#6b7a7a&quot;,
+        &quot;line-width&quot;: [&quot;interpolate&quot;, [&quot;linear&quot;], [&quot;zoom&quot;], 13, 0.5, 16, 2.0],
+        &quot;line-dasharray&quot;: [2, 1.5]
+      }
+    },
+    {
+      &quot;id&quot;: &quot;roads-minor&quot;,
+      &quot;type&quot;: &quot;line&quot;,
+      &quot;source&quot;: &quot;roads&quot;,
+      &quot;filter&quot;: [&quot;in&quot;, [&quot;get&quot;, &quot;road_class&quot;], [&quot;literal&quot;, [&quot;medium&quot;, &quot;minor&quot;]]],
+      &quot;paint&quot;: {
+        &quot;line-color&quot;: &quot;#475657&quot;,
+        &quot;line-width&quot;: [&quot;interpolate&quot;, [&quot;linear&quot;], [&quot;zoom&quot;], 13, 1.0, 16, 4.0]
+      }
+    },
+    {
+      &quot;id&quot;: &quot;roads-major&quot;,
+      &quot;type&quot;: &quot;line&quot;,
+      &quot;source&quot;: &quot;roads&quot;,
+      &quot;filter&quot;: [&quot;==&quot;, [&quot;get&quot;, &quot;road_class&quot;], &quot;major&quot;],
+      &quot;paint&quot;: {
+        &quot;line-color&quot;: &quot;#2F3737&quot;,
+        &quot;line-width&quot;: [&quot;interpolate&quot;, [&quot;linear&quot;], [&quot;zoom&quot;], 13, 1.5, 16, 6.0]
+      }
+    },
+    {
+      &quot;id&quot;: &quot;railway&quot;,
+      &quot;type&quot;: &quot;line&quot;,
+      &quot;source&quot;: &quot;railway&quot;,
+      &quot;paint&quot;: {
+        &quot;line-color&quot;: &quot;#2F3737&quot;,
+        &quot;line-width&quot;: 2,
+        &quot;line-dasharray&quot;: [3, 3]
+      }
+    },
+    {
+      &quot;id&quot;: &quot;buildings-2d&quot;,
+      &quot;type&quot;: &quot;fill&quot;,
+      &quot;source&quot;: &quot;buildings&quot;,
+      &quot;paint&quot;: {
+        &quot;fill-color&quot;: [&quot;match&quot;, [&quot;get&quot;, &quot;c&quot;], 0, &quot;#FF5E5B&quot;, &quot;#433633&quot;],
+        &quot;fill-outline-color&quot;: &quot;#2F3737&quot;
+      }
+    },
+    {
+      &quot;id&quot;: &quot;buildings-3d&quot;,
+      &quot;type&quot;: &quot;fill-extrusion&quot;,
+      &quot;source&quot;: &quot;buildings&quot;,
+      &quot;layout&quot;: { &quot;visibility&quot;: &quot;none&quot; },
+      &quot;paint&quot;: {
+        &quot;fill-extrusion-color&quot;: [&quot;match&quot;, [&quot;get&quot;, &quot;c&quot;], 0, &quot;#FF5E5B&quot;, &quot;#433633&quot;],
+        &quot;fill-extrusion-height&quot;: [&quot;get&quot;, &quot;h&quot;],
+        &quot;fill-extrusion-base&quot;: 0,
+        &quot;fill-extrusion-opacity&quot;: 0.95
+      }
+    },
+    {
+      &quot;id&quot;: &quot;boundary&quot;,
+      &quot;type&quot;: &quot;line&quot;,
+      &quot;source&quot;: &quot;boundary&quot;,
+      &quot;paint&quot;: {
+        &quot;line-color&quot;: &quot;#2F3737&quot;,
+        &quot;line-width&quot;: 1.5,
+        &quot;line-dasharray&quot;: [4, 3],
+        &quot;line-opacity&quot;: 0.5
+      }
+    }
+  ]
+}
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 2: 校验 JSON 合法</strong></li>
+</ul>
+<p>Run: <code>python -c "import json; json.load(open('cuhk/site/style.json', encoding='utf-8')); print('style.json OK')"</code>
+Expected: <code>style.json OK</code></p>
+<ul>
+<li>[ ] <strong>Step 3: Commit</strong></li>
+</ul>
+<pre><code class="language-bash">git add cuhk/site/style.json
+git commit -m &quot;cuhk: map style (prettymaps palette, no glyphs needed)&quot;
+</code></pre>
+<hr />
+<h2 id="13indexhtml-appjs">任务 13：前端页面与交互（index.html + app.js）</h2>
+<p><strong>Files:</strong>
+- Create: <code>cuhk/site/index.html</code>
+- Create: <code>cuhk/site/app.js</code></p>
+<ul>
+<li>[ ] <strong>Step 1: 写 index.html</strong></li>
+</ul>
+<p><code>cuhk/site/index.html</code>（完整内容）：</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh-Hant&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;香港中文大學校園地圖 · CUHK Campus Map&lt;/title&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;vendor/maplibre-gl.css&quot;&gt;
+&lt;style&gt;
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; font-family: &quot;Microsoft YaHei&quot;, &quot;PingFang SC&quot;, &quot;Noto Sans CJK&quot;, sans-serif; }
+  #map { position: absolute; inset: 0; }
+
+  #topbar {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 16px; background: rgba(242, 244, 203, 0.92);
+    border-bottom: 2px solid #2F3737;
+  }
+  .title { font-size: 18px; font-weight: 700; color: #2F3737; }
+  .title .sub { font-size: 12px; font-weight: 400; color: #475657; margin-left: 10px; }
+  #chips { display: flex; gap: 8px; align-items: center; }
+  .chip {
+    display: flex; align-items: center; gap: 6px; cursor: pointer;
+    padding: 4px 12px; border: 1.5px solid #2F3737; border-radius: 999px;
+    background: #fff; font-size: 13px; color: #2F3737; user-select: none;
+  }
+  .chip .swatch { width: 10px; height: 10px; border-radius: 50%; }
+  .chip.off { opacity: 0.35; }
+  #btn3d {
+    cursor: pointer; padding: 4px 14px; border: 1.5px solid #2F3737;
+    border-radius: 999px; background: #2F3737; color: #F2F4CB; font-size: 13px;
+  }
+
+  .poi-marker { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+  .poi-marker .dot {
+    width: 11px; height: 11px; border-radius: 50%;
+    border: 2px solid #fff; box-shadow: 0 0 2px rgba(0,0,0,0.6); flex: none;
+  }
+  .poi-marker .lbl { display: none; line-height: 1.15; pointer-events: none; }
+  .poi-marker .zh { font-size: 12px; font-weight: 700; color: #2F3737; text-shadow: 0 0 3px #F2F4CB, 0 0 3px #F2F4CB; white-space: nowrap; }
+  .poi-marker .en { font-size: 10px; color: #475657; text-shadow: 0 0 3px #F2F4CB, 0 0 3px #F2F4CB; white-space: nowrap; }
+  body.z-mid .poi-marker.cat-landmark .lbl,
+  body.z-mid .poi-marker.cat-transport .lbl { display: block; }
+  body.z-high .poi-marker .lbl { display: block; }
+  .poi-marker.hidden { display: none; }
+
+  .cat-study .dot, .chip[data-cat=&quot;study&quot;] .swatch { background: #2F3737; }
+  .cat-life .dot, .chip[data-cat=&quot;life&quot;] .swatch { background: #FF5E5B; }
+  .cat-sports .dot, .chip[data-cat=&quot;sports&quot;] .swatch { background: #64B96A; }
+  .cat-transport .dot, .chip[data-cat=&quot;transport&quot;] .swatch { background: #2f6fb5; }
+  .cat-landmark .dot, .chip[data-cat=&quot;landmark&quot;] .swatch { background: #E8B64C; }
+
+  .maplibregl-popup-content { border: 2px solid #2F3737; border-radius: 6px; }
+  .pop .zh { font-size: 15px; font-weight: 700; color: #2F3737; }
+  .pop .en { font-size: 12px; color: #475657; margin-bottom: 6px; }
+  .pop p { margin: 6px 0 0; font-size: 12.5px; color: #2F3737; }
+
+  #credit {
+    position: absolute; bottom: 8px; left: 8px; z-index: 10;
+    font-size: 11px; color: #475657; background: rgba(242,244,203,0.85);
+    padding: 2px 8px; border-radius: 4px;
+  }
+  #error-overlay {
+    position: absolute; inset: 0; z-index: 100; display: flex;
+    align-items: center; justify-content: center; background: #F2F4CB;
+    font-size: 16px; color: #2F3737; text-align: center; line-height: 2;
+  }
+  #error-overlay.hidden { display: none; }
+  #error-overlay code { background: #fff; padding: 2px 8px; border: 1px solid #2F3737; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&quot;map&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;topbar&quot;&gt;
+  &lt;div class=&quot;title&quot;&gt;香港中文大學校園地圖&lt;span class=&quot;sub&quot;&gt;CUHK Campus Map · 迎新特別版&lt;/span&gt;&lt;/div&gt;
+  &lt;div id=&quot;chips&quot;&gt;
+    &lt;div class=&quot;chip&quot; data-cat=&quot;study&quot;&gt;&lt;span class=&quot;swatch&quot;&gt;&lt;/span&gt;学习&lt;/div&gt;
+    &lt;div class=&quot;chip&quot; data-cat=&quot;life&quot;&gt;&lt;span class=&quot;swatch&quot;&gt;&lt;/span&gt;生活&lt;/div&gt;
+    &lt;div class=&quot;chip&quot; data-cat=&quot;sports&quot;&gt;&lt;span class=&quot;swatch&quot;&gt;&lt;/span&gt;体育&lt;/div&gt;
+    &lt;div class=&quot;chip&quot; data-cat=&quot;transport&quot;&gt;&lt;span class=&quot;swatch&quot;&gt;&lt;/span&gt;交通&lt;/div&gt;
+    &lt;div class=&quot;chip&quot; data-cat=&quot;landmark&quot;&gt;&lt;span class=&quot;swatch&quot;&gt;&lt;/span&gt;地标&lt;/div&gt;
+    &lt;button id=&quot;btn3d&quot;&gt;3D 视角&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;credit&quot;&gt;数据 © OpenStreetMap contributors · 风格灵感来自 prettymaps&lt;/div&gt;
+&lt;div id=&quot;error-overlay&quot; class=&quot;hidden&quot;&gt;
+  &lt;div&gt;
+    找不到地图数据文件 😢&lt;br&gt;
+    请先在仓库根目录运行：&lt;code&gt;python cuhk/scripts/build_data.py&lt;/code&gt;&lt;br&gt;
+    然后用 &lt;code&gt;start.bat&lt;/code&gt; 重新打开本页
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;script src=&quot;vendor/maplibre-gl.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;app.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 2: 写 app.js</strong></li>
+</ul>
+<p><code>cuhk/site/app.js</code>（完整内容）：</p>
+<pre><code class="language-javascript">/* CUHK 迎新校园地图：MapLibre 初始化 + POI marker + 分类筛选 + 3D 切换
+ * 数据全部来自本地 ./data/（由 cuhk/scripts/build_data.py 生成），零外部请求。
+ */
+
+const CUHK_CENTER = [114.2070, 22.4205];
+
+const map = new maplibregl.Map({
+  container: &quot;map&quot;,
+  style: &quot;style.json&quot;,
+  center: CUHK_CENTER,
+  zoom: 14.6,
+  minZoom: 12.5,
+  maxZoom: 18,
+  maxPitch: 65,
+  attributionControl: { compact: true },
+});
+
+map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), &quot;top-right&quot;);
+
+/* ---------- 工具 ---------- */
+
+async function loadJSON(url) {
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error(`${url}: HTTP ${resp.status}`);
+  return resp.json();
+}
+
+function showError() {
+  document.getElementById(&quot;error-overlay&quot;).classList.remove(&quot;hidden&quot;);
+}
+
+/* ---------- 点状纹理（prettymaps hatch 风格） ---------- */
+
+function makeDotsImage(color) {
+  const size = 12;
+  const canvas = document.createElement(&quot;canvas&quot;);
+  canvas.width = canvas.height = size;
+  const ctx = canvas.getContext(&quot;2d&quot;);
+  ctx.clearRect(0, 0, size, size);
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.arc(3, 3, 1.6, 0, Math.PI * 2);
+  ctx.arc(9, 9, 1.6, 0, Math.PI * 2);
+  ctx.fill();
+  const img = ctx.getImageData(0, 0, size, size);
+  return { width: size, height: size, data: new Uint8Array(img.data.buffer) };
+}
+
+function addHatchLayers() {
+  if (!map.hasImage(&quot;dots-green&quot;)) {
+    map.addImage(&quot;dots-green&quot;, makeDotsImage(&quot;#A7C497&quot;));
+    map.addImage(&quot;dots-water&quot;, makeDotsImage(&quot;#9bc3d4&quot;));
+  }
+  map.addLayer(
+    {
+      id: &quot;green-hatch&quot;,
+      type: &quot;fill&quot;,
+      source: &quot;green&quot;,
+      paint: { &quot;fill-pattern&quot;: &quot;dots-green&quot; },
+    },
+    &quot;forest&quot;
+  );
+  map.addLayer(
+    {
+      id: &quot;water-hatch&quot;,
+      type: &quot;fill&quot;,
+      source: &quot;water&quot;,
+      paint: { &quot;fill-pattern&quot;: &quot;dots-water&quot; },
+    },
+    &quot;green&quot;
+  );
+}
+
+/* ---------- 山体阴影（image source，坐标来自 hillshade.json） ---------- */
+
+async function addHillshade() {
+  const meta = await loadJSON(&quot;data/hillshade.json&quot;);
+  map.addSource(&quot;hillshade&quot;, {
+    type: &quot;image&quot;,
+    url: &quot;data/hillshade.png&quot;,
+    coordinates: meta.coordinates,
+  });
+  map.addLayer(
+    { id: &quot;hillshade&quot;, type: &quot;raster&quot;, source: &quot;hillshade&quot;, paint: { &quot;raster-opacity&quot;: 1 } },
+    &quot;sea&quot; // 插到 sea 之下：陆上有阴影、海面干净
+  );
+}
+
+/* ---------- POI markers ---------- */
+
+function popupHTML(props) {
+  return `&lt;div class=&quot;pop&quot;&gt;
+    &lt;div class=&quot;zh&quot;&gt;${props.name_zh}&lt;/div&gt;
+    &lt;div class=&quot;en&quot;&gt;${props.name_en}&lt;/div&gt;
+    &lt;p&gt;${props.desc}&lt;/p&gt;
+  &lt;/div&gt;`;
+}
+
+function addPOIMarkers(geojson) {
+  for (const feat of geojson.features) {
+    const p = feat.properties;
+    const el = document.createElement(&quot;div&quot;);
+    el.className = `poi-marker cat-${p.category}`;
+    el.innerHTML = `&lt;div class=&quot;dot&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;lbl&quot;&gt;&lt;div class=&quot;zh&quot;&gt;${p.name_zh}&lt;/div&gt;&lt;div class=&quot;en&quot;&gt;${p.name_en}&lt;/div&gt;&lt;/div&gt;`;
+    const popup = new maplibregl.Popup({ maxWidth: &quot;280px&quot;, offset: 12 }).setHTML(popupHTML(p));
+    new maplibregl.Marker({ element: el })
+      .setLngLat(feat.geometry.coordinates)
+      .setPopup(popup)
+      .addTo(map);
+  }
+}
+
+/* ---------- 分类筛选 chips ---------- */
+
+function wireChips() {
+  document.querySelectorAll(&quot;.chip&quot;).forEach((chip) =&gt; {
+    chip.addEventListener(&quot;click&quot;, () =&gt; {
+      const cat = chip.dataset.cat;
+      chip.classList.toggle(&quot;off&quot;);
+      const show = !chip.classList.contains(&quot;off&quot;);
+      document
+        .querySelectorAll(`.poi-marker.cat-${cat}`)
+        .forEach((m) =&gt; m.classList.toggle(&quot;hidden&quot;, !show));
+    });
+  });
+}
+
+/* ---------- 3D 切换 ---------- */
+
+function wire3DButton() {
+  const btn = document.getElementById(&quot;btn3d&quot;);
+  let is3d = false;
+  btn.addEventListener(&quot;click&quot;, () =&gt; {
+    is3d = !is3d;
+    map.setLayoutProperty(&quot;buildings-3d&quot;, &quot;visibility&quot;, is3d ? &quot;visible&quot; : &quot;none&quot;);
+    map.setLayoutProperty(&quot;buildings-2d&quot;, &quot;visibility&quot;, is3d ? &quot;none&quot; : &quot;visible&quot;);
+    map.easeTo({ pitch: is3d ? 45 : 0, duration: 800 });
+    btn.textContent = is3d ? &quot;2D 视角&quot; : &quot;3D 视角&quot;;
+  });
+}
+
+/* ---------- 标注密度随缩放变化 ---------- */
+
+function updateZoomClass() {
+  const z = map.getZoom();
+  document.body.classList.toggle(&quot;z-mid&quot;, z &gt;= 14.5);
+  document.body.classList.toggle(&quot;z-high&quot;, z &gt;= 15.5);
+}
+
+/* ---------- 启动 ---------- */
+
+map.on(&quot;load&quot;, async () =&gt; {
+  try {
+    addHatchLayers();
+    await addHillshade();
+    const pois = await loadJSON(&quot;data/pois.geojson&quot;);
+    addPOIMarkers(pois);
+    wireChips();
+    wire3DButton();
+    updateZoomClass();
+    map.on(&quot;zoom&quot;, updateZoomClass);
+  } catch (e) {
+    console.error(e);
+    showError();
+  }
+});
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 3: 静态检查</strong></li>
+</ul>
+<p>Run: <code>python -c "import json; [json.load(open('cuhk/site/'+f, encoding='utf-8')) for f in ()]; print('html/js written')"</code>
+以及用浏览器或 <code>node --check cuhk/site/app.js</code>（若装了 node）检查 JS 语法；没有 node 就在任务 15 用浏览器验证。</p>
+<ul>
+<li>[ ] <strong>Step 4: Commit</strong></li>
+</ul>
+<pre><code class="language-bash">git add cuhk/site/index.html cuhk/site/app.js
+git commit -m &quot;cuhk: map page (markers, popups, filters, 3D toggle, error overlay)&quot;
+</code></pre>
+<hr />
+<h2 id="14-readme">任务 14：启动脚本 + README</h2>
+<p><strong>Files:</strong>
+- Create: <code>cuhk/site/start.bat</code>
+- Create: <code>cuhk/site/start.sh</code>
+- Create: <code>cuhk/README.md</code></p>
+<ul>
+<li>[ ] <strong>Step 1: 写 start.bat（Windows 双击即用）</strong></li>
+</ul>
+<p><code>cuhk/site/start.bat</code>：</p>
+<pre><code class="language-bat">@echo off
+rem CUHK 校园地图本地启动：起 http.server 并打开浏览器
+cd /d &quot;%~dp0&quot;
+start &quot;&quot; http://localhost:8765/
+python -m http.server 8765
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 2: 写 start.sh（备用）</strong></li>
+</ul>
+<p><code>cuhk/site/start.sh</code>：</p>
+<pre><code class="language-bash">#!/usr/bin/env bash
+cd &quot;$(dirname &quot;$0&quot;)&quot;
+(sleep 1; xdg-open http://localhost:8765/ 2&gt;/dev/null || open http://localhost:8765/ 2&gt;/dev/null) &amp;
+python -m http.server 8765
+</code></pre>
+<ul>
+<li>[ ] <strong>Step 3: 写 README</strong></li>
+</ul>
+<p><code>cuhk/README.md</code>：</p>
+<pre><code class="language-markdown"># CUHK 校园迎新地图
+
+面向新生的香港中文大学交互式网页地图：prettymaps 插画风、中英双语地点标注、
+等高线 + 山体阴影 + 3D 建筑表现山城高差。纯静态、零外部依赖，可离线运行。
+
+## 快速开始
+
+```bash
+# 1. 跑数据管线（需要网络抓 OSM/SRTM，约 3-10 分钟，之后有缓存）
+python cuhk/scripts/build_data.py
+
+# 2. 启动本地服务并打开地图（Windows）
+cuhk\site\start.bat
+# 或 macOS/Linux：
+bash cuhk/site/start.sh
+</code></pre>
+<p>浏览器打开 http://localhost:8765/ 即可。<code>file://</code> 直接双击 index.html 无法工作
+（浏览器限制 fetch/Web Worker），必须走 http.server。</p>
+<h2 id="_2">修改内容</h2>
+<ul>
+<li>改地点：编辑 <code>cuhk/data/pois.yml</code>（42 条中英双语 POI），重跑管线</li>
+<li>改样式：编辑 <code>cuhk/site/style.json</code>（配色取自 prettymaps default preset），刷新页面即可</li>
+<li>改交互：编辑 <code>cuhk/site/app.js</code></li>
+</ul>
+<h2 id="_3">测试</h2>
+<pre><code class="language-bash">python -m pytest cuhk/tests -v
+</code></pre>
+<h2 id="_4">常见问题</h2>
+<ul>
+<li><strong>Overpass 超时</strong>：重跑一次（有缓存）；或设镜像环境变量
+  <code>CUHK_OVERPASS_URL=https://overpass.private.coffee/api/interpreter</code></li>
+<li><strong>POI 匹配失败</strong>：管线会列出未匹配的 id，对照 <code>cuhk/cache/names_dump.csv</code>
+  （任务 8 流程）修正 <code>osm_name</code> 或改用 <code>lon/lat</code></li>
+</ul>
+<h2 id="_5">数据与许可</h2>
+<p>地图数据 © OpenStreetMap contributors (ODbL)。视觉风格灵感来自
+<a href="https://github.com/marceloprates/prettymaps">prettymaps</a>。</p>
+<pre><code>
+- [ ] **Step 4: 手动冒烟 start.bat**
+
+Run: `cuhk\site\start.bat`（或手动 `cd cuhk/site &amp;&amp; python -m http.server 8765`）
+Expected: 浏览器打开 http://localhost:8765/ 显示地图（任务 15 做完整检查）
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add cuhk/site/start.bat cuhk/site/start.sh cuhk/README.md
+git commit -m &quot;cuhk: local launch scripts + README&quot;
+</code></pre>
+<hr />
+<h2 id="15">任务 15：端到端验证</h2>
+<p><strong>Files:</strong>
+- Create: <code>cuhk/screenshots/map-2d.png</code>
+- Create: <code>cuhk/screenshots/map-3d.png</code></p>
+<ul>
+<li>[ ] <strong>Step 1: 全量测试回归</strong></li>
+</ul>
+<p>Run: <code>python -m pytest cuhk/tests -v</code>
+Expected: 全部 passed</p>
+<ul>
+<li>[ ] <strong>Step 2: 确认数据齐备</strong></li>
+</ul>
+<p>Run: <code>python -c "import os; d='cuhk/site/data'; print(sorted(os.listdir(d)))"</code>
+Expected: 13 个 <code>.geojson</code>（boundary + buildings/roads/railway/water/waterway/forest/green/beach/parking/sea/contours 共 11 层 + pois；空图层为合法空 FeatureCollection）+ <code>hillshade.png</code> + <code>hillshade.json</code></p>
+<ul>
+<li>[ ] <strong>Step 3: 浏览器手工 checklist</strong></li>
+</ul>
+<p>打开 http://localhost:8765/ 逐项确认（每项都要实际操作）：</p>
+<ul>
+<li>[ ] 地图加载，奶油底色 + 红/棕建筑 + 绿地/海面与 prettymaps 风格一致</li>
+<li>[ ] 山体阴影可见（山坡有明暗），等高线在山上可见</li>
+<li>[ ] 海面（吐露港）为浅蓝色，不是奶油色</li>
+<li>[ ] 点击 POI（如大学图书馆）弹出 中文名+英文名+简介</li>
+<li>[ ] 5 个分类 chip 点击能开关对应标注</li>
+<li>[ ] 缩小到 14 级：只见地标/交通标注；放大到 16 级：全部标注出现</li>
+<li>[ ] 点 "3D 视角"：建筑拉起、视角倾斜，山城立体感明显；再点恢复 2D</li>
+<li>[ ] 右键拖动可旋转/倾斜，滚轮缩放正常</li>
+<li>[ ] 打开 DevTools Network 面板刷新：<strong>没有任何外部域名请求</strong>（全部 localhost）</li>
+<li>
+<p>[ ] 删除 <code>cuhk/site/data/pois.geojson</code> 后刷新：出现"请先运行 build_data.py"提示（验证后恢复文件）</p>
+</li>
+<li>
+<p>[ ] <strong>Step 4: 截图存档</strong></p>
+</li>
+</ul>
+<p>2D 全景与 3D 视角各截一张，保存为 <code>cuhk/screenshots/map-2d.png</code>、<code>cuhk/screenshots/map-3d.png</code>。</p>
+<ul>
+<li>[ ] <strong>Step 5: 最终 Commit</strong></li>
+</ul>
+<pre><code class="language-bash">git add cuhk/screenshots/
+git commit -m &quot;cuhk: e2e verified, add screenshots&quot;
+</code></pre>
+<hr />
+<h2 id="_6">计划自审记录</h2>
+<p><strong>Spec 覆盖检查：</strong>
+- §5 ① 边界 → 任务 3 ✅；② 图层 → 任务 4 ✅；③ 高差 → 任务 6 ✅；④ POI → 任务 8 ✅；⑤ 校验 → 任务 9 ✅
+- §6 前端 → 任务 11–13 ✅；start.bat → 任务 14 ✅（§6.2 file:// 限制已说明）
+- §7 高差三件套（等高线/阴影/3D 建筑）→ 任务 6 + 12 + 13 ✅；高度回退规则简化已声明偏差 ✅
+- §8 POI 交互（chips/弹窗/缩放联动）→ 任务 13 ✅；photo 字段预留 → pois.yml 可加字段，前端暂不渲染 ✅
+- §9 错误处理 → 任务 2（Overpass 重试+镜像提示）、任务 7（高度回退）、任务 13（error overlay）✅
+- §10 验证 → 任务 9 + 15 ✅
+- §11 范围外（路线规划/真 3D 地形/照片/部署/搜索）→ 计划中无任何任务引入 ✅</p>
+<p><strong>类型一致性：</strong> <code>road_class</code>（任务 4 产出 ↔ 任务 12 style filter）、<code>h</code>/<code>c</code>（任务 7 ↔ 12）、<code>ele</code>（任务 6 ↔ 12 未用到但保留在 geojson 供调试）、pois 属性 <code>name_zh/name_en/category/desc</code>（任务 8 ↔ 13）——已核对一致。图层文件名 <code>*.geojson</code>（任务 10 写出 ↔ style.json sources ↔ app.js fetch）一致。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

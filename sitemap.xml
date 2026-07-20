@@ -2,14 +2,78 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://yourusername.github.io/prettymaps/</loc>
-         <lastmod>2026-07-18</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://yourusername.github.io/prettymaps/api/</loc>
-         <lastmod>2026-07-18</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://yourusername.github.io/prettymaps/usage/</loc>
-         <lastmod>2026-07-18</lastmod>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://yourusername.github.io/prettymaps/superpowers/plans/2026-07-18-cuhk-interactive-map/</loc>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://yourusername.github.io/prettymaps/superpowers/plans/2026-07-19-cuhk-map-v2-official-data/</loc>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://yourusername.github.io/prettymaps/superpowers/plans/2026-07-20-cuhk-map-bounds-shuttle-service/</loc>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://yourusername.github.io/prettymaps/superpowers/plans/2026-07-20-cuhk-map-v3-corrections/</loc>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://yourusername.github.io/prettymaps/superpowers/plans/2026-07-20-cuhk-map-v3-label-path-bus/</loc>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://yourusername.github.io/prettymaps/superpowers/plans/2026-07-20-cuhk-map-v3-visual-routing/</loc>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://yourusername.github.io/prettymaps/superpowers/plans/2026-07-20-cuhk-official-building-labels/</loc>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://yourusername.github.io/prettymaps/superpowers/plans/2026-07-20-cuhk-public-shuttle-route-geometry/</loc>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://yourusername.github.io/prettymaps/superpowers/specs/2026-07-18-cuhk-prettymap-design/</loc>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://yourusername.github.io/prettymaps/superpowers/specs/2026-07-19-cuhk-map-v2-official-data-design/</loc>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://yourusername.github.io/prettymaps/superpowers/specs/2026-07-20-cuhk-map-bounds-shuttle-service-design/</loc>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://yourusername.github.io/prettymaps/superpowers/specs/2026-07-20-cuhk-map-v3-corrections-design/</loc>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://yourusername.github.io/prettymaps/superpowers/specs/2026-07-20-cuhk-map-v3-label-path-bus-design/</loc>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://yourusername.github.io/prettymaps/superpowers/specs/2026-07-20-cuhk-map-v3-visual-routing-design/</loc>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://yourusername.github.io/prettymaps/superpowers/specs/2026-07-20-cuhk-official-building-labels-design/</loc>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://yourusername.github.io/prettymaps/superpowers/specs/2026-07-20-cuhk-public-shuttle-route-geometry-design/</loc>
+         <lastmod>2026-07-20</lastmod>
     </url>
 </urlset>

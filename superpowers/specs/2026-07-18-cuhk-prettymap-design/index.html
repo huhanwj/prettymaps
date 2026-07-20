@@ -1,0 +1,722 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://yourusername.github.io/prettymaps/superpowers/specs/2026-07-18-cuhk-prettymap-design/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>CUHK 交互式网页地图 · 设计文档 - prettymaps</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="pink">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cuhk" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="prettymaps" class="md-header__button md-logo" aria-label="prettymaps" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            prettymaps
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CUHK 交互式网页地图 · 设计文档
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="prettymaps" class="md-nav__button md-logo" aria-label="prettymaps" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    prettymaps
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 背景与目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 需求总结（来自澄清问答）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 技术路线选择
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 整体架构
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cuhkscripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 数据管线设计（cuhk/scripts/）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-cuhksite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 前端设计（cuhk/site/）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 前端设计（cuhk/site/）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 样式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 本地运行
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 高低差呈现（v1 方案）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-poi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. POI 交互
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 错误处理与边界情况
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. 验证方案
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. 明确不做（v1 范围外）
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="cuhk">CUHK 交互式网页地图 · 设计文档</h1>
+<ul>
+<li>日期：2026-07-18</li>
+<li>状态：已与需求方确认，待实现</li>
+<li>代码库：prettymaps fork（<code>J:\work\prettymaps</code>），项目代码置于 <code>cuhk/</code> 子目录，不改动 prettymaps 本体</li>
+</ul>
+<hr />
+<h2 id="1">1. 背景与目标</h2>
+<p>为香港中文大学（CUHK）新生宣传制作一张<strong>交互式网页地图</strong>，三个核心目标：</p>
+<ol>
+<li><strong>展现学校风貌</strong> —— 视觉上采用 prettymaps 经典插画风（奶油底 + 撞色建筑），海报级美感</li>
+<li><strong>导航</strong> —— 地点标注 + 点击信息弹窗（明确<strong>不做</strong>路线规划）</li>
+<li><strong>体现高低差</strong> —— CUHK 是山城（海平面至 ~140m），高差是学校的标志性特征</li>
+</ol>
+<h2 id="2">2. 需求总结（来自澄清问答）</h2>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>决定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>用途</td>
+<td>新生宣传材料</td>
+</tr>
+<tr>
+<td>形式</td>
+<td>真·交互式网络地图（缩放/平移/倾斜），非静态图</td>
+</tr>
+<tr>
+<td>覆盖范围</td>
+<td>CUHK 校园边界 + 周边一圈缓冲（含港铁大学站、马料水、科学园海滨方向）</td>
+</tr>
+<tr>
+<td>POI 类别</td>
+<td>学习类、生活类、体育类、交通类（另加地标类，如天人合一）</td>
+</tr>
+<tr>
+<td>标注语言</td>
+<td>中英双语</td>
+</tr>
+<tr>
+<td>部署</td>
+<td>先本地静态运行（纯静态文件，日后迁移容易）</td>
+</tr>
+<tr>
+<td>视觉风格</td>
+<td>prettymaps 经典插画风（方案 A 配色）</td>
+</tr>
+<tr>
+<td>技术路线</td>
+<td>方案 A：MapLibre GL JS + 自处理 OSM 矢量数据（见 §3）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3">3. 技术路线选择</h2>
+<p>比较过三个方案：</p>
+<ul>
+<li><strong>A（已选）</strong>：MapLibre GL JS + Python 管线自产矢量数据 + prettymaps 风自定义样式。真交互、矢量任意缩放、3D 高差、免 API key 全离线。工作量最大但唯一满足全部需求</li>
+<li>B：Leaflet + prettymaps 静态大图叠加。最快但位图放大模糊、建筑不可点、交互感弱</li>
+<li>C：MapLibre + 第三方矢量瓦片底图。需 API key、风格受限、内地 CDN 访问不稳</li>
+</ul>
+<h2 id="4">4. 整体架构</h2>
+<p>两个松耦合部分，通过静态文件衔接：</p>
+<pre><code>┌──────────────────────────────┐         ┌────────────────────────────┐
+│ 数据管线 (Python, 离线运行一次) │ ──────▶ │ 前端 (纯静态站点, MapLibre)   │
+│ cuhk/scripts/build_data.py   │ GeoJSON │ cuhk/site/index.html       │
+│ OSM + SRTM → 分层数据文件      │ +PNG/JSON│ 本地 http.server 即可运行    │
+└──────────────────────────────┘         └────────────────────────────┘
+</code></pre>
+<ul>
+<li>管线跑一次产出数据；之后调样式/POI 只需改前端文件或 POI 表，不用重跑</li>
+<li>前端完全离线：MapLibre vendor 到本地，零 CDN、零 API key</li>
+<li>prettymaps 本体代码不改动；管线仅以 <code>json.load</code> 读取 <code>prettymaps/presets/*.json</code> 作为调色板来源（不 import prettymaps 包，避免 vsketch 等重依赖）</li>
+<li>项目代码全部放 <code>cuhk/</code> 子目录，保持 fork 与 upstream 可合并</li>
+</ul>
+<h2 id="5-cuhkscripts">5. 数据管线设计（<code>cuhk/scripts/</code>）</h2>
+<p>入口：<code>python scripts/build_data.py</code>，产出写入 <code>cuhk/site/data/</code>。</p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>内容</th>
+<th>产出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>① 范围</td>
+<td>从 OSM 取 CUHK 校园边界 relation，向外 buffer ~800m（覆盖大学站、马料水、科学园海滨）</td>
+<td><code>boundary.geojson</code></td>
+</tr>
+<tr>
+<td>② 图层</td>
+<td>osmnx 按 tag 组合抓取，图层定义沿用 prettymaps preset：建筑 / 道路 / 水体 / 绿地 / 沙滩 / 停车场，另增步道与楼梯（<code>highway=steps/footway/path</code>，山城必须）</td>
+<td>每层一个 <code>.geojson</code></td>
+</tr>
+<tr>
+<td>③ 高差</td>
+<td><code>elevation</code> 包下载 SRTM → 10m 间隔等高线（线要素）+ 山体阴影（半透明 PNG + 地理配准参数）。10m 间隔依据：校园高程 0–140m，约 14 条等高线，疏密合适</td>
+<td><code>contours.geojson</code>、<code>hillshade.png</code></td>
+</tr>
+<tr>
+<td>④ POI</td>
+<td>手工维护 <code>pois.yml</code>（约 40 个重点地点：九大书院、图书馆、食堂、体育设施、大学站、校巴站、地标），每条含中英名、分类、一句话简介。坐标两种写法：直接写 <code>lon/lat</code>，或写 OSM 对象名由管线模糊匹配取坐标（匹配失败即报错列入待处理清单，不静默丢弃）</td>
+<td><code>pois.geojson</code></td>
+</tr>
+<tr>
+<td>⑤ 校验</td>
+<td>断言每层非空、建筑数 &gt;300、坐标落在香港范围内；失败即报错中止</td>
+<td>控制台汇总表</td>
+</tr>
+</tbody>
+</table>
+<p>约定：</p>
+<ul>
+<li><strong>POI 手工维护而非全自动抓取</strong>：迎新内容本来就要人工把关；OSM 自动抓取中英名经常缺一（已与需求方确认）</li>
+<li>Overpass API 端点可配置（内地网络可一键切镜像站）</li>
+<li>OSM 原始数据缓存在 <code>cuhk/cache/</code>，改 <code>pois.yml</code> 不必重新抓取</li>
+</ul>
+<h2 id="6-cuhksite">6. 前端设计（<code>cuhk/site/</code>）</h2>
+<pre><code>cuhk/site/
+├── index.html                  # 唯一入口
+├── vendor/maplibre-gl.{js,css} # vendor 本地化，零 CDN
+├── style.json                  # 地图样式
+├── data/                       # 管线产出（§5）
+└── start.bat                   # 双击 → python -m http.server → 自动开浏览器
+</code></pre>
+<h3 id="61">6.1 样式</h3>
+<ul>
+<li>调色板直接取自 prettymaps preset：背景 <code>#F2F4CB</code>、绿地 <code>#8BB174</code>、水体 <code>#a8e1e6</code>、建筑 <code>#FF5E5B</code>/<code>#433633</code> 撞色交替、深色道路 <code>#2F3737</code></li>
+<li>图层顺序（自底向上）：背景 → 山体阴影 → 等高线 → 绿地/水体 → 道路 → 3D 建筑 → POI 标注</li>
+<li>中文标注用 MapLibre <code>localIdeographFontFamily</code>（微软雅黑/苹方等本地字体渲染），离线可显示，无需打包 CJK 字体 PBF</li>
+</ul>
+<h3 id="62">6.2 本地运行</h3>
+<p><code>file://</code> 直接双击无法工作（Web Worker 与 fetch 受浏览器限制），故提供 <code>start.bat</code>：启动 <code>python -m http.server</code> 并自动打开浏览器。</p>
+<h2 id="7-v1">7. 高低差呈现（v1 方案）</h2>
+<table>
+<thead>
+<tr>
+<th>手法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>等高线（10m）</td>
+<td>浅色虚线，不抢戏但看得出山势</td>
+</tr>
+<tr>
+<td>山体阴影</td>
+<td>半透明叠加，平地/山坡一眼分明</td>
+</tr>
+<tr>
+<td>3D 建筑拉伸</td>
+<td>MapLibre fill-extrusion，按 OSM <code>height</code> / <code>building:levels</code> 标签估算；视角倾斜（pitch ~45°）时山城立体感强</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>默认 2D 俯视，提供一键切换 3D 视角；支持右键拖动倾斜/旋转</li>
+<li>高度缺失回退规则：无 <code>height</code> 则 <code>levels × 3m</code>；再缺则按类别默认值（书院 15m / 教学楼 12m / 其他 8m）</li>
+<li><strong>v2 可选增强</strong>：自生成 terrain-RGB 瓦片做真 3D 地形（山坡隆起）。v1 不做，接口预留（已与需求方确认）</li>
+</ul>
+<h2 id="8-poi">8. POI 交互</h2>
+<ul>
+<li>顶部分类筛选 chip：<code>学习 / 生活 / 体育 / 交通 / 地标</code>，点击开关对应标注</li>
+<li>点击 POI 弹窗：<strong>中文名 + 英文名 + 一句话简介</strong>（v1 不含照片；<code>pois.yml</code> schema 预留 <code>photo</code> 字段，日后有素材即可加——已与需求方确认）</li>
+<li>缩放联动：低缩放只显示大类地标，放大后 POI 逐级出现，避免标注过密</li>
+</ul>
+<h2 id="9">9. 错误处理与边界情况</h2>
+<ul>
+<li>OSM 抓取失败/返回空 → 管线报错并提示切换 Overpass 镜像，不让空数据静默进前端</li>
+<li>建筑高度标签缺失 → §7 回退规则</li>
+<li>前端数据文件缺失 → 页面显示"请先运行 build_data.py"，不白屏</li>
+<li>Python 环境：本机 3.11.2（repo setup.py 声明 ≥3.12，但管线不 import prettymaps 包，只依赖 osmnx/geopandas/rasterio/elevation 等，3.11 可运行；如踩坑再建 3.12 虚拟环境）</li>
+</ul>
+<h2 id="10">10. 验证方案</h2>
+<ul>
+<li>管线：自动断言（§5 步骤⑤）+ 控制台汇总表</li>
+<li>前端手工 checklist：离线打开 ✓ 缩放 ✓ 3D 倾斜 ✓ 弹窗 ✓ 分类筛选 ✓ 中英标注 ✓</li>
+<li>效果确认：全图截图 + 3D 视角截图各一张，人工过目</li>
+</ul>
+<h2 id="11-v1">11. 明确不做（v1 范围外）</h2>
+<ul>
+<li>路线规划 / 导航引擎</li>
+<li>真 3D 地形（terrain-RGB）</li>
+<li>POI 照片展示（仅预留字段）</li>
+<li>部署上线（仅本地运行）</li>
+<li>POI 文字搜索（v2 候选）</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
