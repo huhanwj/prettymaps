@@ -1,0 +1,205 @@
+{
+  "format": "cuhk-shuttle-recording-v1",
+  "route_id": "1A",
+  "points": [
+    {
+      "sequence": 1,
+      "kind": "stop",
+      "coordinates": [
+        114.21013355255127,
+        22.414497479108093
+      ],
+      "stop_id": "university_station",
+      "name_zh": "大學站",
+      "name_en": "University Station"
+    },
+    {
+      "sequence": 2,
+      "kind": "waypoint",
+      "coordinates": [
+        114.21010925333053,
+        22.414401398495073
+      ]
+    },
+    {
+      "sequence": 3,
+      "kind": "waypoint",
+      "coordinates": [
+        114.20999123613473,
+        22.41439148021996
+      ]
+    },
+    {
+      "sequence": 4,
+      "kind": "waypoint",
+      "coordinates": [
+        114.20995636741742,
+        22.414480744671835
+      ]
+    },
+    {
+      "sequence": 5,
+      "kind": "waypoint",
+      "coordinates": [
+        114.21005024473266,
+        22.41454521340698
+      ]
+    },
+    {
+      "sequence": 6,
+      "kind": "stop",
+      "coordinates": [
+        114.2105171084404,
+        22.417740714885085
+      ],
+      "stop_id": "sports_centre",
+      "name_zh": "大學體育中心",
+      "name_en": "University Sports Centre"
+    },
+    {
+      "sequence": 7,
+      "kind": "waypoint",
+      "coordinates": [
+        114.20799746210355,
+        22.418504488551292
+      ]
+    },
+    {
+      "sequence": 8,
+      "kind": "waypoint",
+      "coordinates": [
+        114.20926368299212,
+        22.419566574537342
+      ]
+    },
+    {
+      "sequence": 9,
+      "kind": "stop",
+      "coordinates": [
+        114.20734941959381,
+        22.41981852797386
+      ],
+      "stop_id": "science_centre",
+      "name_zh": "科學館",
+      "name_en": "Science Centre"
+    },
+    {
+      "sequence": 10,
+      "kind": "waypoint",
+      "coordinates": [
+        114.20490308689858,
+        22.419865479558098
+      ]
+    },
+    {
+      "sequence": 11,
+      "kind": "waypoint",
+      "coordinates": [
+        114.20435323405093,
+        22.419860520615345
+      ]
+    },
+    {
+      "sequence": 12,
+      "kind": "waypoint",
+      "coordinates": [
+        114.20434786963165,
+        22.41903981320324
+      ]
+    },
+    {
+      "sequence": 13,
+      "kind": "waypoint",
+      "coordinates": [
+        114.20436128067723,
+        22.4187521925395
+      ]
+    },
+    {
+      "sequence": 14,
+      "kind": "stop",
+      "coordinates": [
+        114.2052572965622,
+        22.418816817668684
+      ],
+      "stop_id": "admin_building",
+      "name_zh": "大學行政樓",
+      "name_en": "University Administration Building"
+    },
+    {
+      "sequence": 15,
+      "kind": "waypoint",
+      "coordinates": [
+        114.20711118753411,
+        22.418528553632484
+      ]
+    },
+    {
+      "sequence": 16,
+      "kind": "waypoint",
+      "coordinates": [
+        114.20851655370222,
+        22.418598840325856
+      ]
+    },
+    {
+      "sequence": 17,
+      "kind": "stop",
+      "coordinates": [
+        114.20974999666214,
+        22.418023378635652
+      ],
+      "stop_id": "sh_ho",
+      "name_zh": "善衡書院",
+      "name_en": "S.H. Ho College"
+    },
+    {
+      "sequence": 18,
+      "kind": "waypoint",
+      "coordinates": [
+        114.2121573759398,
+        22.417621124771728
+      ]
+    },
+    {
+      "sequence": 19,
+      "kind": "waypoint",
+      "coordinates": [
+        114.21236122382629,
+        22.417638481349243
+      ]
+    },
+    {
+      "sequence": 20,
+      "kind": "waypoint",
+      "coordinates": [
+        114.21244705451358,
+        22.417576493562436
+      ]
+    },
+    {
+      "sequence": 21,
+      "kind": "waypoint",
+      "coordinates": [
+        114.21242291463295,
+        22.417497149154826
+      ]
+    },
+    {
+      "sequence": 22,
+      "kind": "waypoint",
+      "coordinates": [
+        114.21237463487012,
+        22.41747235401803
+      ]
+    },
+    {
+      "sequence": 23,
+      "kind": "waypoint",
+      "coordinates": [
+        114.21073158063143,
+        22.41552389712041
+      ]
+    }
+  ]
+}

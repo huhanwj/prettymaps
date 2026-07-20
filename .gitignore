@@ -48,3 +48,11 @@ SRTM1/
 *.tmp
 *.tmp.png
 prettymaps/presets/my-preset.json
+
+# Brainstorming visual companion session files
+.superpowers/
+
+# CUHK project
+cuhk/cache/
+cuhk/site/data/
+cuhk/site/tiles/

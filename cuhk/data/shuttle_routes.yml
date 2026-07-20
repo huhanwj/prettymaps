@@ -1,0 +1,137 @@
+stops:
+  university_station: {official_stop_id: "1", name_zh: 大學站, name_en: University Station}
+  station_piazza: {official_stop_id: "52", name_zh: 大學站廣場, name_en: Station Piazza}
+  chung_chi_teaching: {official_stop_id: "23", name_zh: 崇基教學樓, name_en: Chung Chi Teaching Building}
+  yiap: {official_stop_id: "53", name_zh: 康本園, name_en: Y.I.A.P.}
+  sports_centre: {official_stop_id: "2", name_zh: 大學體育中心, name_en: University Sports Centre}
+  shaw_hall: {official_stop_id: "4", name_zh: 邵逸夫堂, name_en: Sir Run Run Shaw Hall}
+  postgraduate_hall_1: {official_stop_id: "22", name_zh: 研究生宿舍一座, name_en: Postgraduate Hall 1}
+  fung_king_hey: {official_stop_id: "5", name_zh: 馮景禧樓, name_en: Fung King Hey Building}
+  science_centre: {official_stop_id: "24", name_zh: 科學館, name_en: Science Centre}
+  admin_building: {official_stop_id: "10", name_zh: 大學行政樓, name_en: University Administration Building}
+  sh_ho: {official_stop_id: "51", name_zh: 善衡書院, name_en: S.H. Ho College}
+  united_up: {official_stop_id: "6", name_zh: 聯合書院（上行）, name_en: United College (Upward)}
+  united_down: {official_stop_id: "7", name_zh: 聯合書院（下行）, name_en: United College (Downward)}
+  new_asia: {official_stop_id: "8", name_zh: 新亞書院, name_en: New Asia College}
+  new_asia_circle: {official_stop_id: "9", name_zh: 新亞坊, name_en: New Asia Circle}
+  shaw_up: {official_stop_id: "15", name_zh: 逸夫書院（上行）, name_en: Shaw College (Upward)}
+  shaw_down: {official_stop_id: "15", name_zh: 逸夫書院（下行）, name_en: Shaw College (Downward)}
+  wu_yee_sun_up: {coordinates: [114.20258, 22.42212], name_zh: 伍宜孫書院（上行）, name_en: Wu Yee Sun College (Upward)}
+  wu_yee_sun_down: {coordinates: [114.20270, 22.42223], name_zh: 伍宜孫書院（下行）, name_en: Wu Yee Sun College (Downward)}
+  residence_15: {official_stop_id: "18", name_zh: 十五苑, name_en: Residence No. 15}
+  uc_staff_residence: {official_stop_id: "20", name_zh: 聯合苑, name_en: U.C. Staff Residence}
+  chan_chun_ha: {official_stop_id: "21", name_zh: 陳震夏宿舍, name_en: Chan Chun Ha Hostel}
+  residence_10: {official_stop_id: "50", name_zh: 十苑, name_en: Residence No. 10}
+  cw_chu_down: {official_stop_id: "56", name_zh: 敬文書院（下行）, name_en: CW Chu College (Downward)}
+  cw_chu_up: {official_stop_id: "64", name_zh: 敬文書院（上行）, name_en: CW Chu College (Upward)}
+  area_39_up: {official_stop_id: "55", name_zh: 39區（上行）, name_en: Area 39 (Upward)}
+  area_39_down: {coordinates: [114.20462, 22.42743], name_zh: 39區（下行）, name_en: Area 39 (Downward)}
+  circuit_north: {official_stop_id: "66", name_zh: 環迴北站, name_en: Campus Circuit North}
+  circuit_east_up: {official_stop_id: "62", name_zh: 環迴東站（上行）, name_en: Campus Circuit East (Upward)}
+  circuit_east_down: {official_stop_id: "63", name_zh: 環迴東站（下行）, name_en: Campus Circuit East (Downward)}
+
+routes:
+  1A:
+    name_zh: 本部線
+    name_en: Main Campus
+    group: campus
+    color: "#D84A3A"
+    recording: cuhk-shuttle-1A-recording.json
+    stops: [university_station, sports_centre, science_centre, admin_building, sh_ho]
+  1B:
+    name_zh: 本部線（經研究生宿舍）
+    name_en: Main Campus via PGH
+    group: campus
+    color: "#E26C3A"
+    stops: [shaw_hall, sports_centre, postgraduate_hall_1, admin_building, sh_ho, postgraduate_hall_1, university_station]
+  "2":
+    name_zh: 新聯線
+    name_en: NA / UC
+    group: campus
+    color: "#D79C2F"
+    stops: [united_up, fung_king_hey, sports_centre, new_asia, united_down, admin_building, sh_ho, station_piazza, university_station]
+    variants:
+      - id: minute_45_00_shaw_hall
+        condition_zh: 逢45及00分班次停邵逸夫堂
+        condition_en: Departures at minutes 45 and 00 serve Sir Run Run Shaw Hall
+        insertions:
+          - {after: fung_king_hey, stop: shaw_hall}
+  "3":
+    name_zh: 逸夫線
+    name_en: Shaw
+    group: campus
+    color: "#4C8B62"
+    stops: [cw_chu_down, shaw_up, wu_yee_sun_up, fung_king_hey, science_centre, sports_centre, residence_15, uc_staff_residence, chan_chun_ha, shaw_down, wu_yee_sun_down, admin_building, sh_ho, yiap, station_piazza]
+    forbidden_stops: [residence_10]
+  "4":
+    name_zh: 環迴線
+    name_en: Campus Circuit
+    group: campus
+    color: "#3A8C91"
+    stops: [cw_chu_down, area_39_up, cw_chu_up, circuit_east_up, chan_chun_ha, shaw_down, wu_yee_sun_down, new_asia, united_down, admin_building, sh_ho, yiap, university_station]
+  "8":
+    name_zh: 西部線
+    name_en: Western Campus
+    group: campus
+    color: "#3976A8"
+    stops: [new_asia_circle, science_centre, admin_building, wu_yee_sun_down, shaw_down, chan_chun_ha, uc_staff_residence, cw_chu_down, united_down, wu_yee_sun_up, shaw_up, area_39_down, circuit_north, circuit_east_down, university_station]
+    variants:
+      - id: non_teaching_terminal
+        condition_zh: 非教學日停大學站廣場及崇基教學樓，不停大學站
+        condition_en: Non-teaching days serve Station Piazza and Chung Chi Teaching Building instead of University Station
+        replace_tail:
+          from: circuit_east_down
+          with: [station_piazza, area_39_up, chung_chi_teaching]
+  "5":
+    name_zh: 上行線
+    name_en: Upward
+    group: meet-class
+    color: "#7159A6"
+    departures: [18, 22, 26]
+    stops: [chung_chi_teaching, sports_centre, shaw_hall, fung_king_hey, united_up, new_asia, wu_yee_sun_down, chan_chun_ha, uc_staff_residence, cw_chu_down]
+  6A:
+    name_zh: 下行線（敬文）
+    name_en: Downward (CW Chu)
+    group: meet-class
+    color: "#A15396"
+    stops: [cw_chu_down, uc_staff_residence, chan_chun_ha, wu_yee_sun_down, new_asia, united_down, admin_building, sh_ho, station_piazza, chung_chi_teaching]
+  6B:
+    name_zh: 下行線（新聯）
+    name_en: Downward (NA / UC)
+    group: meet-class
+    color: "#B34E72"
+    stops: [new_asia, united_down, admin_building, sh_ho, station_piazza, chung_chi_teaching]
+  "7":
+    name_zh: 下行線（逸夫）
+    name_en: Downward (Shaw)
+    group: meet-class
+    color: "#C1534D"
+    stops: [shaw_down, wu_yee_sun_down, new_asia, united_down, admin_building, sh_ho, station_piazza, chung_chi_teaching]
+  N:
+    name_zh: 晚間線
+    name_en: Night
+    group: special
+    color: "#334B6E"
+    stops: [cw_chu_down, area_39_up, shaw_up, wu_yee_sun_up, united_down, new_asia_circle, shaw_hall, sports_centre, residence_15, uc_staff_residence, chan_chun_ha, shaw_down, wu_yee_sun_down, new_asia, united_down, admin_building, sh_ho, university_station]
+    forbidden_stops: [residence_10]
+    variants:
+      - id: minute_00_pgh1
+        condition_zh: 逢00分班次停研究生宿舍一座
+        condition_en: Departures at minute 00 serve Postgraduate Hall 1
+        insertions:
+          - {after: sports_centre, stop: postgraduate_hall_1}
+          - {after: sh_ho, stop: postgraduate_hall_1}
+  H:
+    name_zh: 假日線
+    name_en: Holiday
+    group: special
+    color: "#5D6470"
+    stops: [residence_10, cw_chu_down, shaw_up, wu_yee_sun_up, united_down, new_asia_circle, shaw_hall, sports_centre, residence_15, uc_staff_residence, chan_chun_ha, shaw_down, wu_yee_sun_down, new_asia, united_down, admin_building, sh_ho, university_station]
+    variants:
+      - id: minute_00_area39_pgh1
+        condition_zh: 逢00分班次停39區及研究生宿舍一座
+        condition_en: Departures at minute 00 serve Area 39 and Postgraduate Hall 1
+        insertions:
+          - {after: cw_chu_down, stop: area_39_up}
+          - {after: sports_centre, stop: postgraduate_hall_1}
+          - {after: sh_ho, stop: postgraduate_hall_1}

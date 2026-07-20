@@ -1,0 +1,56 @@
+# CUHK 迎新地圖 POI 表
+# 定位三通道（按優先級）：official_name（與官方點位 buildings/landmarks/colleges/
+# facilities/shuttle_stops 合集模糊匹配）→ lon/lat 直接給坐標 → osm_name（與 OSM 要素模糊匹配）。
+# 三者至少其一；official_name 須與官方數據集 cuhk_location_db.js 的名稱一致。
+# category: study 學習 / life 生活 / sports 體育 / transport 交通 / landmark 地標
+pois:
+  # ===== 書院（life） =====
+  - {id: chung-chi,    name_zh: 崇基學院,   name_en: Chung Chi College,    category: life, desc: 1951年創校，歷史最悠久的成員書院，未圓湖所在地。, official_name: Chung Chi College, osm_name: Chung Chi College}
+  - {id: new-asia,     name_zh: 新亞書院,   name_en: New Asia College,     category: life, desc: 1949年創立，以弘揚中國文化為宗旨，"天人合一"所在地。, official_name: New Asia College, osm_name: New Asia College}
+  - {id: united,       name_zh: 聯合書院,   name_en: United College,       category: life, desc: 1956年由五家書院合併組成，坐擁吐露港景致。, official_name: United College, osm_name: United College}
+  - {id: shaw,         name_zh: 逸夫書院,   name_en: Shaw College,         category: life, desc: 1986年創立，位於校園西北部的山坡上。, official_name: Shaw College, osm_name: Shaw College}
+  - {id: morningside,  name_zh: 晨興書院,   name_en: Morningside College,  category: life, desc: 2006年創立的全宿制書院。, official_name: Morningside College, osm_name: Morningside College}
+  - {id: sh-ho,        name_zh: 善衡書院,   name_en: S.H. Ho College,      category: life, desc: 2006年創立，以"家"為理念的全宿制書院。, official_name: S.H. Ho College, osm_name: S.H. Ho College}
+  - {id: cw-chu,       name_zh: 敬文書院,   name_en: C.W. Chu College,     category: life, desc: 2007年創立的小型全宿共膳書院。, official_name: CW Chu College, osm_name: C.W. Chu College}
+  - {id: wu-yee-sun,   name_zh: 伍宜孫書院, name_en: Wu Yee Sun College,   category: life, desc: 2007年創立，鄰近大學站與科學園。, official_name: Wu Yee Sun College, osm_name: Wu Yee Sun College}
+  - {id: lee-woo-sing, name_zh: 和聲書院,   name_en: Lee Woo Sing College, category: life, desc: 2007年創立，位於校園北部山坡。, official_name: Lee Woo Shing College, osm_name: Lee Woo Sing College}
+  # ===== 學習（study） =====
+  - {id: ul,           name_zh: 大學圖書館, name_en: University Library,   category: study, desc: 中大總圖書館，百萬大道旁的學術地標。, official_name: University Library, osm_name: University Library}
+  - {id: moore-lib,    name_zh: 牟路思怡圖書館, name_en: Elisabeth Luce Moore Library, category: study, desc: 崇基學院圖書館。, official_name: Elisabeth Luce Moore Library, osm_name: Elisabeth Luce Moore Library}
+  - {id: chien-mu-lib, name_zh: 錢穆圖書館, name_en: Ch'ien Mu Library,    category: study, desc: 新亞書院圖書館，以創校校長命名。, official_name: Ch'ien Mu Library, osm_name: Ch'ien Mu Library}
+  - {id: wu-chung-lib, name_zh: 聯合書院胡忠圖書館, name_en: Wu Chung Library, category: study, desc: 聯合書院多媒體圖書館，常稱胡忠圖書館。, official_name: United College Wu Chung Library, osm_name: Wu Chung Library}
+  - {id: yia,          name_zh: 康本國際學術園, name_en: Yasumoto International Academic Park, category: study, desc: 大學站旁的教學綜合建築，縮寫 YIA。, official_name: Yasumoto International Academic Park, osm_name: Yasumoto International Academic Park}
+  - {id: cyt,          name_zh: 鄭裕彤樓,   name_en: Cheng Yu Tung Building, category: study, desc: 商學院教學樓，俯瞰大學站。, official_name: Cheng Yu Tung Building, osm_name: Cheng Yu Tung Building}
+  - {id: shb,          name_zh: 何善衡工程學大樓, name_en: Ho Sin Hang Engineering Building, category: study, desc: 工程學院主樓。, official_name: Ho Sin-Hang Engineering Building, osm_name: Ho Sin Hang Engineering Building}
+  - {id: science-centre, name_zh: 科學館,   name_en: Science Centre,       category: study, desc: 理學院教學與實驗大樓。, official_name: University Science Centre, osm_name: Science Centre}
+  - {id: mmw,          name_zh: 蒙民偉工程學大樓, name_en: William M.W. Mong Engineering Building, category: study, desc: 工程學院大樓，鄰近大學站。, official_name: William M.W. Mong Engineering Building, osm_name: William M.W. Mong Engineering Building}
+  - {id: elb,          name_zh: 利黃瑤璧樓, name_en: Esther Lee Building, category: study, desc: 崇基校園綜合教學樓，縮寫 ELB。, official_name: Esther Lee Building, osm_name: Esther Lee Building}
+  - {id: fkh,          name_zh: 馮景禧樓,   name_en: Fung King Hey Building, category: study, desc: 位於大學道的教學樓。, official_name: Fung King Hey Building, osm_name: Fung King Hey Building}
+  - {id: lsk,          name_zh: 梁銶琚樓,   name_en: Leung Kau Kui Building, category: study, desc: 中央校園教學樓。, official_name: Leung Kau Kui Building, osm_name: Leung Kau Kui Building}
+  # ===== 餐飲/生活（life） =====
+  - {id: franklin,     name_zh: 范克廉樓,   name_en: Benjamin Franklin Centre, category: life, desc: 學生活動中心，餐廳與泳池所在地。, official_name: Benjamin Franklin Centre, osm_name: Benjamin Franklin Centre}
+  - {id: orchid-lodge, name_zh: 蘭苑,       name_en: Orchid Lodge,         category: life, desc: 崇基校園內的中式餐廳。, official_name: Orchid Lodge, osm_name: Orchid Lodge}
+  - {id: cc-canteen,   name_zh: 眾志堂,     name_en: Chung Chi College Canteen, category: life, desc: 崇基學生膳堂。, official_name: Chung Chi Tang, osm_name: Chung Chi College Canteen}
+  - {id: na-canteen,   name_zh: 新亞書院學生餐廳, name_en: New Asia College Student Canteen, category: life, desc: 新亞書院學生餐廳。, official_name: New Asia College Student Canteen, osm_name: New Asia College Student Canteen}
+  - {id: uc-canteen,   name_zh: 聯合書院學生膳堂, name_en: United College Student Canteen, category: life, desc: 聯合書院學生膳堂。, official_name: United College Student Canteen, osm_name: United College Student Canteen}
+  # ===== 體育（sports） =====
+  - {id: sports-centre, name_zh: 大學體育中心, name_en: University Sports Centre, category: sports, desc: 室內體育館與健身設施。, official_name: University Sports Centre, osm_name: University Sports Centre}
+  - {id: haddon-cave,  name_zh: 夏鼎基運動場, name_en: Sir Philip Haddon-Cave Sports Field, category: sports, desc: 臨海田徑運動場。, official_name: Sir Philip Haddon-Cave Sports Field, osm_name: Sir Philip Haddon-Cave Sports Field}
+  - {id: swimming-pool, name_zh: 大學游泳池, name_en: University Swimming Pool, category: sports, desc: 范克廉樓旁的室外泳池。, lon: 114.2055, lat: 22.4180}
+  # ===== 交通（transport） =====
+  - {id: university-station-north, name_zh: 港鐵大學站北面出口, name_en: University MTR Station (Northern Exit), category: transport, desc: 連接中大校園北部的港鐵出口。, official_name: University MTR Station (Northern Exit)}
+  - {id: university-station-west, name_zh: 港鐵大學站西面出口, name_en: University MTR Station (Western Exit), category: transport, desc: 連接崇基校園的港鐵出口。, official_name: University MTR Station (Western Exit)}
+  - {id: bus-terminus, name_zh: 大學站公共運輸交匯處, name_en: University Station Public Transport Interchange, category: transport, desc: 校外巴士與專綫小巴交匯處，緊鄰港鐵大學站。, lon: 114.21080678701401, lat: 22.412917985947334}
+  - {id: shuttle-central, name_zh: 校巴站（本部）, name_en: Central Avenue Shuttle Stop, category: transport, desc: 校內穿梭巴士主要站點。, lon: 114.2072, lat: 22.4197}
+  # ===== 地標（landmark） =====
+  - {id: harmony,      name_zh: 合一亭,     name_en: Pavilion of Harmony, category: landmark, desc: 新亞書院標誌性景點，常稱「天人合一」。, official_name: Pavilion of Harmony, osm_name: Pavilion of Harmony}
+  - {id: mall,         name_zh: 林蔭大道（百萬大道）, name_en: University Mall, category: landmark, desc: 貫穿中央校園的大道，常稱百萬大道。, official_name: The University Mall, lon: 114.2067, lat: 22.4193}
+  - {id: beacon,       name_zh: 烽火台,     name_en: The Beacon,           category: landmark, desc: 百萬大道旁的標誌性雕塑烽火台。, official_name: The Beacon, osm_name: The Gate}
+  - {id: gate-of-wisdom, name_zh: 《仲門》, name_en: Gate of Wisdom, category: landmark, desc: 大學圖書館前的雕塑《仲門》。, official_name: Gate of Wisdom}
+  - {id: uadmin,       name_zh: 大學行政樓, name_en: University Administration Building, category: landmark, desc: 中央校園行政中樞。, official_name: University Administration Building, osm_name: University Administration Building}
+  - {id: chapel,       name_zh: 崇基禮拜堂, name_en: Chung Chi College Chapel, category: landmark, desc: 崇基校園的禮拜堂與鐘樓。, official_name: Chung Chi College Chapel, osm_name: Chung Chi College Chapel}
+  - {id: shaw-hall,    name_zh: 邵逸夫堂,   name_en: Sir Run Run Shaw Hall, category: landmark, desc: 大學禮堂，大型典禮與演出場地。, official_name: Sir Run Run Shaw Hall, osm_name: Sir Run Run Shaw Hall}
+  - {id: lake,         name_zh: 未圓湖,     name_en: Lake Ad Excellentiam, category: landmark, desc: 崇基校園的湖泊，"未圓"寓意學無止境。, official_name: Lake Ad Excellentiam, osm_name: Lake Ad Excellentiam}
+  - {id: pier,         name_zh: 馬料水碼頭, name_en: Ma Liu Shui Pier,     category: transport, desc: 通往塔門等離島的渡輪碼頭。, osm_name: Ma Liu Shui Pier}
+  - {id: science-park, name_zh: 香港科學園, name_en: Hong Kong Science Park, category: landmark, desc: 校園北側的創科園區，實習機會集中地。, osm_name: Hong Kong Science Park}
+  - {id: promenade,    name_zh: 白石角海濱長廊, name_en: Pak Shek Kok Promenade, category: landmark, desc: 吐露港海濱散步與騎行路線。, osm_name: Pak Shek Kok Promenade}
