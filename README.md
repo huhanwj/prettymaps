@@ -71,7 +71,7 @@ import prettymaps
 plot = prettymaps.plot('Stad van de Zon, Heerhugowaard, Netherlands')
 ```
 
-    Fetching geodataframes took 14.43 seconds
+    Fetching geodataframes took 211.36 seconds
 
 
 
@@ -94,7 +94,7 @@ plot = prettymaps.plot(
 )
 ```
 
-    Fetching geodataframes took 5.48 seconds
+    Fetching geodataframes took 87.62 seconds
 
 
 
@@ -369,7 +369,7 @@ plot = prettymaps.plot(
 )
 ```
 
-    Fetching geodataframes took 20.74 seconds
+    Fetching geodataframes took 121.37 seconds
 
 
 
@@ -393,7 +393,7 @@ plot = prettymaps.plot(
 )
 ```
 
-    Fetching geodataframes took 14.80 seconds
+    Fetching geodataframes took 154.21 seconds
 
 
 
@@ -413,7 +413,7 @@ plot = prettymaps.plot('Centro Histórico, Porto Alegre', show = False)
 plot.geodataframes['building']
 ```
 
-    Fetching geodataframes took 14.56 seconds
+    Fetching geodataframes took 83.63 seconds
 
 
 
@@ -487,7 +487,7 @@ plot.geodataframes['building']
     </tr>
     <tr>
       <th>(relation, 2798271)</th>
-      <td>POLYGON ((-51.23097 -30.03377, -51.2309 -30.03...</td>
+      <td>POLYGON ((-51.231 -30.03401, -51.23097 -30.033...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -606,8 +606,32 @@ plot.geodataframes['building']
       <td>...</td>
     </tr>
     <tr>
-      <th>(way, 1082776706)</th>
-      <td>POLYGON ((-51.22975 -30.02912, -51.22974 -30.0...</td>
+      <th>(way, 1489786345)</th>
+      <td>POLYGON ((-51.22748 -30.02866, -51.22746 -30.0...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>police</td>
+      <td>Brigada Militar do Rio Grande do Sul</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>(way, 1489786355)</th>
+      <td>POLYGON ((-51.22822 -30.03018, -51.22824 -30.0...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -630,8 +654,8 @@ plot.geodataframes['building']
       <td>NaN</td>
     </tr>
     <tr>
-      <th>(way, 1082776707)</th>
-      <td>POLYGON ((-51.22992 -30.02954, -51.22987 -30.0...</td>
+      <th>(way, 1489786361)</th>
+      <td>POLYGON ((-51.22525 -30.03042, -51.22528 -30.0...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -654,8 +678,8 @@ plot.geodataframes['building']
       <td>NaN</td>
     </tr>
     <tr>
-      <th>(way, 1082787655)</th>
-      <td>POLYGON ((-51.22601 -30.03038, -51.22602 -30.0...</td>
+      <th>(way, 1484045485)</th>
+      <td>POLYGON ((-51.22572 -30.03264, -51.22572 -30.0...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -678,37 +702,13 @@ plot.geodataframes['building']
       <td>NaN</td>
     </tr>
     <tr>
-      <th>(way, 1354523569)</th>
-      <td>POLYGON ((-51.23248 -30.03341, -51.23244 -30.0...</td>
+      <th>(way, 1484682485)</th>
+      <td>POLYGON ((-51.22611 -30.03344, -51.22608 -30.0...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>pharmacy</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>(way, 1423336172)</th>
-      <td>POLYGON ((-51.23399 -30.03092, -51.23389 -30.0...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>788</td>
-      <td>Rua dos Andradas</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -727,7 +727,7 @@ plot.geodataframes['building']
     </tr>
   </tbody>
 </table>
-<p>2415 rows × 137 columns</p>
+<p>2350 rows × 142 columns</p>
 </div>
 
 
@@ -738,18 +738,14 @@ Search a building by name and display it:
 ```python
 plot.geodataframes['building'][
         plot.geodataframes['building'].name == 'Catedral Metropolitana Nossa Senhora Mãe de Deus'
-].geometry[0]
+].geometry.iloc[0]
 ```
-
-    /opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/geopandas/geoseries.py:772: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-      val = getattr(super(), mtd)(*args, **kwargs)
-
 
 
 
 
     
-![svg](pictures/README/temp_readme_files/temp_readme_21_1.svg)
+![svg](pictures/README/temp_readme_files/temp_readme_21_0.svg)
     
 
 
@@ -788,7 +784,7 @@ for ax,building in zip(np.concatenate(axes),buildings):
     ax.autoscale(); ax.axis('off'); ax.axis('equal')
 ```
 
-    Fetching geodataframes took 16.54 seconds
+    Fetching geodataframes took 120.73 seconds
 
 
 
@@ -819,7 +815,7 @@ _ = plot.ax.set_title(
 )
 ```
 
-    Fetching geodataframes took 12.52 seconds
+    Fetching geodataframes took 127.47 seconds
 
 
 Use **plotter** mode to export a pen plotter-compatible SVG (thanks to abey79's amazing [vsketch](https://github.com/abey79/vsketch) library)
@@ -838,7 +834,7 @@ plot = prettymaps.plot(
 )
 ```
 
-    Fetching geodataframes took 4.82 seconds
+    Fetching geodataframes took 4.80 seconds
 
 
 
@@ -862,7 +858,7 @@ plot = prettymaps.plot(
 )
 ```
 
-    Fetching geodataframes took 23.53 seconds
+    Fetching geodataframes took 31.77 seconds
 
 
 
@@ -963,13 +959,13 @@ plot = prettymaps.multiplot(
 )
 ```
 
-    Fetching geodataframes took 8.95 seconds
+    Fetching geodataframes took 13.40 seconds
 
 
-    Fetching geodataframes took 7.03 seconds
+    Fetching geodataframes took 58.74 seconds
 
 
-    Fetching geodataframes took 8.45 seconds
+    Fetching geodataframes took 60.14 seconds
 
 
 
@@ -997,7 +993,7 @@ plot = prettymaps.plot(
 )
 ```
 
-    Fetching geodataframes took 37.53 seconds
+    Fetching geodataframes took 192.77 seconds
 
 
     make: Entering directory '/home/runner/work/prettymaps/prettymaps/notebooks/SRTM1'
@@ -1014,11 +1010,11 @@ plot = prettymaps.plot(
     gdalbuildvrt -q -overwrite SRTM1.vrt cache/N21/N21W158.tif
     make: Leaving directory '/home/runner/work/prettymaps/prettymaps/notebooks/SRTM1'
     make: Entering directory '/home/runner/work/prettymaps/prettymaps/notebooks/SRTM1'
-    cp SRTM1.vrt SRTM1.3faa36cc8cab4dfda9edabe3b5a4ddc1.vrt
+    cp SRTM1.vrt SRTM1.74690b0d6fca4e0e8db2ff5942630e8b.vrt
     make: Leaving directory '/home/runner/work/prettymaps/prettymaps/notebooks/SRTM1'
     make: Entering directory '/home/runner/work/prettymaps/prettymaps/notebooks/SRTM1'
-    gdal_translate -q -co TILED=YES -co COMPRESS=DEFLATE -co ZLEVEL=9 -co PREDICTOR=2 -projwin -157.90125854957773 21.364471426268267 -157.81006761682832 21.244615177105388 SRTM1.3faa36cc8cab4dfda9edabe3b5a4ddc1.vrt /home/runner/work/prettymaps/prettymaps/notebooks/elevation.tif
-    rm -f SRTM1.3faa36cc8cab4dfda9edabe3b5a4ddc1.vrt
+    gdal_translate -q -co TILED=YES -co COMPRESS=DEFLATE -co ZLEVEL=9 -co PREDICTOR=2 -projwin -157.90125854957773 21.364471426268267 -157.81006761682832 21.244615177105388 SRTM1.74690b0d6fca4e0e8db2ff5942630e8b.vrt /home/runner/work/prettymaps/prettymaps/notebooks/elevation.tif
+    rm -f SRTM1.74690b0d6fca4e0e8db2ff5942630e8b.vrt
     make: Leaving directory '/home/runner/work/prettymaps/prettymaps/notebooks/SRTM1'
 
 
@@ -1052,7 +1048,7 @@ plot = prettymaps.plot(
 )
 ```
 
-    Fetching geodataframes took 17.09 seconds
+    Fetching geodataframes took 115.70 seconds
 
 
 
