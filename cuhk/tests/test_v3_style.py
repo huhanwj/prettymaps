@@ -6,6 +6,7 @@ CUHK = Path(__file__).resolve().parents[1]
 STYLE_PATH = CUHK / "site" / "style.json"
 INDEX_PATH = CUHK / "site" / "index.html"
 APP_PATH = CUHK / "site" / "app.js"
+BUILD_DATA_PATH = CUHK / "scripts" / "build_data.py"
 README_PATH = CUHK / "README.md"
 KNOWN_ISSUES_PATH = CUHK / "KNOWN_ISSUES.md"
 
@@ -143,6 +144,25 @@ def test_v3_exposes_interactive_route_recorder():
     assert "routeRecordingGeoJSON" in app
     assert ".route-recording-active .poi-marker" in html
     assert 'classList.toggle("route-recording-active"' in app
+
+
+def test_v3_refreshes_map_source_from_uncached_shuttle_data():
+    app = APP_PATH.read_text(encoding="utf-8")
+    assert 'fetch(url, { cache: "no-store" })' in app
+    assert 'getSource("shuttle_routes").setData(shuttleRoutesGeoJSON)' in app
+
+
+def test_v3_can_overlay_recorded_points_for_visual_review():
+    html = INDEX_PATH.read_text(encoding="utf-8")
+    app = APP_PATH.read_text(encoding="utf-8")
+    build_data = BUILD_DATA_PATH.read_text(encoding="utf-8")
+    assert 'get("recordingPreview")' in app
+    assert 'cuhk-shuttle-${routeId}-recording.json' in app
+    assert "showRecordingPreviewFromQuery" in app
+    assert 'glob("cuhk-shuttle-*-recording.json")' in build_data
+    assert 'app-core.js?v=20260720-route-recording-2' in html
+    assert 'app.js?v=20260720-route-recording-2' in html
+    assert 'map.setLayoutProperty("route-recording-line", "visibility", "none");' in app
 
 
 def test_v3_terrain_is_optional_and_has_conditional_legend():

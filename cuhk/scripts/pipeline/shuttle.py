@@ -1,5 +1,7 @@
 """Current public CUHK shuttle route products."""
 
+import json
+
 from pathlib import Path
 
 import geopandas as gp
@@ -14,6 +16,24 @@ PUBLIC_ROUTE_IDS = [
     "1A", "1B", "2", "3", "4", "8",
     "5", "6A", "6B", "7", "N", "H",
 ]
+
+
+def load_recording(path, expected_route_id):
+    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    if data.get("format") != "cuhk-shuttle-recording-v1":
+        raise ValueError(f"route {expected_route_id}: unsupported recording format")
+    if str(data.get("route_id")) != str(expected_route_id):
+        raise ValueError(f"route {expected_route_id}: recording route id does not match")
+    points = data.get("points", [])
+    if len(points) < 2:
+        raise ValueError(f"route {expected_route_id}: recording needs at least two points")
+    for index, point in enumerate(points, start=1):
+        if point.get("sequence") != index or point.get("kind") not in {"stop", "waypoint"}:
+            raise ValueError(f"route {expected_route_id}: invalid recording point {index}")
+        coordinates = point.get("coordinates", [])
+        if len(coordinates) != 2:
+            raise ValueError(f"route {expected_route_id}: point {index} has invalid coordinates")
+    return data
 
 
 def load_config(path):
@@ -46,7 +66,13 @@ def variant_stops(base_stops, variant):
 
 
 def _road_graph(roads):
-    graph = nx.Graph()
+    graph = nx.DiGraph()
+
+    def add_edge(start, end, length):
+        if graph.has_edge(start, end) and graph[start][end]["weight"] <= length:
+            return
+        graph.add_edge(start, end, weight=length)
+
     for _, row in roads.iterrows():
         if row.get("road_class") in {"path", "steps"}:
             continue
@@ -61,9 +87,11 @@ def _road_graph(roads):
                 length = edge.length
                 if length <= 0:
                     continue
-                if graph.has_edge(start, end) and graph[start][end]["weight"] <= length:
-                    continue
-                graph.add_edge(start, end, weight=length)
+                direction = row.get("drive_direction", "both") or "both"
+                if direction in {"forward", "both"}:
+                    add_edge(start, end, length)
+                if direction in {"reverse", "both"}:
+                    add_edge(end, start, length)
     return graph
 
 
@@ -151,6 +179,7 @@ def _conditional_sequences(base_stops, variant):
 
 
 def build_products(roads, official_db, config_path):
+    config_path = Path(config_path)
     config = load_config(config_path)
     stop_gdf = _resolve_stop_points(config, official_db)
     target_crs = roads.crs if roads.crs and roads.crs.is_projected else "EPSG:32650"
@@ -183,13 +212,32 @@ def build_products(roads, official_db, config_path):
             "service_time_en": "",
             "service_time_zh": "",
         }
-        base_geometry = build_route_geometry(
-            route_id,
-            ordered_stops,
-            stop_points,
-            roads_metric,
-            graph=graph,
-        )
+        recording_name = definition.get("recording")
+        if recording_name:
+            recording = load_recording(config_path.parent / recording_name, route_id)
+            recorded_wgs84 = gp.GeoSeries(
+                [Point(point["coordinates"]) for point in recording["points"]],
+                crs="EPSG:4326",
+            ).to_crs(target_crs)
+            recorded_names = [
+                f"recording_{index:03d}" for index in range(len(recorded_wgs84))
+            ]
+            recorded_points = dict(zip(recorded_names, recorded_wgs84))
+            base_geometry = build_route_geometry(
+                route_id,
+                recorded_names,
+                recorded_points,
+                roads_metric,
+                graph=graph,
+            )
+        else:
+            base_geometry = build_route_geometry(
+                route_id,
+                ordered_stops,
+                stop_points,
+                roads_metric,
+                graph=graph,
+            )
         route_rows.append({
             **common,
             "variant": "base",

@@ -104,9 +104,21 @@ def classify_roads(gdf):
             return "bridge"
         return "path"
 
+    def drive_direction(row):
+        values = {str(item).strip().lower() for item in _tag_values(row.get("oneway"))}
+        if values & {"-1", "reverse"}:
+            return "reverse"
+        if values & {"yes", "true", "1"}:
+            return "forward"
+        if values & {"no", "false", "0"}:
+            return "both"
+        junctions = {str(item).strip().lower() for item in _tag_values(row.get("junction"))}
+        return "forward" if "roundabout" in junctions else "both"
+
     gdf = gdf.copy()
     gdf["road_class"] = gdf["highway"].map(to_class)
     gdf["pedestrian_kind"] = gdf.apply(pedestrian_kind, axis=1)
+    gdf["drive_direction"] = gdf.apply(drive_direction, axis=1)
     return gdf
 
 

@@ -24,7 +24,7 @@ map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "top-
 /* ---------- 工具 ---------- */
 
 async function loadJSON(url) {
-  const resp = await fetch(url);
+  const resp = await fetch(url, { cache: "no-store" });
   if (!resp.ok) throw new Error(`${url}: HTTP ${resp.status}`);
   return resp.json();
 }
@@ -460,10 +460,29 @@ function wireRouteRecorder() {
   map.on("click", handleRouteRecordingClick);
 }
 
+async function showRecordingPreviewFromQuery() {
+  const routeId = new URLSearchParams(window.location.search).get("recordingPreview");
+  if (!CUHKAppCore.publicRouteCatalog().some((route) => route.routeId === routeId)) return;
+  try {
+    const recording = await loadJSON(`data/cuhk-shuttle-${routeId}-recording.json`);
+    map.getSource("route-recording").setData(
+      CUHKAppCore.routeRecordingGeoJSON(routeId, recording.points)
+    );
+    map.setLayoutProperty("route-recording-line", "visibility", "none");
+    map.setLayoutProperty("route-recording-points", "visibility", "visible");
+    const select = document.getElementById("busRouteSelect");
+    select.value = routeId;
+    applyBusSelection(routeId);
+  } catch (error) {
+    console.warn(`录制预览 ${routeId} 加载失败：`, error);
+  }
+}
+
 async function wireBusRouteSelect() {
   const select = document.getElementById("busRouteSelect");
   try {
     shuttleRoutesGeoJSON = await loadJSON("data/shuttle_routes.geojson");
+    map.getSource("shuttle_routes").setData(shuttleRoutesGeoJSON);
     routeCatalog = CUHKAppCore.routeOptions(shuttleRoutesGeoJSON).map((route) => ({
       ...route,
       conditions: CUHKAppCore.routeConditions(shuttleRoutesGeoJSON, route.routeId),
@@ -537,6 +556,7 @@ map.on("load", async () => {
   addBusArrowLayer();
   await wireBusRouteSelect();
   wireRouteRecorder();
+  await showRecordingPreviewFromQuery();
   updatePOILabels();
   map.on("move", updatePOILabels);
   map.on("resize", updatePOILabels);

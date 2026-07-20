@@ -127,7 +127,7 @@ def main():
 
     keep = {
         "buildings": ["h", "c", "bt", "campus_id", "geometry"],
-        "roads": ["road_class", "pedestrian_kind", "geometry"],
+        "roads": ["road_class", "pedestrian_kind", "drive_direction", "geometry"],
         "railway": ["geometry"],
         "water": ["geometry"],
         "waterway": ["geometry"],
@@ -166,6 +166,11 @@ def main():
         print(f"  {name}.geojson: {len(gdf)} 要素")
     pois_gdf.to_file(out_dir / "pois.geojson", driver="GeoJSON")
     print(f"  pois.geojson: {len(pois_gdf)} 条")
+    for recording_path in (REPO_CUHK / "data").glob("cuhk-shuttle-*-recording.json"):
+        recording = json.loads(recording_path.read_text(encoding="utf-8"))
+        target = out_dir / recording_path.name
+        target.write_text(json.dumps(recording, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(f"  {target.name}: {len(recording.get('points', []))} 个录制点")
     print(f"完成 → {out_dir}")
 
 

@@ -67,6 +67,24 @@ def test_classify_roads_link_normalization():
     assert list(out["road_class"]) == ["major", "major", "major"]
 
 
+def test_classify_roads_preserves_oneway_and_roundabout_direction():
+    gdf = gp.GeoDataFrame(
+        {
+            "highway": ["service"] * 5,
+            "oneway": ["yes", "-1", "no", None, None],
+            "junction": [None, None, None, None, "roundabout"],
+            "geometry": [LineString([(0, 0), (1, 0)])] * 5,
+        },
+        crs="EPSG:4326",
+    )
+
+    out = layers.classify_roads(gdf)
+
+    assert list(out["drive_direction"]) == [
+        "forward", "reverse", "both", "both", "forward",
+    ]
+
+
 def test_fetch_empty_layers(monkeypatch, campus_square, tmp_path):
     boundary_gdf = gp.GeoDataFrame(geometry=[campus_square], crs="EPSG:4326")
 

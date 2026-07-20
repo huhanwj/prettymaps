@@ -36,7 +36,8 @@ routes:
     name_en: Main Campus
     group: campus
     color: "#D84A3A"
-    stops: [shaw_hall, sports_centre, admin_building, sh_ho, university_station]
+    recording: cuhk-shuttle-1A-recording.json
+    stops: [university_station, sports_centre, science_centre, admin_building, sh_ho]
   1B:
     name_zh: 本部線（經研究生宿舍）
     name_en: Main Campus via PGH
